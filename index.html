@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yuhee Lefkowitz — builder & storyteller through data </title>
+  <meta name="description" content="Portfolio and contact page." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0b0b0b;--fg:#eaeaea;--muted:#a1a1a1;--link:#8bd3ff;--card:#151515;--border:#242424;}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Helvetica Neue',Arial,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol',sans-serif;}
+    a{color:var(--link);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:960px;margin:0 auto;padding:24px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+    .links{display:flex;gap:12px;flex-wrap:wrap}
+    .chip{border:1px solid var(--border);padding:8px 12px;border-radius:999px;background:transparent}
+    main{padding:40px 0}
+    .hero{display:grid;grid-template-columns:140px 1fr;gap:24px;align-items:center}
+    .avatar{width:140px;height:140px;border-radius:16px;object-fit:cover;border:1px solid var(--border);}
+    h1{font-size:clamp(28px,3.5vw,44px);line-height:1.05;margin:0 0 8px;font-weight:800}
+    .tagline{font-size:18px;color:var(--muted);margin:0 0 24px}
+    footer{border-top:1px solid var(--border);margin-top:56px;padding:24px 0;color:var(--muted);font-size:14px;text-align:center}
+    @media (max-width:720px){
+      .hero{grid-template-columns:1fr}
+      .avatar{width:110px;height:110px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header aria-label="site header">
+      <div style="font-weight:700">yuhee.dev</div>
+      <nav class="links" aria-label="primary">
+        <a class="chip" href="https://www.linkedin.com/in/yuhee123/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="chip" href="resume.pdf" target="_blank" rel="noopener">Resume</a>
+        <a class="chip" href="https://github.com/yuhee123" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <img class="avatar" src="avatar.jpg" alt="Portrait of Yuhee Lefkowitz" />
+        <div>
+          <h1>hi<br>my name is <span style="color:var(--link)">Yuhee Lefkowitz</span><br>a creator and &lt;data lover/&gt;</h1>
+          <p class="tagline">I’m a student studying Computer Science at UC Berkeley.</p>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="card" style="margin-top:48px;">
+          <p>Want to collaborate or chat? Email <a href="mailto:yuhee123@berkeley.edu">yuhee123@berkeley.edu</a>.</p>
+        </div>
+      </section>
+
+      <footer>
+        <div>© <span id="y"></span> Yuhee Lefkowitz. Built with vanilla HTML/CSS.</div>
+      </footer>
+    </main>
+  </div>
+  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+</body>
+</html>
