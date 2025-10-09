@@ -9,52 +9,64 @@
   <style>
     :root{
       --bg:#ffffff; --fg:#000000; --muted:#6b6b6b;
-      --accent:#e04e43; /* only red */
+      --accent:#e04e43;            /* only red anywhere */
       --border:#e0e0e0; --card:#ffffff; --radius:20px;
       --shadow:0 4px 20px rgba(0,0,0,.06);
       --gap:16px;
-      --mx:0px; --my:0px; /* motion vars for background parallax */
+      --mx:0px; --my:0px;          /* parallax offsets */
     }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,sans-serif;overflow-x:hidden}
+    body{
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family:Inter,system-ui,sans-serif; overflow-x:hidden;
+      min-height:100vh;
+    }
 
-    /* === Interactive grayscale contour background (TWO layers) === */
+    /* === Interactive grayscale background (TILED + PARALLAX) ===
+       We use a small SVG tile and repeat it so the lines fill the whole page. */
     body::before{
       content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
       background-image:url("data:image/svg+xml;utf8,\
-        <svg xmlns='http://www.w3.org/2000/svg' width='2200' height='2200' viewBox='0 0 2200 2200'>\
-          <rect width='2200' height='2200' fill='%23ffffff'/>\
+        <svg xmlns='http://www.w3.org/2000/svg' width='800' height='240' viewBox='0 0 800 240'>\
+          <rect width='800' height='240' fill='%23ffffff'/>\
           <g stroke='%23000000' stroke-opacity='.08' fill='none' stroke-width='1'>\
-            <path d='M-260 60 q560 42 1120 0 t1120 0'/>\
-            <path d='M-280 120 q580 42 1160 0 t1160 0'/>\
-            <path d='M-300 180 q600 42 1200 0 t1200 0'/>\
-            <path d='M-320 240 q620 42 1240 0 t1240 0'/>\
-            <path d='M-340 300 q640 42 1280 0 t1280 0'/>\
-            <path d='M-360 360 q660 42 1320 0 t1320 0'/>\
-            <path d='M-380 420 q680 42 1360 0 t1360 0'/>\
-            <path d='M-400 480 q700 42 1400 0 t1400 0'/>\
-            <path d='M-420 540 q720 42 1440 0 t1440 0'/>\
-            <path d='M-440 600 q740 42 1480 0 t1480 0'/>\
+            <path d='M-60 20 q200 16 400 0 t400 0'/>\
+            <path d='M-60 40 q200 16 400 0 t400 0'/>\
+            <path d='M-60 60 q200 16 400 0 t400 0'/>\
+            <path d='M-60 80 q200 16 400 0 t400 0'/>\
+            <path d='M-60 100 q200 16 400 0 t400 0'/>\
+            <path d='M-60 120 q200 16 400 0 t400 0'/>\
+            <path d='M-60 140 q200 16 400 0 t400 0'/>\
+            <path d='M-60 160 q200 16 400 0 t400 0'/>\
+            <path d='M-60 180 q200 16 400 0 t400 0'/>\
+            <path d='M-60 200 q200 16 400 0 t400 0'/>\
+            <path d='M-60 220 q200 16 400 0 t400 0'/>\
           </g>\
         </svg>");
-      background-size:cover;
+      background-repeat:repeat;
+      background-size:auto 260px;    /* tile height; tweak to taste */
       background-position:calc(50% + var(--mx)) calc(50% + var(--my));
     }
     body::after{
       content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.6; mix-blend-mode:multiply;
       background-image:url("data:image/svg+xml;utf8,\
-        <svg xmlns='http://www.w3.org/2000/svg' width='2200' height='2200' viewBox='0 0 2200 2200'>\
-          <rect width='2200' height='2200' fill='none'/>\
+        <svg xmlns='http://www.w3.org/2000/svg' width='800' height='240' viewBox='0 0 800 240'>\
+          <rect width='800' height='240' fill='none'/>\
           <g stroke='%23000000' stroke-opacity='.06' fill='none' stroke-width='1'>\
-            <path d='M-250 90 q560 42 1120 0 t1120 0'/>\
-            <path d='M-270 150 q580 42 1160 0 t1160 0'/>\
-            <path d='M-290 210 q600 42 1200 0 t1200 0'/>\
-            <path d='M-310 270 q620 42 1240 0 t1240 0'/>\
-            <path d='M-330 330 q640 42 1280 0 t1280 0'/>\
+            <path d='M-40 30 q200 16 400 0 t400 0'/>\
+            <path d='M-40 50 q200 16 400 0 t400 0'/>\
+            <path d='M-40 70 q200 16 400 0 t400 0'/>\
+            <path d='M-40 90 q200 16 400 0 t400 0'/>\
+            <path d='M-40 110 q200 16 400 0 t400 0'/>\
+            <path d='M-40 130 q200 16 400 0 t400 0'/>\
+            <path d='M-40 150 q200 16 400 0 t400 0'/>\
+            <path d='M-40 170 q200 16 400 0 t400 0'/>\
+            <path d='M-40 190 q200 16 400 0 t400 0'/>\
           </g>\
         </svg>");
-      background-size:cover;
+      background-repeat:repeat;
+      background-size:auto 260px;
       background-position:calc(50% + var(--mx)/1.2) calc(50% + var(--my)/1.2);
     }
 
