@@ -132,6 +132,10 @@
       .prev{left:0}
       .next{right:0}
     }
+      /* Tiny runner game styles */
+    .game-wrap{margin:40px 0 0;background:rgba(255,255,255,.75);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:10px 12px}
+    #runner{width:100%;height:130px;display:block;border-radius:12px;background:linear-gradient(0deg,#fff5ea 0%,#ffffff 60%)}
+    .game-hint{font-size:12px;color:var(--muted);text-align:center;margin-top:6px}
   </style>
 </head>
 <body>
@@ -206,6 +210,11 @@
 
       <section id="contact" class="card">
         <p>Want to collaborate or chat? Email <a href="mailto:yuhee123@berkeley.edu">yuhee123@berkeley.edu</a>.</p>
+      </section>
+
+      <section class="game-wrap" aria-label="Tiny runner game">
+        <canvas id="runner" height="130"></canvas>
+        <div class="game-hint">Press <b>space</b> / tap to boost jump · click canvas to pause</div>
       </section>
 
       <footer>
@@ -293,6 +302,112 @@
       carousel.addEventListener('mouseenter', stop); carousel.addEventListener('mouseleave', play);
 
       layout(); play();
+    })();
+  </script>
+  <script>
+    // --- Tiny Runner Game (bottom of page) ---
+    (function(){
+      const canvas = document.getElementById('runner');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let W = 800, H = 130; // logical size, will be synced to CSS width
+      function resize(){
+        // Match canvas width to its CSS pixel width for crisp rendering
+        const cssW = Math.max(300, Math.floor(canvas.getBoundingClientRect().width));
+        W = cssW; H = 130; canvas.width = W; canvas.height = H;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // world
+      const groundY = H - 28; // ground line
+      let t = 0;              // global time
+
+      // dino
+      const dino = { x: 40, y: groundY, vy: 0, w: 22, h: 24, speed: 90, jumping:false };
+      const gravity = 460; // px/s^2
+      const jumpV = -240;  // jump impulse
+      let autoJumpTimer = 0; // seconds
+
+      // obstacles (for fun, gentle)
+      const cacti = Array.from({length:4}, (_,i)=>({ x: 260 + i*220, w: 12 + (i%2)*6, h: 18 + (i%3)*6 }));
+
+      // interaction
+      let paused = false;
+      function toggle(){ paused = !paused; }
+      canvas.addEventListener('click', toggle);
+      window.addEventListener('keydown', (e)=>{ if(e.code==='Space'){ e.preventDefault(); boost(); }});
+      canvas.addEventListener('touchstart', (e)=>{ e.preventDefault(); boost(); }, {passive:false});
+
+      function boost(){ dino.vy = jumpV * 1.15; dino.jumping = true; autoJumpTimer = 0; }
+
+      // Reduced motion respect
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      let last = performance.now();
+      function loop(now){
+        const dt = Math.min(0.033, (now - last) / 1000); last = now;
+        if(!paused){ update(dt); draw(); }
+        requestAnimationFrame(loop);
+      }
+
+      function update(dt){
+        t += dt; autoJumpTimer += dt;
+        // auto jump every ~1.6s with slight randomness
+        if(autoJumpTimer > 1.6 + Math.sin(t*0.7)*0.15){ dino.vy = jumpV; dino.jumping = true; autoJumpTimer = 0; }
+
+        // horizontal motion (wrap around)
+        const sp = prefersReduced ? dino.speed*0.6 : dino.speed;
+        dino.x += sp * dt;
+        if(dino.x > W + 40){ dino.x = -40; }
+
+        // vertical physics
+        dino.vy += gravity * dt;
+        dino.y += dino.vy * dt;
+        if(dino.y > groundY){ dino.y = groundY; dino.vy = 0; dino.jumping = false; }
+
+        // move cacti
+        for(const c of cacti){ c.x -= sp * 0.6 * dt; if(c.x < -30) c.x = W + 120 + Math.random()*100; }
+      }
+
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        // ground
+        ctx.strokeStyle = '#e9e1d9'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, groundY+0.5); ctx.lineTo(W, groundY+0.5); ctx.stroke();
+
+        // subtle scrolling hills
+        const k = prefersReduced ? 0.2 : 0.5;
+        ctx.strokeStyle = 'rgba(224,78,67,0.15)'; ctx.lineWidth = 1;
+        ctx.beginPath();
+        for(let x=0;x<W;x+=6){
+          const y = groundY - 18 + Math.sin((x + t*120)*0.01)*4*k;
+          if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+
+        // cacti
+        ctx.fillStyle = 'rgba(15,15,18,0.12)';
+        cacti.forEach(c=>{ ctx.fillRect(c.x, groundY - c.h, c.w, c.h); });
+
+        // dino (tiny pixel style)
+        const x = Math.round(dino.x), y = Math.round(dino.y);
+        ctx.fillStyle = '#3a3a3a';
+        // body
+        ctx.fillRect(x-8, y-18, 18, 14); // torso
+        ctx.fillRect(x+6, y-22, 8, 8);   // head
+        ctx.fillRect(x+4, y-14, 4, 4);   // neck
+        // legs animate
+        const leg = (Math.floor(t*12)%2===0) ? -2 : 2;
+        ctx.fillRect(x-6, y-4, 4, 6); // back leg
+        ctx.fillRect(x+4, y-4+leg, 4, 6); // front leg
+        // eye
+        ctx.fillStyle = '#fff'; ctx.fillRect(x+11, y-20, 2, 2);
+
+        // shadow
+        ctx.fillStyle = 'rgba(0,0,0,0.08)'; ctx.beginPath(); ctx.ellipse(x+2, groundY+3, 14, 3, 0, 0, Math.PI*2); ctx.fill();
+      }
+
+      requestAnimationFrame(loop);
     })();
   </script>
 </body>
