@@ -8,9 +8,51 @@
   <style>
     :root{
       --bg:#fffdf9; --fg:#0f0f12; --accent:#e04e43; --border:#ececf2; --radius:22px;
+      --mx:0px; --my:0px; /* motion vars for parallax */
     }
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,sans-serif;overflow-x:hidden}
+
+    /* --- Interactive contour background (two layers) --- */
+    body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+      background-image:url("data:image/svg+xml;utf8,\
+        <svg xmlns='http://www.w3.org/2000/svg' width='2000' height='2000' viewBox='0 0 2000 2000'>\
+          <defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%23ffffff'/><stop offset='1' stop-color='%23fff7ee'/></linearGradient></defs>\
+          <rect width='2000' height='2000' fill='url(%23g)'/>\
+          <g stroke='%23000000' stroke-opacity='.08' fill='none' stroke-width='1'>\
+            <path d='M-240 40 q520 40 1040 0 t1040 0'/>\
+            <path d='M-260 80 q540 40 1080 0 t1080 0'/>\
+            <path d='M-280 120 q560 40 1120 0 t1120 0'/>\
+            <path d='M-300 160 q580 40 1160 0 t1160 0'/>\
+            <path d='M-320 200 q600 40 1200 0 t1200 0'/>\
+            <path d='M-340 240 q620 40 1240 0 t1240 0'/>\
+            <path d='M-360 280 q640 40 1280 0 t1280 0'/>\
+            <path d='M-380 320 q660 40 1320 0 t1320 0'/>\
+            <path d='M-400 360 q680 40 1360 0 t1360 0'/>\
+            <path d='M-420 400 q700 40 1400 0 t1400 0'/>\
+            <path d='M-440 440 q720 40 1440 0 t1440 0'/>\
+          </g>\
+        </svg>");
+      background-size:cover;background-position:calc(50% + var(--mx)) calc(50% + var(--my));
+    }
+    body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;mix-blend-mode:multiply;opacity:.6;
+      background-image:url("data:image/svg+xml;utf8,\
+        <svg xmlns='http://www.w3.org/2000/svg' width='2000' height='2000' viewBox='0 0 2000 2000'>\
+          <g stroke='%23000000' stroke-opacity='.06' fill='none' stroke-width='1'>\
+            <path d='M-230 60 q520 40 1040 0 t1040 0'/>\
+            <path d='M-250 100 q540 40 1080 0 t1080 0'/>\
+            <path d='M-270 140 q560 40 1120 0 t1120 0'/>\
+            <path d='M-290 180 q580 40 1160 0 t1160 0'/>\
+            <path d='M-310 220 q600 40 1200 0 t1200 0'/>\
+            <path d='M-330 260 q620 40 1240 0 t1240 0'/>\
+            <path d='M-350 300 q640 40 1280 0 t1280 0'/>\
+            <path d='M-370 340 q660 40 1320 0 t1320 0'/>\
+            <path d='M-390 380 q680 40 1360 0 t1360 0'/>\
+          </g>\
+        </svg>");
+      background-size:cover;background-position:calc(50% + var(--mx)/1.2) calc(50% + var(--my)/1.2);
+    }
+
     header,footer{max-width:1100px;margin:auto;padding:20px}
     .brand{font-weight:800}
     .hero{max-width:1100px;margin:auto;display:flex;align-items:center;gap:24px;padding:40px 20px}
@@ -21,12 +63,14 @@
 
     .projects{max-width:1100px;margin:40px auto;padding:0 20px}
     .carousel{position:relative;overflow:hidden;padding:0 60px}
-    .track{display:flex;gap:16px;transition:transform .5s ease}
-    .proj-card{background:white;border:1px solid #f3d7d4;border-radius:var(--radius);padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.05);min-width:calc(50% - 8px)}
-    .nav{position:absolute;top:50%;transform:translateY(-50%);border-radius:50%;border:1.5px solid var(--accent);background:white;width:36px;height:36px;cursor:pointer;z-index:10}
+    .viewport{overflow:hidden}
+    .track{display:flex;gap:16px;transition:transform .5s cubic-bezier(.22,.61,.36,1);will-change:transform}
+    .proj-card{background:#fff;border:1px solid #f3d7d4;border-radius:var(--radius);padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.05);min-height:140px;display:flex;flex-direction:column}
+    .proj-card h3{margin:0 0 6px}
+
+    .nav{position:absolute;top:50%;transform:translateY(-50%);border-radius:50%;border:1.5px solid var(--accent);background:#fff;width:36px;height:36px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center}
     .prev{left:10px}.next{right:10px}
 
-    /* Full-width Dino Runner */
     #runner{display:block;width:100vw;height:130px;margin-top:40px;border:none;background:linear-gradient(0deg,#fff5ea 0%,#ffffff 60%)}
   </style>
 </head>
@@ -45,15 +89,17 @@
 
   <section class="projects">
     <h2>Projects</h2>
-    <div class="carousel">
-      <button class="nav prev">&#x276E;</button>
-      <div class="track">
-        <div class="proj-card"><h3>CourtVision AI</h3><p>YOLO + OpenCV tennis analytics.</p></div>
-        <div class="proj-card"><h3>Notify.careers</h3><p>Job scraping and notification platform.</p></div>
-        <div class="proj-card"><h3>BidSwipe</h3><p>iOS app for swipe-based bidding.</p></div>
-        <div class="proj-card"><h3>Quilly</h3><p>Social backend built in Node.js.</p></div>
+    <div class="carousel" data-autoplay="true" data-interval="4500">
+      <button class="nav prev" aria-label="Previous">&#x276E;</button>
+      <div class="viewport">
+        <div class="track">
+          <article class="proj-card"><h3>CourtVision AI</h3><p>YOLO + OpenCV tennis analytics.</p></article>
+          <article class="proj-card"><h3>Notify.careers</h3><p>Job scraping and notification platform.</p></article>
+          <article class="proj-card"><h3>BidSwipe</h3><p>iOS app for swipe-based bidding.</p></article>
+          <article class="proj-card"><h3>Quilly</h3><p>Social backend built in Node.js.</p></article>
+        </div>
       </div>
-      <button class="nav next">&#x276F;</button>
+      <button class="nav next" aria-label="Next">&#x276F;</button>
     </div>
   </section>
 
@@ -64,38 +110,65 @@
   </footer>
 
   <script>
-    // Tiny dino runner across full page
+    // --- Interactive background parallax ---
     (function(){
-      const canvas = document.getElementById('runner');
-      const ctx = canvas.getContext('2d');
-      let W = window.innerWidth, H = 130;
-      function resize(){W=window.innerWidth;canvas.width=W;canvas.height=H;}
-      window.addEventListener('resize',resize);resize();
+      let targetX=0,targetY=0,curX=0,curY=0;const ease=0.06,range=80;
+      function pos(x,y){const w=innerWidth||1,h=innerHeight||1;targetX=(x/w)*2-1;targetY=(y/h)*2-1;}
+      addEventListener('mousemove',e=>pos(e.clientX,e.clientY),{passive:true});
+      addEventListener('touchmove',e=>{if(e.touches[0])pos(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
+      (function raf(){curX+=(targetX-curX)*ease;curY+=(targetY-curY)*ease;document.documentElement.style.setProperty('--mx',curX*range+'px');document.documentElement.style.setProperty('--my',curY*range+'px');requestAnimationFrame(raf)})();
+    })();
 
-      const groundY = H-28;
-      const dino = {x:40,y:groundY,w:22,h:24,vy:0,speed:100};
-      const gravity=460,jumpV=-240;
-      let autoJumpTimer=0,t=0;
+    // --- Carousel (2 per view desktop, 1 per view mobile) ---
+    (function(){
+      const carousel=document.querySelector('.carousel'); if(!carousel) return;
+      const viewport=carousel.querySelector('.viewport');
+      const track=carousel.querySelector('.track');
+      const cards=[...track.children];
+      const prevBtn=carousel.querySelector('.prev');
+      const nextBtn=carousel.querySelector('.next');
+      let perView=2, slideW=0, gap=parseInt(getComputedStyle(track).gap)||16, index=0;
 
-      function update(dt){
-        t+=dt;autoJumpTimer+=dt;
-        if(autoJumpTimer>1.5){dino.vy=jumpV;autoJumpTimer=0;}
-        dino.x+=dino.speed*dt;if(dino.x>W+40)dino.x=-40;
-        dino.vy+=gravity*dt;dino.y+=dino.vy*dt;if(dino.y>groundY)dino.y=groundY,dino.vy=0;
+      function layout(){
+        perView=innerWidth>=980?2:1;
+        slideW=(viewport.clientWidth - gap*(perView-1))/perView;
+        cards.forEach(c=>{c.style.minWidth=slideW+'px';c.style.maxWidth=slideW+'px';});
+        index=Math.max(0,Math.min(index,cards.length-perView));
+        update();
       }
-
-      function draw(){
-        ctx.clearRect(0,0,W,H);
-        ctx.strokeStyle='#e9e1d9';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,groundY+0.5);ctx.lineTo(W,groundY+0.5);ctx.stroke();
-        ctx.strokeStyle='rgba(224,78,67,0.15)';ctx.beginPath();for(let x=0;x<W;x+=6){const y=groundY-18+Math.sin((x+t*120)*0.01)*2; if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();
-        ctx.fillStyle='#3a3a3a';const x=Math.round(dino.x),y=Math.round(dino.y);
-        ctx.fillRect(x-8,y-18,18,14);ctx.fillRect(x+6,y-22,8,8);ctx.fillRect(x+4,y-14,4,4);
-        const leg=(Math.floor(t*12)%2===0)?-2:2;ctx.fillRect(x-6,y-4,4,6);ctx.fillRect(x+4,y-4+leg,4,6);ctx.fillStyle='#fff';ctx.fillRect(x+11,y-20,2,2);
-        ctx.fillStyle='rgba(0,0,0,0.08)';ctx.beginPath();ctx.ellipse(x+2,groundY+3,14,3,0,0,Math.PI*2);ctx.fill();
+      function update(){
+        const x=-(index*(slideW+gap));
+        track.style.transform=`translate3d(${x}px,0,0)`;
+        prevBtn.disabled=index===0;
+        nextBtn.disabled=index>=cards.length-perView;
       }
+      function next(){ index=Math.min(index+perView,cards.length-perView); update(); }
+      function prev(){ index=Math.max(index-perView,0); update(); }
+      nextBtn.addEventListener('click',next); prevBtn.addEventListener('click',prev);
+      addEventListener('resize',layout); layout();
 
-      let last=performance.now();
-      function loop(now){const dt=Math.min(0.033,(now-last)/1000);last=now;update(dt);draw();requestAnimationFrame(loop);}requestAnimationFrame(loop);
+      // touch swipe
+      let sx=0,dx=0; viewport.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dx=0;},{passive:true});
+      viewport.addEventListener('touchmove',e=>{dx=e.touches[0].clientX-sx;},{passive:true});
+      viewport.addEventListener('touchend',()=>{ if(Math.abs(dx)>50){ dx<0?next():prev(); }});
+
+      // autoplay
+      const autoplay=carousel.dataset.autoplay==='true'; const interval=parseInt(carousel.dataset.interval||'4500');
+      let timer=null; function play(){ if(!autoplay) return; stop(); timer=setInterval(()=>{ if(index>=cards.length-perView) index=0; else index+=perView; update(); }, interval); }
+      function stop(){ if(timer) { clearInterval(timer); timer=null; } }
+      carousel.addEventListener('mouseenter',stop); carousel.addEventListener('mouseleave',play);
+      play();
+    })();
+
+    // --- Full-width tiny dino runner ---
+    (function(){
+      const canvas=document.getElementById('runner');
+      const ctx=canvas.getContext('2d');
+      let W=innerWidth,H=130; function resize(){W=innerWidth;canvas.width=W;canvas.height=H;} addEventListener('resize',resize); resize();
+      const groundY=H-28; const dino={x:40,y:groundY,w:22,h:24,vy:0,speed:100}; const gravity=460,jumpV=-240; let auto=0,t=0;
+      function update(dt){t+=dt; auto+=dt; if(auto>1.5){dino.vy=jumpV; auto=0;} dino.x+=dino.speed*dt; if(dino.x>W+40)dino.x=-40; dino.vy+=gravity*dt; dino.y+=dino.vy*dt; if(dino.y>groundY){dino.y=groundY; dino.vy=0;}}
+      function draw(){ctx.clearRect(0,0,W,H); ctx.strokeStyle='#e9e1d9'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,groundY+0.5); ctx.lineTo(W,groundY+0.5); ctx.stroke(); ctx.strokeStyle='rgba(224,78,67,0.15)'; ctx.beginPath(); for(let x=0;x<W;x+=6){const y=groundY-18+Math.sin((x+t*120)*0.01)*2; if(x===0)ctx.moveTo(x,y); else ctx.lineTo(x,y);} ctx.stroke(); ctx.fillStyle='#3a3a3a'; const x=Math.round(dino.x),y=Math.round(dino.y); ctx.fillRect(x-8,y-18,18,14); ctx.fillRect(x+6,y-22,8,8); ctx.fillRect(x+4,y-14,4,4); const leg=(Math.floor(t*12)%2===0)?-2:2; ctx.fillRect(x-6,y-4,4,6); ctx.fillRect(x+4,y-4+leg,4,6); ctx.fillStyle='#fff'; ctx.fillRect(x+11,y-20,2,2); ctx.fillStyle='rgba(0,0,0,0.08)'; ctx.beginPath(); ctx.ellipse(x+2,groundY+3,14,3,0,0,Math.PI*2); ctx.fill(); }
+      let last=performance.now(); function loop(now){const dt=Math.min(0.033,(now-last)/1000); last=now; update(dt); draw(); requestAnimationFrame(loop);} requestAnimationFrame(loop);
     })();
   </script>
 </body>
