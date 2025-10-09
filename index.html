@@ -9,11 +9,11 @@
   <style>
     :root{
       --bg:#ffffff; --fg:#000; --muted:#6b6b6b;
-      --accent:#e04e43;           /* the only red */
+      --accent:#e04e43;            /* the only red */
       --border:#e0e0e0; --card:#fff; --radius:20px;
       --shadow:0 4px 20px rgba(0,0,0,.06);
       --gap:16px;
-      --mx:0px; --my:0px;         /* parallax offsets */
+      --mx:0px; --my:0px;          /* parallax offsets for bg */
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -22,14 +22,11 @@
       font-family:Inter,system-ui,sans-serif; overflow-x:hidden; min-height:100vh;
     }
 
-    /* === Animated BLOB background (grayscale) with slight parallax ===
-       We embed an SVG that animates with SMIL (works as CSS background).
-       Colors are neutral greys to match your theme. */
+    /* === Animated grayscale BLOB background (under fireflies) === */
     body::before{
-      content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
-      background-image:url(\"data:image/svg+xml;utf8,\
+      content:""; position:fixed; inset:0; z-index:-3; pointer-events:none;
+      background-image:url("data:image/svg+xml;utf8,\
         <svg xmlns='http://www.w3.org/2000/svg' viewBox='10 10 80 80' preserveAspectRatio='xMidYMid slice'>\
-          <defs></defs>\
           <g>\
             <path fill='%23efefef' d='M37-5C25.1-14.7,5.7-19.1-9.2-10-28.5,1.8-32.7,31.1-19.8,49c15.5,21.5,52.6,22,67.2,2.3C59.4,35,53.7,8.5,37-5Z'>\
               <animateTransform attributeName=\"transform\" type=\"rotate\" from=\"0 13 25\" to=\"360 13 25\" dur=\"20s\" repeatCount=\"indefinite\"/>\
@@ -44,17 +41,57 @@
               <animateTransform attributeName=\"transform\" type=\"rotate\" from=\"0 84 93\" to=\"360 84 93\" dur=\"15s\" repeatCount=\"indefinite\"/>\
             </path>\
           </g>\
-        </svg>\");
+        </svg>");
       background-repeat:no-repeat;
       background-size:cover;
       background-position:calc(50% + var(--mx)/10) calc(50% + var(--my)/10);
-      filter: saturate(0.9); /* subtle, still grayscale */
+      filter:saturate(0.9);
     }
-    /* faint extra layer for depth (static blur of same SVG) */
     body::after{
-      content:\"\"; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.4; filter:blur(10px);
+      content:""; position:fixed; inset:0; z-index:-2; pointer-events:none; opacity:.35; filter:blur(10px);
       background-image:inherit; background-repeat:no-repeat; background-size:cover;
       background-position:calc(50% + var(--mx)/16) calc(50% + var(--my)/16);
+    }
+
+    /* === Fireflies overlay (grayscale glow) === */
+    .fireflies{
+      position:fixed; inset:0; z-index:-1; pointer-events:none; /* behind content, above blob */
+      overflow:hidden;
+    }
+    .firefly{
+      position:absolute; left:50%; top:50%;
+      width:2px; height:2px; border-radius:50%;
+      background:transparent; box-shadow:0 0 0 0 rgba(255,255,255,0);
+      animation: drift 18s linear infinite, flash 3s ease-in-out infinite;
+      will-change: transform, box-shadow;
+    }
+    /* Create 20 variants with different paths/timings */
+    /* You can increase/decrease count by adding/removing .firefly divs in HTML */
+    .firefly:nth-child(odd){ animation-duration: 22s, 2.6s; }
+    .firefly:nth-child(3n){ animation-duration: 26s, 3.4s; }
+    .firefly::before, .firefly::after{
+      content:\"\"; position:absolute; inset:-8px; border-radius:50%;
+      background: radial-gradient(circle, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 60%);
+      filter: blur(2px);
+    }
+    .firefly::after{
+      inset:-3px;
+      background: radial-gradient(circle, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 60%);
+      filter: blur(1px);
+    }
+
+    /* Drift path (loosely based on Mike Golus' pen, simplified) */
+    @keyframes drift{
+      0%   { transform: translate3d(-40vw, -35vh, 0) scale(1); }
+      25%  { transform: translate3d( 10vw, -10vh, 0) scale(.9); }
+      50%  { transform: translate3d( 40vw,  25vh, 0) scale(1); }
+      75%  { transform: translate3d(-10vw,  35vh, 0) scale(1.1); }
+      100% { transform: translate3d(-40vw, -35vh, 0) scale(1); }
+    }
+    /* Glow pulsing */
+    @keyframes flash{
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); opacity:.2; }
+      50%      { box-shadow: 0 0 12px 4px rgba(255,255,255,.55); opacity:1; }
     }
 
     /* === Layout === */
@@ -96,6 +133,15 @@
   </style>
 </head>
 <body>
+  <!-- Fireflies overlay -->
+  <div class="fireflies" aria-hidden="true">
+    <!-- 20 fireflies (adjust count for more/less) -->
+    <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
+    <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
+    <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
+    <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
+  </div>
+
   <header>
     <div class="brand">yuhee.dev</div>
     <nav class="actions">
@@ -137,7 +183,7 @@
   </footer>
 
   <script>
-    // --- Background parallax for the blob (keeps grayscale theme) ---
+    // --- Background parallax for blobs (keeps grayscale theme) ---
     (function(){
       let tx=0, ty=0, cx=0, cy=0;
       const ease=0.06, range=60;
