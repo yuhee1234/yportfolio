@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Yuhee Lefkowitz — Portfolio</title>
-  <meta name="description" content="Personal site for Yuhee Lefkowitz — links and contact." />
+  <meta name="description" content="Personal site for Yuhee Lefkowitz — links, projects, and contact." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -20,6 +20,8 @@
       --border:#ececf2;        /* light border */
       --shadow:0 10px 30px rgba(17,17,26,.08),0 2px 6px rgba(17,17,26,.06);
       --radius:22px;
+      --gap:16px;
+      --mx:0px;--my:0px;       /* motion vars */
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -27,7 +29,7 @@
       margin:0; color:var(--fg); background:var(--bg); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
       -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
     }
-    /* --- subtle contour background like Linkd --- */
+    /* --- subtle contour background like Linkd + cursor parallax --- */
     body::before{
       content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
       background-image:url("data:image/svg+xml;utf8,\
@@ -64,14 +66,34 @@
     .pill:hover{background:var(--chip)}
 
     /* Hero */
+    .motion{transform:translate3d(calc(var(--mx)/8), calc(var(--my)/8), 0); transition:transform .08s ease-out}
     .hero{display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center;margin:52px 0 28px}
     .avatar{width:120px;height:120px;border-radius:20px;border:1px solid var(--border);background:#fff;box-shadow:var(--shadow);object-fit:cover}
     h1{margin:0;font-size:clamp(28px,5.2vw,52px);line-height:1.02;font-weight:800}
     .accent{color:var(--accent)}
     .tagline{margin:12px 0 0;color:var(--muted);font-size:18px}
 
-    /* Card for contact */
-    .card{margin-top:36px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+    /* Projects Carousel */
+    .projects{margin:30px 0 10px}
+    .projects h2{font-size:26px;line-height:1.2;margin:12px 4px 18px;font-weight:800;text-align:center}
+    .carousel{position:relative}
+    .viewport{overflow:hidden}
+    .track{display:flex;gap:var(--gap);will-change:transform;transition:transform .55s cubic-bezier(.22,.61,.36,1)}
+    .proj-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;min-height:220px;display:flex;flex-direction:column}
+    .proj-card h3{margin:6px 0 6px;font-size:18px}
+    .proj-card p{margin:0 0 12px;color:var(--muted)}
+    .proj-meta{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
+    .btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-radius:14px;border:1.5px solid var(--accent);background:#fff;font-weight:600;text-decoration:none;color:var(--fg)}
+    .btn-outline:hover{background:var(--chip)}
+
+    .nav{position:absolute;top:50%;transform:translateY(-50%);border-radius:999px;border:1.5px solid var(--accent);background:#fff;padding:10px 12px;cursor:pointer;box-shadow:var(--shadow)}
+    .nav:disabled{opacity:.4;cursor:not-allowed}
+    .prev{left:-6px}
+    .next{right:-6px}
+
+    .dots{display:flex;gap:8px;justify-content:center;margin:14px 0}
+    .dot{width:8px;height:8px;border-radius:999px;background:#e6e6ea;border:1px solid #ddd}
+    .dot[aria-selected="true"]{background:var(--accent);border-color:var(--accent)}
 
     footer{margin:56px 0 18px;color:var(--muted);text-align:center}
 
@@ -79,11 +101,9 @@
     @media (max-width:720px){
       .hero{grid-template-columns:1fr;text-align:left}
       .avatar{width:96px;height:96px}
+      .prev{left:0}
+      .next{right:0}
     }
-      /* Motion variables */
-    :root{--mx:0px;--my:0px}
-    /* parallax on hero */
-    .motion{transform:translate3d(calc(var(--mx)/8), calc(var(--my)/8), 0); transition:transform .08s ease-out}
   </style>
 </head>
 <body>
@@ -106,6 +126,56 @@
         </div>
       </section>
 
+      <!-- Projects Carousel -->
+      <section id="projects" class="projects" aria-label="Projects">
+        <h2>Projects</h2>
+        <div class="carousel" data-autoplay="true" data-interval="4000">
+          <button class="nav prev" aria-label="Previous slide">&#x276E;</button>
+          <div class="viewport">
+            <div class="track">
+              <!-- Card 1 -->
+              <article class="proj-card" data-title="CourtVision AI">
+                <h3>CourtVision AI — Tennis Tracking</h3>
+                <p>YOLO + OpenCV pipeline to track ball/player, compute shot speed and rally stats; exports highlights.</p>
+                <div class="proj-meta">
+                  <a class="btn-outline" href="#" target="_blank" rel="noopener">Live demo</a>
+                  <a class="btn-outline" href="#" target="_blank" rel="noopener">GitHub</a>
+                </div>
+              </article>
+              <!-- Card 2 -->
+              <article class="proj-card" data-title="Notify.careers">
+                <h3>Notify.careers — Job Alerts</h3>
+                <p>Scraper + queue + web app for internship drops. React frontend, Python backend, CockroachDB + Redis.</p>
+                <div class="proj-meta">
+                  <a class="btn-outline" href="#" target="_blank" rel="noopener">Visit</a>
+                  <a class="btn-outline" href="#" target="_blank" rel="noopener">Repo</a>
+                </div>
+              </article>
+              <!-- Card 3 -->
+              <article class="proj-card" data-title="BidSwipe">
+                <h3>BidSwipe — Event Ticketing (iOS)</h3>
+                <p>SwiftUI app for swipe-based bidding and seat reservations. Custom tab bar and asset pipeline.</p>
+                <div class="proj-meta">
+                  <a class="btn-outline" href="#" target="_blank" rel="noopener">Screens</a>
+                  <a class="btn-outline" href="#" target="_blank" rel="noopener">GitHub</a>
+                </div>
+              </article>
+              <!-- Card 4 -->
+              <article class="proj-card" data-title="Quilly">
+                <h3>Quilly — Social Platform Backend</h3>
+                <p>Node/Express/Mongo API with auth, events, and messaging. Deployed with CI and containerized services.</p>
+                <div class="proj-meta">
+                  <a class="btn-outline" href="#" target="_blank" rel="noopener">Docs</a>
+                  <a class="btn-outline" href="#" target="_blank" rel="noopener">Repo</a>
+                </div>
+              </article>
+            </div>
+          </div>
+          <button class="nav next" aria-label="Next slide">&#x276F;</button>
+        </div>
+        <div class="dots" aria-label="Slide indicators" role="tablist"></div>
+      </section>
+
       <section id="contact" class="card">
         <p>Want to collaborate or chat? Email <a href="mailto:yuhee123@berkeley.edu">yuhee123@berkeley.edu</a>.</p>
       </section>
@@ -115,41 +185,86 @@
       </footer>
     </main>
   </div>
-  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+
   <script>
     // Mouse-driven background parallax (no libraries)
     (function(){
       let targetX = 0, targetY = 0, curX = 0, curY = 0;
       const ease = 0.06;              // inertia (lower = smoother)
       const range = 80;               // max px shift of background
-
-      function onMove(e){
-        const w = window.innerWidth || 1;
-        const h = window.innerHeight || 1;
-        // normalize to [-1, 1]
-        targetX = (e.clientX / w) * 2 - 1;
-        targetY = (e.clientY / h) * 2 - 1;
+      function onPos(x, y){
+        const w = window.innerWidth || 1; const h = window.innerHeight || 1;
+        targetX = (x / w) * 2 - 1; targetY = (y / h) * 2 - 1;
       }
-      function onTouch(e){
-        if(!e.touches || !e.touches[0]) return;
-        const t = e.touches[0];
-        const w = window.innerWidth || 1;
-        const h = window.innerHeight || 1;
-        targetX = (t.clientX / w) * 2 - 1;
-        targetY = (t.clientY / h) * 2 - 1;
-      }
-      window.addEventListener('mousemove', onMove, {passive:true});
-      window.addEventListener('touchmove', onTouch, {passive:true});
-
-      function raf(){
-        // lerp toward target for smoothness
-        curX += (targetX - curX) * ease;
-        curY += (targetY - curY) * ease;
+      window.addEventListener('mousemove', e=>onPos(e.clientX, e.clientY), {passive:true});
+      window.addEventListener('touchmove', e=>{if(e.touches[0]) onPos(e.touches[0].clientX, e.touches[0].clientY)}, {passive:true});
+      (function raf(){ curX += (targetX - curX) * ease; curY += (targetY - curY) * ease;
         document.documentElement.style.setProperty('--mx', (curX * range) + 'px');
         document.documentElement.style.setProperty('--my', (curY * range) + 'px');
-        requestAnimationFrame(raf);
+        requestAnimationFrame(raf); })();
+    })();
+
+    // ----- Projects Carousel (autoplay, buttons, dots, keyboard, touch) -----
+    (function(){
+      const carousel = document.querySelector('.carousel');
+      if(!carousel) return;
+      const viewport = carousel.querySelector('.viewport');
+      const track = carousel.querySelector('.track');
+      const cards = Array.from(track.children);
+      const prevBtn = carousel.querySelector('.prev');
+      const nextBtn = carousel.querySelector('.next');
+      const dotsWrap = document.querySelector('.dots');
+      let perView = 2; // cards visible
+      let index = 0;   // left-most visible index
+      let slideW = 0;  // px
+      const gap = parseInt(getComputedStyle(track).gap) || 16;
+
+      // Build dots (~pages)
+      function pageCount(){ return Math.max(1, Math.ceil(cards.length / perView)); }
+      function rebuildDots(){ dotsWrap.innerHTML = ''; for(let i=0;i<pageCount();i++){ const d=document.createElement('button'); d.className='dot'; d.setAttribute('role','tab'); d.setAttribute('aria-selected', i===Math.floor(index/perView)); d.addEventListener('click', ()=>goTo(i*perView)); dotsWrap.appendChild(d);} }
+
+      function layout(){
+        perView = window.innerWidth >= 980 ? 2 : 1; // simple breakpoint
+        slideW = (viewport.clientWidth - gap*(perView-1)) / perView;
+        cards.forEach(c=>{ c.style.minWidth = slideW + 'px'; c.style.maxWidth = slideW + 'px'; });
+        clampIndex();
+        update();
+        rebuildDots();
       }
-      raf();
+      function clampIndex(){ index = Math.max(0, Math.min(index, cards.length - perView)); }
+      function update(){
+        const x = -(index * (slideW + gap));
+        track.style.transform = `translate3d(${x}px,0,0)`;
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index >= cards.length - perView;
+        const sel = Math.floor(index/perView);
+        Array.from(dotsWrap.children).forEach((d,i)=>d.setAttribute('aria-selected', i===sel));
+      }
+      function goTo(i){ index = i; clampIndex(); update(); }
+      function next(){ goTo(index + perView); }
+      function prev(){ goTo(index - perView); }
+
+      nextBtn.addEventListener('click', next);
+      prevBtn.addEventListener('click', prev);
+      window.addEventListener('resize', layout);
+
+      // keyboard
+      carousel.addEventListener('keydown', (e)=>{ if(e.key==='ArrowRight') next(); if(e.key==='ArrowLeft') prev(); });
+      carousel.tabIndex = 0;
+
+      // touch swipe
+      let sx=0, dx=0; viewport.addEventListener('touchstart', e=>{sx=e.touches[0].clientX; dx=0;},{passive:true});
+      viewport.addEventListener('touchmove', e=>{dx=e.touches[0].clientX-sx;},{passive:true});
+      viewport.addEventListener('touchend', ()=>{ if(Math.abs(dx)>50){ dx<0?next():prev(); }});
+
+      // autoplay
+      const autoplay = carousel.dataset.autoplay === 'true';
+      const interval = parseInt(carousel.dataset.interval||'4000');
+      let timer=null; function play(){ if(!autoplay) return; stop(); timer=setInterval(()=>{ if(index >= cards.length - perView) goTo(0); else next(); }, interval); }
+      function stop(){ if(timer){ clearInterval(timer); timer=null; }}
+      carousel.addEventListener('mouseenter', stop); carousel.addEventListener('mouseleave', play);
+
+      layout(); play();
     })();
   </script>
 </body>
