@@ -5,55 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Yuhee Lefkowitz — Creator & Engineer</title>
   <meta name="description" content="Portfolio of Yuhee Lefkowitz — Creator & Engineer from UC Berkeley." />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --bg:#ffffff;
-      --fg:#000000;
-      --muted:#6b6b6b;
-      --accent:#e04e43;
-      --border:#e0e0e0;
-      --card:#ffffff;
-      --shadow:0 4px 20px rgba(0,0,0,0.06);
-      --radius:20px;
-      --mx:0px;--my:0px;
+    :root{
+      --bg:#ffffff; --fg:#000000; --muted:#6b6b6b;
+      --accent:#e04e43; /* only red */
+      --border:#e0e0e0; --card:#ffffff; --radius:20px;
+      --shadow:0 4px 20px rgba(0,0,0,.06);
+      --gap:16px;
+      --mx:0px; --my:0px; /* motion vars for background parallax */
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,sans-serif;overflow-x:hidden;
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,sans-serif;overflow-x:hidden}
+
+    /* === Interactive grayscale contour background (TWO layers) === */
+    body::before{
+      content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
+      background-image:url("data:image/svg+xml;utf8,\
+        <svg xmlns='http://www.w3.org/2000/svg' width='2200' height='2200' viewBox='0 0 2200 2200'>\
+          <rect width='2200' height='2200' fill='%23ffffff'/>\
+          <g stroke='%23000000' stroke-opacity='.08' fill='none' stroke-width='1'>\
+            <path d='M-260 60 q560 42 1120 0 t1120 0'/>\
+            <path d='M-280 120 q580 42 1160 0 t1160 0'/>\
+            <path d='M-300 180 q600 42 1200 0 t1200 0'/>\
+            <path d='M-320 240 q620 42 1240 0 t1240 0'/>\
+            <path d='M-340 300 q640 42 1280 0 t1280 0'/>\
+            <path d='M-360 360 q660 42 1320 0 t1320 0'/>\
+            <path d='M-380 420 q680 42 1360 0 t1360 0'/>\
+            <path d='M-400 480 q700 42 1400 0 t1400 0'/>\
+            <path d='M-420 540 q720 42 1440 0 t1440 0'/>\
+            <path d='M-440 600 q740 42 1480 0 t1480 0'/>\
+          </g>\
+        </svg>");
+      background-size:cover;
+      background-position:calc(50% + var(--mx)) calc(50% + var(--my));
+    }
+    body::after{
+      content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.6; mix-blend-mode:multiply;
+      background-image:url("data:image/svg+xml;utf8,\
+        <svg xmlns='http://www.w3.org/2000/svg' width='2200' height='2200' viewBox='0 0 2200 2200'>\
+          <rect width='2200' height='2200' fill='none'/>\
+          <g stroke='%23000000' stroke-opacity='.06' fill='none' stroke-width='1'>\
+            <path d='M-250 90 q560 42 1120 0 t1120 0'/>\
+            <path d='M-270 150 q580 42 1160 0 t1160 0'/>\
+            <path d='M-290 210 q600 42 1200 0 t1200 0'/>\
+            <path d='M-310 270 q620 42 1240 0 t1240 0'/>\
+            <path d='M-330 330 q640 42 1280 0 t1280 0'/>\
+          </g>\
+        </svg>");
+      background-size:cover;
+      background-position:calc(50% + var(--mx)/1.2) calc(50% + var(--my)/1.2);
     }
 
-    /* Background lines */
-    body::before, body::after {
-      content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='2000' height='2000' viewBox='0 0 2000 2000'><g stroke='%23000000' stroke-opacity='.06' fill='none'><path d='M-240 40 q520 40 1040 0 t1040 0'/><path d='M-260 80 q540 40 1080 0 t1080 0'/><path d='M-280 120 q560 40 1120 0 t1120 0'/><path d='M-300 160 q580 40 1160 0 t1160 0'/><path d='M-320 200 q600 40 1200 0 t1200 0'/><path d='M-340 240 q620 40 1240 0 t1240 0'/></g></svg>");
-      background-size:cover;background-position:calc(50% + var(--mx)) calc(50% + var(--my));
-    }
-
-    header,footer{max-width:1100px;margin:auto;padding:20px;display:flex;justify-content:space-between;align-items:center;}
+    /* === Layout === */
+    header, footer { max-width:1100px; margin:auto; padding:20px;
+      display:flex; align-items:center; justify-content:space-between; }
     .brand{font-weight:800}
-    .actions{display:flex;gap:10px;}
-    .pill{padding:10px 16px;border:1.5px solid var(--accent);border-radius:999px;text-decoration:none;color:var(--fg);font-weight:600;background:#fff;}
+    .actions{display:flex; gap:10px}
+    .pill{padding:10px 16px; border:1.5px solid var(--accent); border-radius:999px;
+      color:var(--fg); background:#fff; text-decoration:none; font-weight:600}
 
-    .hero{max-width:1100px;margin:60px auto;display:flex;align-items:center;gap:24px;padding:0 20px;}
-    .hero img{width:110px;height:110px;border-radius:18px;object-fit:cover;box-shadow:var(--shadow);}
-    h1{margin:0;font-size:42px;line-height:1.1;font-weight:800}
+    .hero{max-width:1100px; margin:60px auto; padding:0 20px;
+      display:flex; align-items:center; gap:24px}
+    .hero img{width:110px; height:110px; border-radius:18px; object-fit:cover; box-shadow:var(--shadow)}
+    h1{margin:0; font-size:42px; line-height:1.1; font-weight:800}
     .accent{color:var(--accent)}
-    p{margin:8px 0 0;color:var(--muted)}
+    p{margin:8px 0 0; color:var(--muted)}
 
-    .projects{max-width:1100px;margin:40px auto;padding:0 20px;}
-    h2{text-align:center;}
+    .projects{max-width:1100px; margin:40px auto; padding:0 20px}
+    h2{text-align:center; margin:0 0 16px}
 
-    .carousel{position:relative;overflow:hidden;padding:0 60px;}
-    .viewport{overflow:hidden;}
-    .track{display:flex;gap:16px;transition:transform .5s ease;will-change:transform;}
-    .proj-card{background:#fff;border:1.5px solid var(--accent);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);flex:1 0 calc(50% - 16px);}
+    /* === Carousel === */
+    .carousel{position:relative; overflow:hidden; padding:0 60px}
+    .viewport{overflow:hidden}
+    .track{display:flex; gap:var(--gap); will-change:transform; transition:transform .5s cubic-bezier(.22,.61,.36,1)}
+    .proj-card{background:#fff; border:1.5px solid var(--accent); border-radius:var(--radius);
+      padding:20px; box-shadow:var(--shadow); min-height:140px; display:flex; flex-direction:column}
+    .proj-card h3{margin:0 0 6px}
 
-    .nav{position:absolute;top:50%;transform:translateY(-50%);background:#fff;border:1.5px solid var(--accent);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-    .prev{left:10px;}
-    .next{right:10px;}
+    .nav{position:absolute; top:50%; transform:translateY(-50%); z-index:5;
+      background:#fff; border:1.5px solid var(--accent); border-radius:50%;
+      width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer}
+    .prev{left:10px} .next{right:10px}
 
-    #runner{display:block;width:100%;height:130px;margin-top:40px;border:none;background:linear-gradient(0deg,#f8f8f8 0%,#ffffff 60%)}
+    /* === Full-width runner === */
+    #runner{display:block; width:100vw; height:130px; margin-top:40px; border:none;
+      background:linear-gradient(0deg,#f6f6f6 0%, #ffffff 60%)}
+
+    @media (max-width:900px){
+      .carousel{padding:0 24px}
+    }
   </style>
 </head>
 <body>
@@ -67,7 +109,7 @@
   </header>
 
   <section class="hero">
-    <img src="avatar.jpg" alt="Portrait of Yuhee Lefkowitz">
+    <img src="avatar.jpg" alt="Portrait of Yuhee Lefkowitz" />
     <div>
       <h1>hi<br>my name is <span class="accent">Yuhee Lefkowitz</span><br>a creator and engineer</h1>
       <p>I’m a student studying Computer Science at UC Berkeley.</p>
@@ -77,7 +119,7 @@
   <section class="projects">
     <h2>Projects</h2>
     <div class="carousel" data-autoplay="true" data-interval="4000">
-      <button class="nav prev">&#x276E;</button>
+      <button class="nav prev" aria-label="Previous">&#x276E;</button>
       <div class="viewport">
         <div class="track">
           <article class="proj-card"><h3>CourtVision AI</h3><p>YOLO + OpenCV tennis analytics.</p></article>
@@ -86,31 +128,125 @@
           <article class="proj-card"><h3>Quilly Backend</h3><p>Node.js social API for events & messaging.</p></article>
         </div>
       </div>
-      <button class="nav next">&#x276F;</button>
+      <button class="nav next" aria-label="Next">&#x276F;</button>
     </div>
   </section>
 
+  <!-- Full width tiny runner -->
   <canvas id="runner"></canvas>
 
-  <footer>© 2025 Yuhee Lefkowitz. Built with vanilla HTML/CSS.</footer>
+  <footer>
+    <span>© <span id="year"></span> Yuhee Lefkowitz. Built with vanilla HTML/CSS.</span>
+  </footer>
 
   <script>
-    // background motion
+    // --- Interactive grayscale background (parallax) ---
     (function(){
-      let targetX=0,targetY=0,curX=0,curY=0;const ease=0.06,range=60;
-      function pos(x,y){const w=innerWidth||1,h=innerHeight||1;targetX=(x/w)*2-1;targetY=(y/h)*2-1;}
-      addEventListener('mousemove',e=>pos(e.clientX,e.clientY),{passive:true});
-      addEventListener('touchmove',e=>{if(e.touches[0])pos(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
-      (function raf(){curX+=(targetX-curX)*ease;curY+=(targetY-curY)*ease;document.documentElement.style.setProperty('--mx',curX*range+'px');document.documentElement.style.setProperty('--my',curY*range+'px');requestAnimationFrame(raf)})();
+      let tx=0, ty=0, cx=0, cy=0;
+      const ease = 0.06, range = 70;
+      function set(x,y){ const w=innerWidth||1, h=innerHeight||1; tx=(x/w)*2-1; ty=(y/h)*2-1; }
+      addEventListener('mousemove', e=>set(e.clientX,e.clientY), {passive:true});
+      addEventListener('touchmove', e=>{ if(e.touches[0]) set(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
+      (function raf(){
+        cx += (tx-cx)*ease; cy += (ty-cy)*ease;
+        document.documentElement.style.setProperty('--mx', (cx*range)+'px');
+        document.documentElement.style.setProperty('--my', (cy*range)+'px');
+        requestAnimationFrame(raf);
+      })();
     })();
 
-    // Carousel
-    (function(){const c=document.querySelector('.carousel');if(!c)return;const t=c.querySelector('.track');const cards=[...t.children];const prev=c.querySelector('.prev');const next=c.querySelector('.next');let i=0;let per=2;let w=0;const g=16;function lay(){per=innerWidth>900?2:1;w=(c.clientWidth-120-g*(per-1))/per;cards.forEach(x=>x.style.minWidth=w+'px');upd();}function upd(){t.style.transform=`translateX(${-i*(w+g)}px)`;prev.disabled=i===0;next.disabled=i>=cards.length-per;}next.onclick=()=>{i=Math.min(i+per,cards.length-per);upd();};prev.onclick=()=>{i=Math.max(0,i-per);upd();};addEventListener('resize',lay);lay();})();
+    // --- Carousel (2 per view desktop, 1 per view mobile) ---
+    (function(){
+      const c=document.querySelector('.carousel'); if(!c) return;
+      const viewport=c.querySelector('.viewport');
+      const track=c.querySelector('.track');
+      const cards=[...track.children];
+      const prev=c.querySelector('.prev');
+      const next=c.querySelector('.next');
+      let per=2, w=0, i=0;
+      const gap=parseInt(getComputedStyle(track).gap)||16;
 
-    // Full-width T-Rex game
-    (function(){const canvas=document.getElementById('runner');const ctx=canvas.getContext('2d');let W=innerWidth,H=130;function resize(){W=innerWidth;canvas.width=W;canvas.height=H;}addEventListener('resize',resize);resize();const gY=H-28;const d={x:40,y:gY,w:22,h:24,vy:0,s:100};const G=460,J=-240;let a=0,t=0;function u(dt){t+=dt;a+=dt;if(a>1.5){d.vy=J;a=0;}d.x+=d.s*dt;if(d.x>W+40)d.x=-40;d.vy+=G*dt;d.y+=d.vy*dt;if(d.y>gY){d.y=gY;d.vy=0;}}function draw(){ctx.clearRect(0,0,W,H);ctx.strokeStyle='#d0d0d0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,gY+0.5);ctx.lineTo(W,gY+0.5);ctx.stroke();ctx.strokeStyle='rgba(0,0,0,0.1)';ctx.beginPath();for(let x=0;x<W;x+=6){const y=gY-18+Math.sin((x+t*120)*0.01)*2;if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();ctx.fillStyle='#000';const x=Math.round(d.x),y=Math.round(d.y);ctx.fillRect(x-8,y-18,18,14);ctx.fillRect(x+6,y-22,8,8);ctx.fillRect(x+4,y-14,4,4);const leg=(Math.floor(t*12)%2===0)?-2:2;ctx.fillRect(x-6,y-4,4,6);ctx.fillRect(x+4,y-4+leg,4,6);ctx.fillStyle='#fff';ctx.fillRect(x+11,y-20,2,2);ctx.fillStyle='rgba(0,0,0,0.05)';ctx.beginPath();ctx.ellipse(x+2,gY+3,14,3,0,0,Math.PI*2);ctx.fill();}
-      let last=performance.now();function loop(now){const dt=Math.min(0.033,(now-last)/1000);last=now;u(dt);draw();requestAnimationFrame(loop);}requestAnimationFrame(loop);
+      function layout(){
+        per = innerWidth>=980 ? 2 : 1;
+        w = (viewport.clientWidth - gap*(per-1)) / per;
+        cards.forEach(el=>{ el.style.minWidth=w+'px'; el.style.maxWidth=w+'px'; });
+        i = Math.max(0, Math.min(i, cards.length - per));
+        update();
+      }
+      function update(){
+        track.style.transform = `translate3d(${-(i*(w+gap))}px,0,0)`;
+        prev.disabled = i===0;
+        next.disabled = i>=cards.length-per;
+      }
+      function go(delta){ i = Math.max(0, Math.min(i+delta, cards.length-per)); update(); }
+
+      prev.addEventListener('click', ()=>go(-per));
+      next.addEventListener('click', ()=>go(per));
+      addEventListener('resize', layout);
+      layout();
+
+      // touch swipe
+      let sx=0, dx=0;
+      viewport.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; dx=0; }, {passive:true});
+      viewport.addEventListener('touchmove',  e=>{ dx=e.touches[0].clientX - sx; }, {passive:true});
+      viewport.addEventListener('touchend',   ()=>{ if(Math.abs(dx)>50){ go(dx<0?per:-per); } });
+
+      // autoplay
+      const autoplay = c.dataset.autoplay==='true';
+      const interval = parseInt(c.dataset.interval||'4000',10);
+      let timer=null;
+      function play(){ if(!autoplay) return; stop(); timer=setInterval(()=>{ i = (i>=cards.length-per) ? 0 : i+per; update(); }, interval); }
+      function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+      c.addEventListener('mouseenter', stop);
+      c.addEventListener('mouseleave', play);
+      play();
     })();
+
+    // --- Full-width tiny T-Rex runner (auto-run + auto-jump) ---
+    (function(){
+      const canvas=document.getElementById('runner');
+      const ctx=canvas.getContext('2d');
+      let W=innerWidth, H=130;
+      function resize(){ W=innerWidth; canvas.width=W; canvas.height=H; }
+      addEventListener('resize', resize); resize();
+
+      const groundY=H-28;
+      const d={x:40,y:groundY,w:22,h:24,vy:0,s:100};
+      const G=460, J=-240;
+      let a=0, t=0;
+
+      function update(dt){
+        t+=dt; a+=dt;
+        if(a>1.5){ d.vy=J; a=0; }
+        d.x += d.s*dt; if(d.x>W+40) d.x=-40;
+        d.vy += G*dt; d.y += d.vy*dt; if(d.y>groundY){ d.y=groundY; d.vy=0; }
+      }
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        // ground + subtle wave
+        ctx.strokeStyle='#d0d0d0'; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.moveTo(0,groundY+0.5); ctx.lineTo(W,groundY+0.5); ctx.stroke();
+        ctx.strokeStyle='rgba(0,0,0,0.1)'; ctx.beginPath();
+        for(let x=0;x<W;x+=6){ const y=groundY-18+Math.sin((x+t*120)*0.01)*2; if(x===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
+        ctx.stroke();
+
+        // dino pixel sprite
+        const x=Math.round(d.x), y=Math.round(d.y);
+        ctx.fillStyle='#000';
+        ctx.fillRect(x-8,y-18,18,14); ctx.fillRect(x+6,y-22,8,8); ctx.fillRect(x+4,y-14,4,4);
+        const leg=(Math.floor(t*12)%2===0)?-2:2;
+        ctx.fillRect(x-6,y-4,4,6); ctx.fillRect(x+4,y-4+leg,4,6);
+        ctx.fillStyle='#fff'; ctx.fillRect(x+11,y-20,2,2);
+        ctx.fillStyle='rgba(0,0,0,.05)'; ctx.beginPath(); ctx.ellipse(x+2,groundY+3,14,3,0,0,Math.PI*2); ctx.fill();
+      }
+
+      let last=performance.now();
+      function loop(now){ const dt=Math.min(0.033,(now-last)/1000); last=now; update(dt); draw(); requestAnimationFrame(loop); }
+      requestAnimationFrame(loop);
+    })();
+
+    // footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
