@@ -22,6 +22,8 @@
       --radius:22px;
       --gap:16px;
       --mx:0px;--my:0px;       /* motion vars */
+      --gap:16px;
+      --mx:0px;--my:0px;       /* motion vars */
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -31,29 +33,55 @@
     }
     /* --- subtle contour background like Linkd + cursor parallax --- */
     body::before{
-      content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+      content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
       background-image:url("data:image/svg+xml;utf8,\
-        <svg xmlns='http://www.w3.org/2000/svg' width='1400' height='1400' viewBox='0 0 1400 1400'>\
-          <defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%23ffffff'/><stop offset='1' stop-color='%23fffaf3'/></linearGradient></defs>\
-          <rect width='1400' height='1400' fill='url(%23g)'/>\
-          <g stroke='%23000000' stroke-opacity='.06' fill='none' stroke-width='1'>\
-            <path d='M-120 80 q320 40 640 0 t640 0'/>\
-            <path d='M-140 160 q340 40 680 0 t680 0'/>\
-            <path d='M-160 240 q360 40 720 0 t720 0'/>\
-            <path d='M-180 320 q380 40 760 0 t760 0'/>\
-            <path d='M-200 400 q400 40 800 0 t800 0'/>\
-            <path d='M-220 480 q420 40 840 0 t840 0'/>\
-            <path d='M-240 560 q440 40 880 0 t880 0'/>\
-            <path d='M-260 640 q460 40 920 0 t920 0'/>\
-            <path d='M-280 720 q480 40 960 0 t960 0'/>\
-            <path d='M-300 800 q500 40 1000 0 t1000 0'/>\
-            <path d='M-320 880 q520 40 1040 0 t1040 0'/>\
-            <path d='M-340 960 q540 40 1080 0 t1080 0'/>\
-            <path d='M-360 1040 q560 40 1120 0 t1120 0'/>\
-            <path d='M-380 1120 q580 40 1160 0 t1160 0'/>\
+        <svg xmlns='http://www.w3.org/2000/svg' width='2000' height='2000' viewBox='0 0 2000 2000'>\
+          <defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%23ffffff'/><stop offset='1' stop-color='%23fff7ee'/></linearGradient></defs>\
+          <rect width='2000' height='2000' fill='url(%23g)'/>\
+          <g stroke='%23000000' stroke-opacity='.08' fill='none' stroke-width='1'>\
+            <path d='M-240 40 q520 40 1040 0 t1040 0'/>\
+            <path d='M-260 80 q540 40 1080 0 t1080 0'/>\
+            <path d='M-280 120 q560 40 1120 0 t1120 0'/>\
+            <path d='M-300 160 q580 40 1160 0 t1160 0'/>\
+            <path d='M-320 200 q600 40 1200 0 t1200 0'/>\
+            <path d='M-340 240 q620 40 1240 0 t1240 0'/>\
+            <path d='M-360 280 q640 40 1280 0 t1280 0'/>\
+            <path d='M-380 320 q660 40 1320 0 t1320 0'/>\
+            <path d='M-400 360 q680 40 1360 0 t1360 0'/>\
+            <path d='M-420 400 q700 40 1400 0 t1400 0'/>\
+            <path d='M-440 440 q720 40 1440 0 t1440 0'/>\
+            <path d='M-460 480 q740 40 1480 0 t1480 0'/>\
+            <path d='M-480 520 q760 40 1520 0 t1520 0'/>\
+            <path d='M-500 560 q780 40 1560 0 t1560 0'/>\
+            <path d='M-520 600 q800 40 1600 0 t1600 0'/>\
+            <path d='M-540 640 q820 40 1640 0 t1640 0'/>\
+            <path d='M-560 680 q840 40 1680 0 t1680 0'/>\
+            <path d='M-580 720 q860 40 1720 0 t1720 0'/>\
+            <path d='M-600 760 q880 40 1760 0 t1760 0'/>\
+            <path d='M-620 800 q900 40 1800 0 t1800 0'/>\
           </g>\
         </svg>");
-      background-size:cover; background-position: calc(50% + var(--mx)) calc(50% + var(--my)); filter:contrast(100%);
+      background-size:cover; background-position: calc(50% + var(--mx)) calc(50% + var(--my));
+    }
+    /* second contour layer for denser lines */
+    body::after{
+      content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; mix-blend-mode:multiply; opacity:.6;
+      background-image:url("data:image/svg+xml;utf8,\
+        <svg xmlns='http://www.w3.org/2000/svg' width='2000' height='2000' viewBox='0 0 2000 2000'>\
+          <g stroke='%23000000' stroke-opacity='.05' fill='none' stroke-width='1'>\
+            <path d='M-230 60 q520 40 1040 0 t1040 0'/>\
+            <path d='M-250 100 q540 40 1080 0 t1080 0'/>\
+            <path d='M-270 140 q560 40 1120 0 t1120 0'/>\
+            <path d='M-290 180 q580 40 1160 0 t1160 0'/>\
+            <path d='M-310 220 q600 40 1200 0 t1200 0'/>\
+            <path d='M-330 260 q620 40 1240 0 t1240 0'/>\
+            <path d='M-350 300 q640 40 1280 0 t1280 0'/>\
+            <path d='M-370 340 q660 40 1320 0 t1320 0'/>\
+            <path d='M-390 380 q680 40 1360 0 t1360 0'/>\
+            <path d='M-410 420 q700 40 1400 0 t1400 0'/>\
+          </g>\
+        </svg>");
+      background-size:cover; background-position: calc(50% + var(--mx)/1.2) calc(50% + var(--my)/1.2);
     }
 
     .container{max-width:1100px;margin:0 auto;padding:20px}
@@ -76,20 +104,20 @@
     /* Projects Carousel */
     .projects{margin:30px 0 10px}
     .projects h2{font-size:26px;line-height:1.2;margin:12px 4px 18px;font-weight:800;text-align:center}
-    .carousel{position:relative}
-    .viewport{overflow:hidden}
+    .carousel{position:relative; padding:0 64px;}
+    .viewport{overflow:hidden; padding: 0 2px;}
     .track{display:flex;gap:var(--gap);will-change:transform;transition:transform .55s cubic-bezier(.22,.61,.36,1)}
-    .proj-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;min-height:220px;display:flex;flex-direction:column}
+    .proj-card{background:var(--card);border:1.5px solid #f3d7d4;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;min-height:220px;display:flex;flex-direction:column}
     .proj-card h3{margin:6px 0 6px;font-size:18px}
     .proj-card p{margin:0 0 12px;color:var(--muted)}
     .proj-meta{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
     .btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-radius:14px;border:1.5px solid var(--accent);background:#fff;font-weight:600;text-decoration:none;color:var(--fg)}
     .btn-outline:hover{background:var(--chip)}
 
-    .nav{position:absolute;top:50%;transform:translateY(-50%);border-radius:999px;border:1.5px solid var(--accent);background:#fff;padding:10px 12px;cursor:pointer;box-shadow:var(--shadow)}
+    .nav{position:absolute;top:50%;transform:translateY(-50%);border-radius:999px;border:1.5px solid var(--accent);background:#fff;padding:10px 12px;cursor:pointer;box-shadow:var(--shadow); z-index:5;}
     .nav:disabled{opacity:.4;cursor:not-allowed}
-    .prev{left:-6px}
-    .next{right:-6px}
+    .prev{left:6px}
+    .next{right:6px}
 
     .dots{display:flex;gap:8px;justify-content:center;margin:14px 0}
     .dot{width:8px;height:8px;border-radius:999px;background:#e6e6ea;border:1px solid #ddd}
