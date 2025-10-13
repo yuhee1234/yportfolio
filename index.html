@@ -13,8 +13,8 @@
       --border:#e0e0e0; --card:#fff; --radius:20px;
       --shadow:0 4px 20px rgba(0,0,0,.06);
       --gap:16px;
-      --mx:0px; --my:0px;   /* blob parallax */
-      --pmx:0px; --pmy:0px; /* PM floaters mouse parallax */
+      --mx:0px; --my:0px;     /* blob parallax */
+      --pmx:0px; --pmy:0px;   /* (not required, but available) */
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -23,7 +23,7 @@
       font-family:Inter,system-ui,sans-serif; overflow-x:hidden; min-height:100vh;
     }
 
-    /* === Animated grayscale blob background === */
+    /* === Animated grayscale BLOB background (unchanged) === */
     body::before{
       content:""; position:fixed; inset:0; z-index:-3; pointer-events:none;
       background-image:url("data:image/svg+xml;utf8,\
@@ -43,8 +43,7 @@
             </path>\
           </g>\
         </svg>");
-      background-repeat:no-repeat;
-      background-size:cover;
+      background-repeat:no-repeat; background-size:cover;
       background-position:calc(50% + var(--mx)/10) calc(50% + var(--my)/10);
       filter:saturate(0.9);
     }
@@ -54,7 +53,7 @@
       background-position:calc(50% + var(--mx)/16) calc(50% + var(--my)/16);
     }
 
-    /* === Fireflies overlay === */
+    /* === Fireflies (unchanged) === */
     .fireflies{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
     .firefly{
       position:absolute; left:50%; top:50%;
@@ -70,7 +69,6 @@
       background: radial-gradient(circle, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 60%); filter: blur(2px);
     }
     .firefly::after{ inset:-3px; background: radial-gradient(circle, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 60%); filter: blur(1px); }
-
     @keyframes drift{
       0%   { transform: translate3d(-40vw, -35vh, 0) scale(1); }
       25%  { transform: translate3d( 10vw, -10vh, 0) scale(.9); }
@@ -79,8 +77,8 @@
       100% { transform: translate3d(-40vw, -35vh, 0) scale(1); }
     }
     @keyframes flash{
-      0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); opacity:.2; }
-      50%      { box-shadow: 0 0 12px 4px rgba(255,255,255,.55); opacity:1; }
+      0%,100%{ box-shadow:0 0 0 0 rgba(255,255,255,0); opacity:.2; }
+      50%    { box-shadow:0 0 12px 4px rgba(255,255,255,.55); opacity:1; }
     }
 
     /* === Layout === */
@@ -101,7 +99,7 @@
     .projects{max-width:1100px; margin:40px auto; padding:0 20px}
     h2{text-align:center; margin:0 0 16px}
 
-    /* === Carousel === */
+    /* === Coding Projects carousel (unchanged) === */
     .carousel{position:relative; overflow:hidden; padding:0 60px}
     .viewport{overflow:hidden}
     .track{display:flex; gap:var(--gap); will-change:transform; transition:transform .5s cubic-bezier(.22,.61,.36,1)}
@@ -115,62 +113,48 @@
       background:#fff; border:1.5px solid var(--accent); border-radius:50%;
       width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer}
     .prev{left:10px} .next{right:10px}
+    @media (max-width:900px){ .carousel{padding:0 24px} }
 
-    /* === Full-width runner === */
-    #runner{display:block; width:100vw; height:130px; margin-top:40px; border:none;
-      background:linear-gradient(0deg,#f6f6f6 0%, #ffffff 60%)}
-
-    /* === PM floating squares (right side) === */
-    .pm-floaters{
-      position:fixed; top:80px; bottom:80px; right:10px;
-      width:min(28vw, 320px);
-      pointer-events:none; z-index:1; /* above bg, below nav buttons */
+    /* === PM Projects: right-side vertical carousel === */
+    .pm-rail{
+      position:fixed; top:90px; bottom:90px; right:12px;
+      width:min(30vw, 320px);
+      display:block; pointer-events:none; z-index:1;
+      /* subtle gradient edge fade */
+      mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
     }
-    .pm-card{
-      position:absolute; left:0; top:-20%;
+    .pm-cube{
+      position:absolute; left:50%;
       width:160px; height:160px;
-      background:#fff;
+      transform: translate(-50%, 0) translateY(var(--y, 0px));
+      background:var(--card);
       border:1.5px solid var(--accent);
       border-radius:18px;
       box-shadow:var(--shadow);
       padding:14px;
-      display:flex; flex-direction:column; gap:6px;
-      pointer-events:auto; cursor:pointer;
-      will-change: transform;
-      /* base transform includes subtle mouse parallax via --pmx/--pmy */
-      transform: translateY(var(--y, -30%)) translateX(calc(var(--laneX, 0px) + (var(--pmx) * 0.03))) rotate(calc((var(--pmx) / 500) * 1deg));
-      animation: pmFall var(--dur, 22s) linear infinite;
-      transition: box-shadow .2s ease, transform .2s ease;
+      display:flex; flex-direction:column; gap:6px; justify-content:flex-start;
+      pointer-events:auto; cursor:pointer; will-change:transform;
+      transition: box-shadow .18s ease, transform .18s ease;
+      /* hover offsets set via JS: --hx, --hy (clamped small) */
+      transform-origin: 50% 50%;
     }
-    .pm-card h4{margin:0; font-size:16px}
-    .pm-card p{margin:0; font-size:12px; color:var(--muted)}
-    .pm-card:hover{
-      animation-play-state: paused;
-      box-shadow: 0 10px 28px rgba(0,0,0,.12);
-      transform:
-        translateY(var(--y, -30%))
-        translateX(calc(var(--laneX, 0px) + (var(--pmx) * 0.05)))
-        rotate(calc((var(--pmx) / 400) * 1deg))
-        scale(1.04);
-    }
-    @keyframes pmFall{
-      0%   { --y:-40%; }
-      100% { --y:110%; }
-    }
-    /* Subtle outline focus */
-    .pm-card:focus-visible{ outline:3px solid rgba(224,78,67,.35); outline-offset:2px; }
+    .pm-cube h4{margin:0; font-size:16px}
+    .pm-cube p{margin:0; font-size:12px; color:var(--muted)}
 
-    /* Hide floaters on narrow screens */
+    /* Narrow screens: hide the PM rail (optional) */
     @media (max-width: 980px){
-      .pm-floaters{ display:none; }
-      .carousel{ padding:0 24px; }
+      .pm-rail{ display:none; }
     }
+
+    /* Full-width runner */
+    #runner{display:block; width:100vw; height:130px; margin-top:40px; border:none;
+      background:linear-gradient(0deg,#f6f6f6 0%, #ffffff 60%)}
   </style>
 </head>
 <body>
-  <!-- Fireflies overlay -->
+  <!-- Fireflies -->
   <div class="fireflies" aria-hidden="true">
-    <!-- 20 fireflies -->
     <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
     <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
     <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
@@ -211,8 +195,8 @@
     </div>
   </section>
 
-  <!-- PM floating squares (right side column) -->
-  <div class="pm-floaters" aria-hidden="false"></div>
+  <!-- PM Projects vertical carousel -->
+  <div class="pm-rail" aria-label="PM Projects vertical carousel"></div>
 
   <!-- Full width tiny runner -->
   <canvas id="runner"></canvas>
@@ -222,27 +206,21 @@
   </footer>
 
   <script>
-    // --- Background parallax (also feeds PM parallax vars) ---
+    // --- Background parallax (unchanged core) ---
     (function(){
       let tx=0, ty=0, cx=0, cy=0;
       const ease=0.06, range=60;
       function set(x,y){ const w=innerWidth||1, h=innerHeight||1; tx=(x/w)*2-1; ty=(y/h)*2-1; }
       addEventListener('mousemove', e=>set(e.clientX,e.clientY), {passive:true});
       addEventListener('touchmove', e=>{ if(e.touches[0]) set(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
-      (function raf(){
-        cx+=(tx-cx)*ease; cy+=(ty-cy)*ease;
-        const mx=(cx*range), my=(cy*range);
-        const root=document.documentElement.style;
-        root.setProperty('--mx',  mx+'px');
-        root.setProperty('--my',  my+'px');
-        // separate vars for PM floaters so we can scale differently
-        root.setProperty('--pmx', mx+'px');
-        root.setProperty('--pmy', my+'px');
+      (function raf(){ cx+=(tx-cx)*ease; cy+=(ty-cy)*ease;
+        document.documentElement.style.setProperty('--mx', (cx*range)+'px');
+        document.documentElement.style.setProperty('--my', (cy*range)+'px');
         requestAnimationFrame(raf);
       })();
     })();
 
-    // --- Carousel initializer (supports multiple .carousel instances) ---
+    // --- Coding Projects carousel (unchanged, multi-instance safe) ---
     (function(){
       function initCarousel(c){
         const viewport=c.querySelector('.viewport');
@@ -291,60 +269,98 @@
       document.querySelectorAll('.carousel').forEach(initCarousel);
     })();
 
-    // --- PM Floating Squares creator ---
+    // --- PM Projects: continuous vertical carousel with hover lean & enlarge ---
     (function(){
-      const host = document.querySelector('.pm-floaters');
-      if(!host) return;
+      const rail = document.querySelector('.pm-rail');
+      if(!rail) return;
 
-      // Define your PM “projects”
-      const PM = [
-        { title:'Quilly Growth Experiments', desc:'A/B onboarding, event funnels, weekly KPI reviews.' },
-        { title:'Notify.careers PM', desc:'Roadmap, PRD for alerts, launch checklist.' },
-        { title:'BidSwipe Product Ops', desc:'Feedback loop, waitlist prioritization, v1 scope.' },
-        { title:'Dipper Launch Plan', desc:'Influencer seeding, GTM event, content cadence.' }
+      const ITEMS = [
+        { title:'Quilly Growth Experiments', desc:'A/B onboarding, event funnels, weekly KPIs.' },
+        { title:'Notify.careers PM',        desc:'Roadmap + PRD for alerts; launch checklist.' },
+        { title:'BidSwipe Product Ops',     desc:'Feedback loop, waitlist prioritization, v1 scope.' },
+        { title:'Dipper Launch Plan',       desc:'Influencer seeding, GTM event, content cadence.' },
+        // add more here if you want denser flow
       ];
 
-      // Lanes determine horizontal distribution within the host
-      const lanes = 3; // columns
-      const laneWidth = () => (host.clientWidth - 180); // 160 card + ~20 breathing room
-      function mkCard(data, laneIndex, seed){
+      const cubes = [];
+      const SPEED = 38;   // px/sec vertical speed
+      const GAP   = 26;   // vertical gap between cubes
+      const SIZE  = 160;  // cube height
+
+      function makeCube(data, idx){
         const el = document.createElement('article');
-        el.className = 'pm-card';
-        el.setAttribute('tabindex','0'); // keyboard focusable
+        el.className = 'pm-cube';
         el.innerHTML = `<h4>${data.title}</h4><p>${data.desc}</p>`;
+        rail.appendChild(el);
 
-        // random-ish timings per card
-        const dur = 18 + (seed % 10);            // 18–27s
-        const delay = (seed * 0.9) % 12;          // 0–12s
-        const laneX = (laneWidth() / Math.max(lanes-1,1)) * laneIndex;
-
-        el.style.setProperty('--dur', dur+'s');
-        el.style.animationDelay = (-delay)+'s';   // negative to stagger immediately
-        el.style.setProperty('--laneX', (laneX)+'px');
-
-        // Click behavior (optional: open a details modal or link)
-        el.addEventListener('click', (e)=>{
-          e.stopPropagation();
-          // Placeholder — you can route to case studies here
-          alert(data.title);
+        // Hover interactivity: slight lean towards cursor + scale
+        let hover = {dx:0, dy:0};
+        const CLAMP = 8;  // max pixels to nudge toward pointer
+        el.addEventListener('mousemove', (e)=>{
+          const r = el.getBoundingClientRect();
+          const cx = r.left + r.width/2, cy = r.top + r.height/2;
+          const dx = Math.max(-CLAMP, Math.min(CLAMP, (e.clientX - cx) * 0.08));
+          const dy = Math.max(-CLAMP, Math.min(CLAMP, (e.clientY - cy) * 0.08));
+          hover.dx = dx; hover.dy = dy;
+          el.style.transform = `translate(-50%, 0) translate(${dx}px, ${dy}px) translateY(${el._y||0}px) scale(1.045)`;
+          el.style.boxShadow = '0 10px 28px rgba(0,0,0,.12)';
+        });
+        el.addEventListener('mouseleave', ()=>{
+          hover.dx = hover.dy = 0;
+          el.style.boxShadow = 'var(--shadow)';
+          // reset transform on leave; y restored in the next frame tick
         });
 
-        host.appendChild(el);
+        return { el, hover, y: 0 };
       }
 
-      function build(){
-        host.innerHTML='';
-        const copies = 2; // duplicate sets so the column feels fuller
-        for(let c=0;c<copies;c++){
-          PM.forEach((item, idx)=>{
-            const lane = idx % lanes;
-            mkCard(item, lane, idx + c*PM.length);
-          });
+      function layout(){
+        // Build enough cubes to fill + buffer
+        rail.innerHTML = '';
+        cubes.length = 0;
+
+        const railH = rail.clientHeight || 600;
+        const needed = Math.ceil(railH / (SIZE + GAP)) + 2; // +2 buffer
+        const seq = [];
+        for(let i=0;i<needed;i++) seq.push(ITEMS[i % ITEMS.length]);
+
+        seq.forEach((data, i)=>{
+          const cube = makeCube(data, i);
+          cube.y = i * (SIZE + GAP);
+          cubes.push(cube);
+        });
+      }
+
+      let last = performance.now();
+      function tick(now){
+        const dt = Math.min(0.033, (now - last) / 1000); // cap delta
+        last = now;
+
+        const railH = rail.clientHeight || 600;
+        const loopY = (SIZE + GAP) * cubes.length;
+
+        for(const c of cubes){
+          c.y += SPEED * dt; // move down
+          if(c.y > railH + SIZE){ // once fully past bottom, wrap to top
+            c.y -= loopY;
+          }
+          const ypx = c.y|0;
+          // If hovering, keep the lean/scale; otherwise base transform
+          if(c.el.matches(':hover')){
+            // keep current dx/dy but refresh Y
+            c.el._y = ypx;
+            c.el.style.transform = `translate(-50%, 0) translate(${c.hover.dx}px, ${c.hover.dy}px) translateY(${ypx}px) scale(1.045)`;
+          }else{
+            c.el._y = ypx;
+            c.el.style.transform = `translate(-50%, 0) translateY(${ypx}px)`;
+          }
         }
+        requestAnimationFrame(tick);
       }
 
-      build();
-      addEventListener('resize', build);
+      layout();
+      addEventListener('resize', layout);
+      requestAnimationFrame((t)=>{ last=t; tick(t); });
     })();
 
     // --- Tiny T-Rex runner (unchanged) ---
