@@ -14,7 +14,7 @@
       --shadow:0 4px 20px rgba(0,0,0,.06);
       --gap:16px;
       --mx:0px; --my:0px;     /* blob parallax */
-      --pmx:0px; --pmy:0px;   /* (not required, but available) */
+      --pmx:0px; --pmy:0px;   /* pm floaters */
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -23,7 +23,7 @@
       font-family:Inter,system-ui,sans-serif; overflow-x:hidden; min-height:100vh;
     }
 
-    /* === Animated grayscale BLOB background (unchanged) === */
+    /* ===== Blobs + glow (unchanged) ===== */
     body::before{
       content:""; position:fixed; inset:0; z-index:-3; pointer-events:none;
       background-image:url("data:image/svg+xml;utf8,\
@@ -53,60 +53,50 @@
       background-position:calc(50% + var(--mx)/16) calc(50% + var(--my)/16);
     }
 
-    /* === Fireflies (unchanged) === */
     .fireflies{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
-    .firefly{
-      position:absolute; left:50%; top:50%;
-      width:2px; height:2px; border-radius:50%;
+    .firefly{ position:absolute; left:50%; top:50%; width:2px; height:2px; border-radius:50%;
       background:transparent; box-shadow:0 0 0 0 rgba(255,255,255,0);
-      animation: drift 18s linear infinite, flash 3s ease-in-out infinite;
-      will-change: transform, box-shadow;
-    }
+      animation: drift 18s linear infinite, flash 3s ease-in-out infinite; will-change: transform, box-shadow; }
     .firefly:nth-child(odd){ animation-duration: 22s, 2.6s; }
     .firefly:nth-child(3n){ animation-duration: 26s, 3.4s; }
-    .firefly::before, .firefly::after{
-      content:""; position:absolute; inset:-8px; border-radius:50%;
-      background: radial-gradient(circle, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 60%); filter: blur(2px);
-    }
+    .firefly::before, .firefly::after{ content:""; position:absolute; inset:-8px; border-radius:50%;
+      background: radial-gradient(circle, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 60%); filter: blur(2px); }
     .firefly::after{ inset:-3px; background: radial-gradient(circle, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 60%); filter: blur(1px); }
-    @keyframes drift{
-      0%   { transform: translate3d(-40vw, -35vh, 0) scale(1); }
-      25%  { transform: translate3d( 10vw, -10vh, 0) scale(.9); }
-      50%  { transform: translate3d( 40vw,  25vh, 0) scale(1); }
-      75%  { transform: translate3d(-10vw,  35vh, 0) scale(1.1); }
-      100% { transform: translate3d(-40vw, -35vh, 0) scale(1); }
-    }
-    @keyframes flash{
-      0%,100%{ box-shadow:0 0 0 0 rgba(255,255,255,0); opacity:.2; }
-      50%    { box-shadow:0 0 12px 4px rgba(255,255,255,.55); opacity:1; }
-    }
+    @keyframes drift{ 0%{transform:translate3d(-40vw,-35vh,0) scale(1)} 25%{transform:translate3d(10vw,-10vh,0) scale(.9)} 50%{transform:translate3d(40vw,25vh,0) scale(1)} 75%{transform:translate3d(-10vw,35vh,0) scale(1.1)} 100%{transform:translate3d(-40vw,-35vh,0) scale(1)}}
+    @keyframes flash{ 0%,100%{ box-shadow:0 0 0 0 rgba(255,255,255,0); opacity:.2 } 50%{ box-shadow:0 0 12px 4px rgba(255,255,255,.55); opacity:1 } }
 
-    /* === Layout === */
+    /* ===== Layout ===== */
     header, footer { max-width:1100px; margin:auto; padding:20px;
       display:flex; align-items:center; justify-content:space-between; }
     .brand{font-weight:800}
     .actions{display:flex; gap:10px}
     .pill{padding:10px 16px; border:1.5px solid var(--accent); border-radius:999px;
-      color:var(--fg); background:#fff; text-decoration:none; font-weight:600}
+      color:var(--fg); background:#fff; text-decoration:none; font-weight:600; transition:transform .18s ease, box-shadow .18s ease}
+    .pill:hover{ transform:translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,.08) }
 
     .hero{max-width:1100px; margin:60px auto; padding:0 20px;
       display:flex; align-items:center; gap:24px}
     .hero img{width:110px; height:110px; border-radius:18px; object-fit:cover; box-shadow:var(--shadow)}
-    h1{margin:0; font-size:42px; line-height:1.1; font-weight:800}
-    .accent{color:var(--accent)}
+    h1{margin:0; font-size:42px; line-height:1.1; font-weight:800; perspective:800px}
+    .accent{color:var(--accent); background:linear-gradient(90deg,var(--accent),var(--accent));
+      background-size:0% 2px; background-repeat:no-repeat; background-position:0 100%; transition:background-size .35s ease}
+    .accent:hover{ background-size:100% 2px }
     p{margin:8px 0 0; color:var(--muted)}
 
     .projects{max-width:1100px; margin:40px auto; padding:0 20px}
-    h2{text-align:center; margin:0 0 16px}
+    h2{ text-align:center; margin:0 0 16px; transition:transform .18s ease }
+    h2:hover{ transform:translateY(-2px) }
 
-    /* === Coding Projects carousel (unchanged) === */
+    /* ===== Carousel (unchanged) ===== */
     .carousel{position:relative; overflow:hidden; padding:0 60px}
     .viewport{overflow:hidden}
     .track{display:flex; gap:var(--gap); will-change:transform; transition:transform .5s cubic-bezier(.22,.61,.36,1)}
     .proj-card{
       background:#fff; border:1.5px solid var(--accent); border-radius:var(--radius);
-      padding:20px; box-shadow:var(--shadow); min-height:140px; display:flex; flex-direction:column
+      padding:20px; box-shadow:var(--shadow); min-height:140px; display:flex; flex-direction:column;
+      transition:transform .18s ease, box-shadow .18s ease
     }
+    .proj-card:hover{ transform:translateY(-3px); box-shadow:0 10px 22px rgba(0,0,0,.10) }
     .proj-card h3{margin:0 0 6px}
 
     .nav{position:absolute; top:50%; transform:translateY(-50%); z-index:5;
@@ -115,12 +105,10 @@
     .prev{left:10px} .next{right:10px}
     @media (max-width:900px){ .carousel{padding:0 24px} }
 
-    /* === PM Projects: right-side vertical carousel === */
+    /* ===== PM vertical carousel (unchanged from your last step) ===== */
     .pm-rail{
       position:fixed; top:90px; bottom:90px; right:12px;
-      width:min(30vw, 320px);
-      display:block; pointer-events:none; z-index:1;
-      /* subtle gradient edge fade */
+      width:min(30vw, 320px); display:block; pointer-events:none; z-index:1;
       mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
       -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
     }
@@ -128,26 +116,31 @@
       position:absolute; left:50%;
       width:160px; height:160px;
       transform: translate(-50%, 0) translateY(var(--y, 0px));
-      background:var(--card);
-      border:1.5px solid var(--accent);
-      border-radius:18px;
-      box-shadow:var(--shadow);
-      padding:14px;
-      display:flex; flex-direction:column; gap:6px; justify-content:flex-start;
+      background:var(--card); border:1.5px solid var(--accent);
+      border-radius:18px; box-shadow:var(--shadow);
+      padding:14px; display:flex; flex-direction:column; gap:6px; justify-content:flex-start;
       pointer-events:auto; cursor:pointer; will-change:transform;
       transition: box-shadow .18s ease, transform .18s ease;
-      /* hover offsets set via JS: --hx, --hy (clamped small) */
       transform-origin: 50% 50%;
     }
     .pm-cube h4{margin:0; font-size:16px}
     .pm-cube p{margin:0; font-size:12px; color:var(--muted)}
+    @media (max-width: 980px){ .pm-rail{ display:none } }
 
-    /* Narrow screens: hide the PM rail (optional) */
-    @media (max-width: 980px){
-      .pm-rail{ display:none; }
+    /* ===== Hero text: per-letter hover animation ===== */
+    .char{
+      display:inline-block;
+      transform: translate3d(0,0,0) rotate(0deg) scale(1);
+      transition: transform .28s cubic-bezier(.22,.61,.36,1);
+      will-change: transform;
+    }
+    .hero-tilt{
+      display:inline-block;
+      transform-style:preserve-3d;
+      transition: transform .25s ease;
     }
 
-    /* Full-width runner */
+    /* Runner */
     #runner{display:block; width:100vw; height:130px; margin-top:40px; border:none;
       background:linear-gradient(0deg,#f6f6f6 0%, #ffffff 60%)}
   </style>
@@ -173,12 +166,12 @@
   <section class="hero">
     <img src="avatar.jpg" alt="Portrait of Yuhee Lefkowitz" />
     <div>
-      <h1>hi<br>my name is <span class="accent">Yuhee Lefkowitz</span><br>a strategist and builder</h1>
+      <!-- wrap headline in .hero-tilt for magnetic tilt -->
+      <h1 class="hero-tilt" id="heroTitle">hi<br>my name is <span class="accent">Yuhee Lefkowitz</span><br>a strategist and builder</h1>
       <p>I’m a student studying Computer Science at UC Berkeley.</p>
     </div>
   </section>
 
-  <!-- Coding Projects (kept as carousel) -->
   <section class="projects">
     <h2>Coding Projects</h2>
     <div class="carousel" data-autoplay="true" data-interval="4000">
@@ -198,7 +191,7 @@
   <!-- PM Projects vertical carousel -->
   <div class="pm-rail" aria-label="PM Projects vertical carousel"></div>
 
-  <!-- Full width tiny runner -->
+  <!-- Runner -->
   <canvas id="runner"></canvas>
 
   <footer>
@@ -206,7 +199,7 @@
   </footer>
 
   <script>
-    // --- Background parallax (unchanged core) ---
+    /* ===== Parallax for blobs (unchanged) ===== */
     (function(){
       let tx=0, ty=0, cx=0, cy=0;
       const ease=0.06, range=60;
@@ -220,7 +213,7 @@
       })();
     })();
 
-    // --- Coding Projects carousel (unchanged, multi-instance safe) ---
+    /* ===== Coding carousel (unchanged) ===== */
     (function(){
       function initCarousel(c){
         const viewport=c.querySelector('.viewport');
@@ -269,7 +262,7 @@
       document.querySelectorAll('.carousel').forEach(initCarousel);
     })();
 
-    // --- PM Projects: continuous vertical carousel with hover lean & enlarge ---
+    /* ===== PM vertical carousel (unchanged from your last step) ===== */
     (function(){
       const rail = document.querySelector('.pm-rail');
       if(!rail) return;
@@ -279,80 +272,66 @@
         { title:'Notify.careers PM',        desc:'Roadmap + PRD for alerts; launch checklist.' },
         { title:'BidSwipe Product Ops',     desc:'Feedback loop, waitlist prioritization, v1 scope.' },
         { title:'Dipper Launch Plan',       desc:'Influencer seeding, GTM event, content cadence.' },
-        // add more here if you want denser flow
       ];
 
       const cubes = [];
-      const SPEED = 38;   // px/sec vertical speed
-      const GAP   = 26;   // vertical gap between cubes
+      const SPEED = 38;   // px/sec
+      const GAP   = 26;   // vertical gap
       const SIZE  = 160;  // cube height
 
-      function makeCube(data, idx){
+      function makeCube(data){
         const el = document.createElement('article');
         el.className = 'pm-cube';
         el.innerHTML = `<h4>${data.title}</h4><p>${data.desc}</p>`;
         rail.appendChild(el);
 
-        // Hover interactivity: slight lean towards cursor + scale
+        // simple hover: subtle enlarge + shadow (movement handled by transform below)
         let hover = {dx:0, dy:0};
-        const CLAMP = 8;  // max pixels to nudge toward pointer
+        const CLAMP = 8;
         el.addEventListener('mousemove', (e)=>{
           const r = el.getBoundingClientRect();
-          const cx = r.left + r.width/2, cy = r.top + r.height/2;
-          const dx = Math.max(-CLAMP, Math.min(CLAMP, (e.clientX - cx) * 0.08));
-          const dy = Math.max(-CLAMP, Math.min(CLAMP, (e.clientY - cy) * 0.08));
-          hover.dx = dx; hover.dy = dy;
-          el.style.transform = `translate(-50%, 0) translate(${dx}px, ${dy}px) translateY(${el._y||0}px) scale(1.045)`;
-          el.style.boxShadow = '0 10px 28px rgba(0,0,0,.12)';
+          const cx=r.left+r.width/2, cy=r.top+r.height/2;
+          const dx=Math.max(-CLAMP,Math.min(CLAMP,(e.clientX-cx)*0.08));
+          const dy=Math.max(-CLAMP,Math.min(CLAMP,(e.clientY-cy)*0.08));
+          hover.dx=dx; hover.dy=dy;
+          el._hover = {dx,dy};
         });
-        el.addEventListener('mouseleave', ()=>{
-          hover.dx = hover.dy = 0;
-          el.style.boxShadow = 'var(--shadow)';
-          // reset transform on leave; y restored in the next frame tick
-        });
+        el.addEventListener('mouseleave', ()=>{ el._hover=null; });
 
-        return { el, hover, y: 0 };
+        return { el, y:0 };
       }
 
       function layout(){
-        // Build enough cubes to fill + buffer
         rail.innerHTML = '';
         cubes.length = 0;
-
         const railH = rail.clientHeight || 600;
-        const needed = Math.ceil(railH / (SIZE + GAP)) + 2; // +2 buffer
+        const needed = Math.ceil(railH / (SIZE + GAP)) + 2;
         const seq = [];
         for(let i=0;i<needed;i++) seq.push(ITEMS[i % ITEMS.length]);
-
-        seq.forEach((data, i)=>{
-          const cube = makeCube(data, i);
-          cube.y = i * (SIZE + GAP);
-          cubes.push(cube);
+        seq.forEach(item=>{
+          const c = makeCube(item);
+          c.y = cubes.length * (SIZE + GAP);
+          cubes.push(c);
         });
       }
 
       let last = performance.now();
       function tick(now){
-        const dt = Math.min(0.033, (now - last) / 1000); // cap delta
-        last = now;
-
+        const dt = Math.min(0.033,(now-last)/1000); last=now;
         const railH = rail.clientHeight || 600;
         const loopY = (SIZE + GAP) * cubes.length;
 
         for(const c of cubes){
-          c.y += SPEED * dt; // move down
-          if(c.y > railH + SIZE){ // once fully past bottom, wrap to top
-            c.y -= loopY;
-          }
-          const ypx = c.y|0;
-          // If hovering, keep the lean/scale; otherwise base transform
-          if(c.el.matches(':hover')){
-            // keep current dx/dy but refresh Y
-            c.el._y = ypx;
-            c.el.style.transform = `translate(-50%, 0) translate(${c.hover.dx}px, ${c.hover.dy}px) translateY(${ypx}px) scale(1.045)`;
+          c.y += SPEED * dt;
+          if(c.y > railH + SIZE){ c.y -= loopY; }
+          const y = c.y|0;
+          const hov = c.el._hover;
+          if(hov){
+            c.el.style.transform = `translate(-50%,0) translate(${hov.dx}px,${hov.dy}px) translateY(${y}px) scale(1.045)`;
+            c.el.style.boxShadow = '0 10px 28px rgba(0,0,0,.12)';
           }else{
-            c.el._y = ypx;
-            c.el.style.transform = `translate(-50%, 0) translateY(${ypx}px)`;
+            c.el.style.transform = `translate(-50%,0) translateY(${y}px)`;
+            c.el.style.boxShadow = 'var(--shadow)';
           }
         }
         requestAnimationFrame(tick);
@@ -363,7 +342,84 @@
       requestAnimationFrame((t)=>{ last=t; tick(t); });
     })();
 
-    // --- Tiny T-Rex runner (unchanged) ---
+    /* ===== HERO TEXT EFFECTS =====
+       1) Per-letter hover “burst” with spring-back
+       2) Slight magnetic tilt toward cursor while hovering
+    */
+    (function(){
+      const title = document.getElementById('heroTitle');
+      if(!title) return;
+
+      // Wrap every non-<br> text node’s characters in span.char
+      function wrapChars(root){
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+          acceptNode(n){ return n.nodeValue.trim().length ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT; }
+        });
+        const toWrap = [];
+        while(walker.nextNode()) toWrap.push(walker.currentNode);
+        toWrap.forEach(node=>{
+          const frag = document.createDocumentFragment();
+          const text = node.nodeValue;
+          for(let i=0;i<text.length;i++){
+            const ch = text[i];
+            const span = document.createElement('span');
+            span.className = 'char';
+            span.textContent = ch;
+            frag.appendChild(span);
+          }
+          node.parentNode.replaceChild(frag, node);
+        });
+      }
+
+      wrapChars(title);
+
+      const chars = Array.from(title.querySelectorAll('.char'));
+      const tiltWrap = title; // we already gave h1 the .hero-tilt styles
+
+      // Helper: random in range
+      const rand = (min,max)=>Math.random()*(max-min)+min;
+
+      // Burst on enter
+      function burst(){
+        chars.forEach((el, i)=>{
+          // ignore spaces to keep layout tidy
+          if(el.textContent === ' ') return;
+          const dx = rand(-6,6);
+          const dy = rand(-8,4);
+          const rz = rand(-3,3);
+          el.style.transform = `translate3d(${dx}px,${dy}px,0) rotate(${rz}deg)`;
+          // slight stagger
+          el.style.transitionDelay = `${(i%10)*6}ms`;
+        });
+      }
+
+      // Reset on leave
+      function reset(){
+        chars.forEach((el)=>{
+          el.style.transform = `translate3d(0,0,0) rotate(0deg)`;
+          el.style.transitionDelay = `0ms`;
+        });
+        // release tilt
+        tiltWrap.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      }
+
+      // Magnetic tilt toward cursor while hovering the title
+      function onMove(e){
+        const r = tiltWrap.getBoundingClientRect();
+        const x = (e.clientX - (r.left + r.width/2)) / (r.width/2);
+        const y = (e.clientY - (r.top  + r.height/2)) / (r.height/2);
+        const maxTilt = 4; // degrees
+        const rx = Math.max(-1, Math.min(1, -y)) * maxTilt;
+        const ry = Math.max(-1, Math.min(1,  x)) * maxTilt;
+        tiltWrap.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+      }
+
+      title.addEventListener('mouseenter', burst);
+      title.addEventListener('mouseleave', reset);
+      title.addEventListener('mousemove', onMove, {passive:true});
+    })();
+
+    /* ===== Runner (unchanged) ===== */
     (function(){
       const canvas=document.getElementById('runner');
       const ctx=canvas.getContext('2d');
