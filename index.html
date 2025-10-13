@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Yuhee Lefkowitz — Creator & Engineer</title>
-  <meta name="description" content="Portfolio of Yuhee Lefkowitz — Creator & Engineer from UC Berkeley." />
+  <title>Yuhee Lefkowitz — Strategist & Builder</title>
+  <meta name="description" content="Portfolio of Yuhee Lefkowitz — Strategist & Builder from UC Berkeley." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
   <style>
     :root{
@@ -65,12 +65,10 @@
       animation: drift 18s linear infinite, flash 3s ease-in-out infinite;
       will-change: transform, box-shadow;
     }
-    /* Create 20 variants with different paths/timings */
-    /* You can increase/decrease count by adding/removing .firefly divs in HTML */
     .firefly:nth-child(odd){ animation-duration: 22s, 2.6s; }
     .firefly:nth-child(3n){ animation-duration: 26s, 3.4s; }
     .firefly::before, .firefly::after{
-      content:\"\"; position:absolute; inset:-8px; border-radius:50%;
+      content:""; position:absolute; inset:-8px; border-radius:50%;
       background: radial-gradient(circle, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 60%);
       filter: blur(2px);
     }
@@ -80,7 +78,6 @@
       filter: blur(1px);
     }
 
-    /* Drift path (loosely based on Mike Golus' pen, simplified) */
     @keyframes drift{
       0%   { transform: translate3d(-40vw, -35vh, 0) scale(1); }
       25%  { transform: translate3d( 10vw, -10vh, 0) scale(.9); }
@@ -88,7 +85,6 @@
       75%  { transform: translate3d(-10vw,  35vh, 0) scale(1.1); }
       100% { transform: translate3d(-40vw, -35vh, 0) scale(1); }
     }
-    /* Glow pulsing */
     @keyframes flash{
       0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); opacity:.2; }
       50%      { box-shadow: 0 0 12px 4px rgba(255,255,255,.55); opacity:1; }
@@ -154,13 +150,14 @@
   <section class="hero">
     <img src="avatar.jpg" alt="Portrait of Yuhee Lefkowitz" />
     <div>
-      <h1>hi<br>my name is <span class="accent">Yuhee Lefkowitz</span><br>a creator and engineer</h1>
+      <h1>hi<br>my name is <span class="accent">Yuhee Lefkowitz</span><br>a strategist and builder</h1>
       <p>I’m a student studying Computer Science at UC Berkeley.</p>
     </div>
   </section>
 
+  <!-- Coding Projects -->
   <section class="projects">
-    <h2>Projects</h2>
+    <h2>Coding Projects</h2>
     <div class="carousel" data-autoplay="true" data-interval="4000">
       <button class="nav prev" aria-label="Previous">&#x276E;</button>
       <div class="viewport">
@@ -169,6 +166,23 @@
           <article class="proj-card"><h3>Notify.careers</h3><p>Internship drop tracker + job alert web app.</p></article>
           <article class="proj-card"><h3>BidSwipe (iOS)</h3><p>SwiftUI app for event bidding & seat reservations.</p></article>
           <article class="proj-card"><h3>Quilly Backend</h3><p>Node.js social API for events & messaging.</p></article>
+        </div>
+      </div>
+      <button class="nav next" aria-label="Next">&#x276F;</button>
+    </div>
+  </section>
+
+  <!-- PM Projects -->
+  <section class="projects">
+    <h2>PM Projects</h2>
+    <div class="carousel" data-autoplay="true" data-interval="4200">
+      <button class="nav prev" aria-label="Previous">&#x276E;</button>
+      <div class="viewport">
+        <div class="track">
+          <article class="proj-card"><h3>Quilly Growth Experiments</h3><p>A/B tests on onboarding & event funnels; weekly KPI reviews.</p></article>
+          <article class="proj-card"><h3>Notify.careers PM</h3><p>Roadmap, PRD for alerts, and launch checklist for drop notifications.</p></article>
+          <article class="proj-card"><h3>BidSwipe Product Ops</h3><p>Feedback loop, waitlist prioritization, and v1 seat-reserve scope.</p></article>
+          <article class="proj-card"><h3>Dipper Launch Plan</h3><p>Influencer seeding, event GTM, and content calendar with metrics.</p></article>
         </div>
       </div>
       <button class="nav next" aria-label="Next">&#x276F;</button>
@@ -197,51 +211,54 @@
       })();
     })();
 
-    // --- Carousel (2 per view desktop, 1 per view mobile) ---
+    // --- Carousel initializer (supports multiple .carousel instances) ---
     (function(){
-      const c=document.querySelector('.carousel'); if(!c) return;
-      const viewport=c.querySelector('.viewport');
-      const track=c.querySelector('.track');
-      const cards=[...track.children];
-      const prev=c.querySelector('.prev');
-      const next=c.querySelector('.next');
-      let per=2, w=0, i=0;
-      const gap=parseInt(getComputedStyle(track).gap)||16;
+      function initCarousel(c){
+        const viewport=c.querySelector('.viewport');
+        const track=c.querySelector('.track');
+        const cards=[...track.children];
+        const prev=c.querySelector('.prev');
+        const next=c.querySelector('.next');
+        let per=2, w=0, i=0;
+        const gap=parseInt(getComputedStyle(track).gap)||16;
 
-      function layout(){
-        per = innerWidth>=980 ? 2 : 1;
-        w = (viewport.clientWidth - gap*(per-1)) / per;
-        cards.forEach(el=>{ el.style.minWidth=w+'px'; el.style.maxWidth=w+'px'; });
-        i = Math.max(0, Math.min(i, cards.length - per));
-        update();
+        function layout(){
+          per = innerWidth>=980 ? 2 : 1;
+          w = (viewport.clientWidth - gap*(per-1)) / per;
+          cards.forEach(el=>{ el.style.minWidth=w+'px'; el.style.maxWidth=w+'px'; });
+          i = Math.max(0, Math.min(i, cards.length - per));
+          update();
+        }
+        function update(){
+          track.style.transform = `translate3d(${-(i*(w+gap))}px,0,0)`;
+          prev.disabled = i===0;
+          next.disabled = i>=cards.length-per;
+        }
+        function go(delta){ i = Math.max(0, Math.min(i+delta, cards.length-per)); update(); }
+
+        prev.addEventListener('click', ()=>go(-per));
+        next.addEventListener('click', ()=>go(per));
+        addEventListener('resize', layout);
+        layout();
+
+        // touch swipe
+        let sx=0, dx=0;
+        viewport.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; dx=0; }, {passive:true});
+        viewport.addEventListener('touchmove',  e=>{ dx=e.touches[0].clientX - sx; }, {passive:true});
+        viewport.addEventListener('touchend',   ()=>{ if(Math.abs(dx)>50){ go(dx<0?per:-per); } });
+
+        // autoplay (per-carousel)
+        const autoplay = c.dataset.autoplay==='true';
+        const interval = parseInt(c.dataset.interval||'4000',10);
+        let timer=null;
+        function play(){ if(!autoplay) return; stop(); timer=setInterval(()=>{ i = (i>=cards.length-per) ? 0 : i+per; update(); }, interval); }
+        function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+        c.addEventListener('mouseenter', stop);
+        c.addEventListener('mouseleave', play);
+        play();
       }
-      function update(){
-        track.style.transform = `translate3d(${-(i*(w+gap))}px,0,0)`;
-        prev.disabled = i===0;
-        next.disabled = i>=cards.length-per;
-      }
-      function go(delta){ i = Math.max(0, Math.min(i+delta, cards.length-per)); update(); }
 
-      prev.addEventListener('click', ()=>go(-per));
-      next.addEventListener('click', ()=>go(per));
-      addEventListener('resize', layout);
-      layout();
-
-      // touch swipe
-      let sx=0, dx=0;
-      viewport.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; dx=0; }, {passive:true});
-      viewport.addEventListener('touchmove',  e=>{ dx=e.touches[0].clientX - sx; }, {passive:true});
-      viewport.addEventListener('touchend',   ()=>{ if(Math.abs(dx)>50){ go(dx<0?per:-per); } });
-
-      // autoplay
-      const autoplay = c.dataset.autoplay==='true';
-      const interval = parseInt(c.dataset.interval||'4000',10);
-      let timer=null;
-      function play(){ if(!autoplay) return; stop(); timer=setInterval(()=>{ i = (i>=cards.length-per) ? 0 : i+per; update(); }, interval); }
-      function stop(){ if(timer){ clearInterval(timer); timer=null; } }
-      c.addEventListener('mouseenter', stop);
-      c.addEventListener('mouseleave', play);
-      play();
+      document.querySelectorAll('.carousel').forEach(initCarousel);
     })();
 
     // --- Full-width tiny T-Rex runner (auto-run + auto-jump) ---
