@@ -358,4 +358,126 @@
               c.x += c.vx*dt; c.y += c.vy*dt;
               // wall bounce
               if(c.x <= PAD){ c.x = PAD; c.vx = Math.abs(c.vx); }
-              else if(c.x + SIZE >= W-PAD){ c.x = W-PAD-SIZE; c.vx = -
+              else if(c.x + SIZE >= W-PAD){ c.x = W-PAD-SIZE; c.vx = -Math.abs(c.vx); }
+              if(c.y <= PAD){ c.y = PAD; c.vy = Math.abs(c.vy); }
+              else if(c.y + SIZE >= H-PAD){ c.y = H-PAD-SIZE; c.vy = -Math.abs(c.vy); }
+            }
+            const tx = (c.x|0) + c.hx;
+            const ty = (c.y|0) + c.hy;
+            c.el.style.transform = `translate(${tx}px, ${ty}px) scale(${c.scale})`;
+          }
+
+          requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }
+
+      build();
+      addEventListener('resize', build);
+      animate();
+    })();
+
+    /* ===== HERO TEXT EFFECTS (spacing-safe): per-letter burst + gentle tilt ===== */
+    (function(){
+      const title = document.getElementById('heroTitle');
+      if(!title) return;
+
+      // Wrap text nodes into .char spans but keep spaces as text nodes
+      function wrapChars(root){
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+          acceptNode(n){ return n.nodeValue.length ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT; }
+        });
+        const nodes = [];
+        while(walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(node=>{
+          const frag = document.createDocumentFragment();
+          const text = node.nodeValue;
+          for(let i=0;i<text.length;i++){
+            const ch = text[i];
+            if(ch === ' '){
+              frag.appendChild(document.createTextNode(' '));
+            }else{
+              const span = document.createElement('span');
+              span.className = 'char'; span.textContent = ch;
+              frag.appendChild(span);
+            }
+          }
+          node.parentNode.replaceChild(frag, node);
+        });
+      }
+      wrapChars(title);
+
+      const chars = Array.from(title.querySelectorAll('.char'));
+      const rand = (min,max)=>Math.random()*(max-min)+min;
+
+      function burst(){
+        chars.forEach((el,i)=>{
+          const dx = rand(-6,6), dy = rand(-8,4), rz = rand(-3,3);
+          el.style.transform = `translate3d(${dx}px,${dy}px,0) rotate(${rz}deg)`;
+          el.style.transitionDelay = `${(i%10)*6}ms`;
+        });
+      }
+      function reset(){
+        chars.forEach((el)=>{ el.style.transform = 'translate3d(0,0,0) rotate(0deg)'; el.style.transitionDelay='0ms'; });
+        title.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      }
+      function onMove(e){
+        const r = title.getBoundingClientRect();
+        const x = (e.clientX - (r.left + r.width/2)) / (r.width/2);
+        const y = (e.clientY - (r.top  + r.height/2)) / (r.height/2);
+        const maxTilt = 4;
+        const rx = Math.max(-1, Math.min(1, -y)) * maxTilt;
+        const ry = Math.max(-1, Math.min(1,  x)) * maxTilt;
+        title.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+      }
+
+      title.addEventListener('mouseenter', burst);
+      title.addEventListener('mouseleave', reset);
+      title.addEventListener('mousemove', onMove, {passive:true});
+    })();
+
+    /* ===== Runner ===== */
+    (function(){
+      const canvas=document.getElementById('runner');
+      const ctx=canvas.getContext('2d');
+      let W=innerWidth, H=130;
+      function resize(){ W=innerWidth; canvas.width=W; canvas.height=H; }
+      addEventListener('resize', resize); resize();
+
+      const groundY=H-28;
+      const d={x:40,y:groundY,w:22,h:24,vy:0,s:100};
+      const G=460, J=-240;
+      let a=0, t=0;
+
+      function update(dt){
+        t+=dt; a+=dt;
+        if(a>1.5){ d.vy=J; a=0; }
+        d.x += d.s*dt; if(d.x>W+40) d.x=-40;
+        d.vy += G*dt; d.y += d.vy*dt; if(d.y>groundY){ d.y=groundY; d.vy=0; }
+      }
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        ctx.strokeStyle='#d0d0d0'; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.moveTo(0,groundY+0.5); ctx.lineTo(W,groundY+0.5); ctx.stroke();
+        ctx.strokeStyle='rgba(0,0,0,0.1)'; ctx.beginPath();
+        for(let x=0;x<W;x+=6){ const y=groundY-18+Math.sin((x+t*120)*0.01)*2; if(x===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
+        ctx.stroke();
+
+        const x=Math.round(d.x), y=Math.round(d.y);
+        ctx.fillStyle='#000';
+        ctx.fillRect(x-8,y-18,18,14); ctx.fillRect(x+6,y-22,8,8); ctx.fillRect(x+4,y-14,4,4);
+        const leg=(Math.floor(t*12)%2===0)?-2:2;
+        ctx.fillRect(x-6,y-4,4,6); ctx.fillRect(x+4,y-4+leg,4,6);
+        ctx.fillStyle='#fff'; ctx.fillRect(x+11,y-20,2,2);
+        ctx.fillStyle='rgba(0,0,0,.05)'; ctx.beginPath(); ctx.ellipse(x+2,groundY+3,14,3,0,0,Math.PI*2); ctx.fill();
+      }
+
+      let last=performance.now();
+      function loop(now){ const dt=Math.min(0.033,(now-last)/1000); last=now; update(dt); draw(); requestAnimationFrame(loop); }
+      requestAnimationFrame(loop);
+    })();
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
