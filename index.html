@@ -17,10 +17,12 @@
     }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{ margin:0; background:var(--bg); color:var(--fg);
-      font-family:Inter,system-ui,sans-serif; overflow-x:hidden; min-height:100vh; }
+    body{
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family:Inter,system-ui,sans-serif; overflow-x:hidden; min-height:100vh;
+    }
 
-    /* Background blobs + glow */
+    /* ===== Background blobs + glow ===== */
     body::before{
       content:""; position:fixed; inset:0; z-index:-3; pointer-events:none;
       background-image:url("data:image/svg+xml;utf8,\
@@ -50,7 +52,7 @@
       background-position:calc(50% + var(--mx)/16) calc(50% + var(--my)/16);
     }
 
-    /* Fireflies */
+    /* ===== Fireflies ===== */
     .fireflies{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
     .firefly{ position:absolute; left:50%; top:50%; width:2px; height:2px; border-radius:50%;
       background:transparent; box-shadow:0 0 0 0 rgba(255,255,255,0);
@@ -63,7 +65,7 @@
     @keyframes drift{ 0%{transform:translate3d(-40vw,-35vh,0) scale(1)} 25%{transform:translate3d(10vw,-10vh,0) scale(.9)} 50%{transform:translate3d(40vw,25vh,0) scale(1)} 75%{transform:translate3d(-10vw,35vh,0) scale(1.1)} 100%{transform:translate3d(-40vw,-35vh,0) scale(1)}}
     @keyframes flash{ 0%,100%{ box-shadow:0 0 0 0 rgba(255,255,255,0); opacity:.2 } 50%{ box-shadow:0 0 12px 4px rgba(255,255,255,.55); opacity:1 } }
 
-    /* Layout */
+    /* ===== Layout ===== */
     header, footer { max-width:1100px; margin:auto; padding:20px;
       display:flex; align-items:center; justify-content:space-between; }
     .brand{font-weight:800}
@@ -85,7 +87,7 @@
     h2{ text-align:center; margin:0 0 16px; transition:transform .18s ease }
     h2:hover{ transform:translateY(-2px) }
 
-    /* Coding Projects carousel */
+    /* ===== Coding Projects carousel ===== */
     .carousel{position:relative; overflow:hidden; padding:0 60px}
     .viewport{overflow:hidden}
     .track{display:flex; gap:var(--gap); will-change:transform; transition:transform .5s cubic-bezier(.22,.61,.36,1)}
@@ -102,11 +104,11 @@
     .prev{left:10px} .next{right:10px}
     @media (max-width:900px){ .carousel{padding:0 24px} }
 
-    /* PM bouncing field (right side, avoids main content) */
+    /* ===== PM bouncing field (right rail) ===== */
     .pm-field{
       position:fixed; top:90px; bottom:90px; right:12px;
       width:min(30vw, 340px); z-index:1;
-      pointer-events:none; /* only cubes receive events */
+      pointer-events:none; /* only cubes handle events */
       mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
       -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
     }
@@ -122,7 +124,7 @@
     .pm-cube p{margin:0; font-size:12px; color:var(--muted)}
     @media (max-width:980px){ .pm-field{ display:none } }
 
-    /* Per-letter hover (spacing-safe) */
+    /* ===== Per-letter hover (spacing-safe) ===== */
     .char{
       display:inline-block;
       transform: translate3d(0,0,0) rotate(0deg) scale(1);
@@ -130,12 +132,13 @@
       will-change: transform;
     }
 
-    /* Runner */
+    /* ===== Runner ===== */
     #runner{display:block; width:100vw; height:130px; margin-top:40px; border:none;
       background:linear-gradient(0deg,#f6f6f6 0%, #ffffff 60%)}
   </style>
 </head>
 <body>
+  <!-- Fireflies -->
   <div class="fireflies" aria-hidden="true">
     <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
     <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
@@ -160,23 +163,32 @@
     </div>
   </section>
 
+  <!-- Coding Projects (updated to match your SWE resume) -->
   <section class="projects">
     <h2>Coding Projects</h2>
     <div class="carousel" data-autoplay="true" data-interval="4000">
       <button class="nav prev" aria-label="Previous">&#x276E;</button>
       <div class="viewport">
         <div class="track">
-          <article class="proj-card"><h3>CourtVision AI</h3><p>YOLO + OpenCV tennis analytics.</p></article>
-          <article class="proj-card"><h3>Notify.careers</h3><p>Internship drop tracker + job alert web app.</p></article>
-          <article class="proj-card"><h3>BidSwipe (iOS)</h3><p>SwiftUI app for event bidding & seat reservations.</p></article>
-          <article class="proj-card"><h3>Quilly Backend</h3><p>Node.js social API for events & messaging.</p></article>
+          <article class="proj-card">
+            <h3>Capybara Maps</h3>
+            <p>SwiftUI iOS + MapKit; Node/Postgres (PostGIS) nearest-neighbor API; Dockerized backend w/ caching for sub-second loads.</p>
+          </article>
+          <article class="proj-card">
+            <h3>StockSphere</h3>
+            <p>Next.js + Flask microservices; Redis-cached endpoints + Twilio SMS alerts; sustained &lt;100ms responses under load.</p>
+          </article>
+          <article class="proj-card">
+            <h3>CurryStats</h3>
+            <p>FastAPI dashboard using NBA Stats API; HuggingFace sentiment on news/social; interactive charts linking play to fan sentiment.</p>
+          </article>
         </div>
       </div>
       <button class="nav next" aria-label="Next">&#x276F;</button>
     </div>
   </section>
 
-  <!-- PM Projects: bouncing squares field -->
+  <!-- PM Projects: bouncing squares (hover-to-stick) -->
   <div class="pm-field" aria-label="PM Projects DVD field"></div>
 
   <canvas id="runner"></canvas>
@@ -186,7 +198,7 @@
   </footer>
 
   <script>
-    /* Parallax for blobs */
+    /* ===== Parallax for blobs ===== */
     (function(){
       let tx=0, ty=0, cx=0, cy=0; const ease=0.06, range=60;
       function set(x,y){ const w=innerWidth||1, h=innerHeight||1; tx=(x/w)*2-1; ty=(y/h)*2-1; }
@@ -199,7 +211,7 @@
       })();
     })();
 
-    /* Coding carousel */
+    /* ===== Coding carousel ===== */
     (function(){
       function initCarousel(c){
         const viewport=c.querySelector('.viewport');
@@ -244,7 +256,7 @@
       document.querySelectorAll('.carousel').forEach(initCarousel);
     })();
 
-    /* PM Projects: bouncing squares (DVD) */
+    /* ===== PM Projects: bouncing squares with hover-to-stick & click-off release ===== */
     (function(){
       const field = document.querySelector('.pm-field');
       if(!field) return;
@@ -256,45 +268,74 @@
         { title:'Dipper Launch Plan',       desc:'Influencer seeding, GTM event, content cadence.' },
       ];
 
-      const SIZE = 160, PAD = 6;     // cube size & wall padding
-      const MIN_SPD = 60, MAX_SPD = 120; // px/sec
+      const SIZE = 160, PAD = 6;
+      const MIN_SPD = 60, MAX_SPD = 120;
       const cubes = [];
 
       function rand(a,b){ return Math.random()*(b-a)+a; }
-      function sign(){ return Math.random()<0.5 ? -1 : 1; }
-
       function makeCube(data){
         const el = document.createElement('article');
         el.className = 'pm-cube';
         el.innerHTML = `<h4>${data.title}</h4><p>${data.desc}</p>`;
         field.appendChild(el);
 
-        const rect = field.getBoundingClientRect();
-        const x = rand(PAD, Math.max(PAD, rect.width - SIZE - PAD));
-        const y = rand(PAD, Math.max(PAD, rect.height - SIZE - PAD));
-        const spd = rand(MIN_SPD, MAX_SPD);
-        const ang = rand(0, Math.PI*2);
-        const vx = Math.cos(ang)*spd*sign();
-        const vy = Math.sin(ang)*spd*sign();
+        const r = field.getBoundingClientRect();
+        const cube = {
+          el,
+          x: rand(PAD, Math.max(PAD, r.width - SIZE - PAD)),
+          y: rand(PAD, Math.max(PAD, r.height - SIZE - PAD)),
+          vx: rand(MIN_SPD, MAX_SPD) * (Math.random()<.5?-1:1),
+          vy: rand(MIN_SPD, MAX_SPD) * (Math.random()<.5?-1:1),
+          stuck: false,
+          prev: {vx:0, vy:0},
+          scale: 1,
+          hx: 0, hy: 0,
+        };
 
-        const cube = { el, x, y, vx, vy, scale:1, hx:0, hy:0 };
-        // hover lean/enlarge
-        const CLAMP = 8;
-        el.addEventListener('mousemove', (e)=>{
-          const r = el.getBoundingClientRect();
-          const cx=r.left+r.width/2, cy=r.top+r.height/2;
-          cube.hx = Math.max(-CLAMP, Math.min(CLAMP, (e.clientX-cx)*0.08));
-          cube.hy = Math.max(-CLAMP, Math.min(CLAMP, (e.clientY-cy)*0.08));
-          cube.scale = 1.045;
-          el.style.boxShadow = '0 10px 28px rgba(0,0,0,.12)';
+        // Hover => stick to cursor (pause physics) until click-off anywhere
+        const CLAMP = 10;
+        function onMove(e){
+          if(!cube.stuck) return;
+          const fr = field.getBoundingClientRect();
+          // position center under mouse, clamped inside field
+          const targetX = e.clientX - fr.left - SIZE/2;
+          const targetY = e.clientY - fr.top  - SIZE/2;
+          cube.x = Math.max(PAD, Math.min(fr.width  - SIZE - PAD, targetX));
+          cube.y = Math.max(PAD, Math.min(fr.height - SIZE - PAD, targetY));
+          // subtle nudge toward cursor inside the card
+          const cr = el.getBoundingClientRect();
+          const cx = cr.left + cr.width/2, cy = cr.top + cr.height/2;
+          cube.hx = Math.max(-CLAMP, Math.min(CLAMP, (e.clientX - cx) * 0.1));
+          cube.hy = Math.max(-CLAMP, Math.min(CLAMP, (e.clientY - cy) * 0.1));
+          cube.scale = 1.06;
+          el.style.boxShadow = '0 12px 30px rgba(0,0,0,.14)';
+        }
+
+        el.addEventListener('mouseenter', ()=>{
+          if(cube.stuck) return;
+          cube.stuck = true;
+          cube.prev.vx = cube.vx; cube.prev.vy = cube.vy;
+          cube.vx = 0; cube.vy = 0;
+          document.addEventListener('pointermove', onMove, {passive:true});
+          el.style.cursor = 'grabbing';
         });
-        el.addEventListener('mouseleave', ()=>{
-          cube.hx = cube.hy = 0; cube.scale = 1;
+
+        // Click anywhere outside the cube → release it
+        function releaseIfOutside(target){
+          if(!cube.stuck) return;
+          if(target === el || el.contains(target)) return; // ignore clicks on the cube itself
+          cube.stuck = false;
+          document.removeEventListener('pointermove', onMove);
+          cube.scale = 1; cube.hx = cube.hy = 0;
           el.style.boxShadow = 'var(--shadow)';
-        });
-
-        // optional click
-        el.addEventListener('click', (e)=>{ e.stopPropagation(); });
+          // resume with previous velocity (randomize angle slightly)
+          const jitter = 0.25;
+          cube.vx = cube.prev.vx || rand(MIN_SPD, MAX_SPD)*(Math.random()<.5?-1:1);
+          cube.vy = cube.prev.vy || rand(MIN_SPD, MAX_SPD)*(Math.random()<.5?-1:1);
+          cube.vx *= (1 + (Math.random()-0.5)*jitter);
+          cube.vy *= (1 + (Math.random()-0.5)*jitter);
+        }
+        document.addEventListener('pointerdown', (e)=>releaseIfOutside(e.target));
 
         cubes.push(cube);
       }
@@ -305,138 +346,16 @@
         ITEMS.forEach(makeCube);
       }
 
-      function tickFactory(){
+      function animate(){
         let last = performance.now();
-        return function frame(now){
+        function frame(now){
           const dt = Math.min(0.033, (now-last)/1000); last=now;
-          const rect = field.getBoundingClientRect();
-          const W = rect.width, H = rect.height;
+          const fr = field.getBoundingClientRect();
+          const W = fr.width, H = fr.height;
 
           for(const c of cubes){
-            // physics
-            c.x += c.vx*dt; c.y += c.vy*dt;
-
-            // wall bounces
-            if(c.x <= PAD){ c.x=PAD; c.vx = Math.abs(c.vx); }
-            else if(c.x + SIZE >= W-PAD){ c.x = W-PAD-SIZE; c.vx = -Math.abs(c.vx); }
-            if(c.y <= PAD){ c.y=PAD; c.vy = Math.abs(c.vy); }
-            else if(c.y + SIZE >= H-PAD){ c.y = H-PAD-SIZE; c.vy = -Math.abs(c.vy); }
-
-            // draw (apply hover offsets & scale)
-            const tx = (c.x|0) + c.hx;
-            const ty = (c.y|0) + c.hy;
-            c.el.style.transform = `translate(${tx}px, ${ty}px) scale(${c.scale})`;
-          }
-          requestAnimationFrame(frame);
-        }
-      }
-
-      build();
-      addEventListener('resize', build);
-      requestAnimationFrame(tickFactory());
-    })();
-
-    /* HERO TEXT EFFECTS (spacing-safe): per-letter burst + gentle tilt */
-    (function(){
-      const title = document.getElementById('heroTitle');
-      if(!title) return;
-
-      // Wrap non-<br> text nodes into spans per character, but KEEP SPACES AS REAL TEXT
-      function wrapChars(root){
-        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-          acceptNode(n){ return n.nodeValue.length ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT; }
-        });
-        const nodes = [];
-        while(walker.nextNode()) nodes.push(walker.currentNode);
-
-        nodes.forEach(node=>{
-          const frag = document.createDocumentFragment();
-          const text = node.nodeValue;
-          for(let i=0;i<text.length;i++){
-            const ch = text[i];
-            if(ch === ' '){
-              frag.appendChild(document.createTextNode(' ')); // keep natural spacing
-            }else{
-              const span = document.createElement('span');
-              span.className = 'char'; span.textContent = ch;
-              frag.appendChild(span);
-            }
-          }
-          node.parentNode.replaceChild(frag, node);
-        });
-      }
-      wrapChars(title);
-
-      const chars = Array.from(title.querySelectorAll('.char'));
-      const rand = (min,max)=>Math.random()*(max-min)+min;
-
-      function burst(){
-        chars.forEach((el,i)=>{
-          const dx = rand(-6,6), dy = rand(-8,4), rz = rand(-3,3);
-          el.style.transform = `translate3d(${dx}px,${dy}px,0) rotate(${rz}deg)`;
-          el.style.transitionDelay = `${(i%10)*6}ms`;
-        });
-      }
-      function reset(){
-        chars.forEach((el)=>{ el.style.transform = 'translate3d(0,0,0) rotate(0deg)'; el.style.transitionDelay='0ms'; });
-      }
-      function onMove(e){
-        const r = title.getBoundingClientRect();
-        const x = (e.clientX - (r.left + r.width/2)) / (r.width/2);
-        const y = (e.clientY - (r.top  + r.height/2)) / (r.height/2);
-        const maxTilt = 4;
-        const rx = Math.max(-1, Math.min(1, -y)) * maxTilt;
-        const ry = Math.max(-1, Math.min(1,  x)) * maxTilt;
-        title.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-      }
-
-      title.addEventListener('mouseenter', burst);
-      title.addEventListener('mouseleave', ()=>{ reset(); title.style.transform='rotateX(0deg) rotateY(0deg)'; });
-      title.addEventListener('mousemove', onMove, {passive:true});
-    })();
-
-    /* Runner */
-    (function(){
-      const canvas=document.getElementById('runner');
-      const ctx=canvas.getContext('2d');
-      let W=innerWidth, H=130;
-      function resize(){ W=innerWidth; canvas.width=W; canvas.height=H; }
-      addEventListener('resize', resize); resize();
-
-      const groundY=H-28;
-      const d={x:40,y:groundY,w:22,h:24,vy:0,s:100};
-      const G=460, J=-240;
-      let a=0, t=0;
-
-      function update(dt){
-        t+=dt; a+=dt;
-        if(a>1.5){ d.vy=J; a=0; }
-        d.x += d.s*dt; if(d.x>W+40) d.x=-40;
-        d.vy += G*dt; d.y += d.vy*dt; if(d.y>groundY){ d.y=groundY; d.vy=0; }
-      }
-      function draw(){
-        ctx.clearRect(0,0,W,H);
-        ctx.strokeStyle='#d0d0d0'; ctx.lineWidth=2;
-        ctx.beginPath(); ctx.moveTo(0,groundY+0.5); ctx.lineTo(W,groundY+0.5); ctx.stroke();
-        ctx.strokeStyle='rgba(0,0,0,0.1)'; ctx.beginPath();
-        for(let x=0;x<W;x+=6){ const y=groundY-18+Math.sin((x+t*120)*0.01)*2; if(x===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
-        ctx.stroke();
-
-        const x=Math.round(d.x), y=Math.round(d.y);
-        ctx.fillStyle='#000';
-        ctx.fillRect(x-8,y-18,18,14); ctx.fillRect(x+6,y-22,8,8); ctx.fillRect(x+4,y-14,4,4);
-        const leg=(Math.floor(t*12)%2===0)?-2:2;
-        ctx.fillRect(x-6,y-4,4,6); ctx.fillRect(x+4,y-4+leg,4,6);
-        ctx.fillStyle='#fff'; ctx.fillRect(x+11,y-20,2,2);
-        ctx.fillStyle='rgba(0,0,0,.05)'; ctx.beginPath(); ctx.ellipse(x+2,groundY+3,14,3,0,0,Math.PI*2); ctx.fill();
-      }
-
-      let last=performance.now();
-      function loop(now){ const dt=Math.min(0.033,(now-last)/1000); last=now; update(dt); draw(); requestAnimationFrame(loop); }
-      requestAnimationFrame(loop);
-    })();
-
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>
+            if(!c.stuck){
+              c.x += c.vx*dt; c.y += c.vy*dt;
+              // wall bounce
+              if(c.x <= PAD){ c.x = PAD; c.vx = Math.abs(c.vx); }
+              else if(c.x + SIZE >= W-PAD){ c.x = W-PAD-SIZE; c.vx = -
