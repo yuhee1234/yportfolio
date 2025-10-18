@@ -121,13 +121,12 @@
       mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
       -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
     }
-    .pm-label{
-      position:fixed; right:calc(min(30vw,340px) + 28px); top:140px; z-index:2;
-      background:#fff; border:1.5px dashed var(--accent); color:var(--accent);
-      padding:8px 14px; border-radius:999px; box-shadow:var(--shadow); font-weight:700; font-size:110%;
-      animation: bob 3s ease-in-out infinite;
+    .pm-title{
+      position:fixed; right:12px; top:96px; z-index:2;
+      color:var(--fg); background:transparent; font-weight:800; font-size:1.2rem;
+      padding:4px 0;
     }
-    @keyframes bob{ 0%,100%{ transform:translateY(0)} 50%{ transform:translateY(-6px)} } 50%{ transform:translateY(-6px) rotate(-2deg)} }
+     50%{ transform:translateY(-6px)} } 50%{ transform:translateY(-6px) rotate(-2deg)} }
 
     .pm-cube{
       position:absolute; width:180px; height:180px; left:0; top:0;
@@ -135,8 +134,18 @@
       border:1.5px solid var(--border); border-radius:18px; box-shadow:var(--shadow);
       padding:14px; display:flex; flex-direction:column; gap:8px; justify-content:flex-start;
       pointer-events:auto; cursor:pointer; will-change:transform;
-      transition: box-shadow .18s ease, transform .12s ease, border-color .18s ease;
-      user-select:none;
+      transition: box-shadow .22s ease, transform .22s cubic-bezier(.22,.61,.36,1), border-color .18s ease;
+      user-select:none; overflow:hidden;
+    }
+    .pm-cube::before{ /* soft sheen */
+      content:""; position:absolute; inset:-40% -120% auto auto; height:200%; width:40%;
+      background:linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.35) 50%, rgba(255,255,255,0) 100%);
+      transform:translateX(-120%) rotate(20deg); opacity:0; pointer-events:none;
+      transition: opacity .25s ease, transform .8s ease;
+    }
+    .pm-cube:hover::before{ opacity:1; transform:translateX(250%) rotate(20deg); }
+    .pm-cube:hover{ box-shadow:0 18px 36px rgba(0,0,0,.16); border-color:var(--accent);
+      transform:scale(1.06) rotate3d(1,1,0,2deg);
     }
     .pm-cube h4{margin:0; font-size:16px}
     .pm-cube p{margin:0; font-size:12.5px; color:var(--muted); line-height:1.45}
@@ -232,7 +241,7 @@
   </section>
 
   <!-- PM Projects label + bouncing squares (hover pauses; not sticky) -->
-  <div class="pm-label" aria-hidden="true">PM Projects</div>
+  <div class="pm-title">PM Projects</div>
   <div class="pm-field" aria-label="PM Projects DVD field"></div>
 
   <canvas id="runner"></canvas>
@@ -260,42 +269,51 @@
       function initCarousel(c){
         const viewport=c.querySelector('.viewport');
         const track=c.querySelector('.track');
-        const cards=[...track.children];
         const prev=c.querySelector('.prev');
         const next=c.querySelector('.next');
         let per=2, w=0, i=0;
         const gap=parseInt(getComputedStyle(track).gap)||16;
 
+        // Duplicate cards once for seamless loop (only once)
+        if(!track.dataset.looped){
+          track.dataset.looped = 'true';
+          const html = track.innerHTML;
+          track.insertAdjacentHTML('beforeend', html); // duplicate
+        }
+        const cards=[...track.children];
+
         function layout(){
           per = innerWidth>=980 ? 2 : 1;
           w = (viewport.clientWidth - gap*(per-1)) / per;
           cards.forEach(el=>{ el.style.minWidth=w+'px'; el.style.maxWidth=w+'px'; });
-          i = Math.max(0, Math.min(i, cards.length - per)); update();
+          update();
         }
-        function update(){
-          track.style.transform = `translate3d(${-(i*(w+gap))}px,0,0)`;
-          prev.disabled = i===0; next.disabled = i>=cards.length-per;
+        function update(){ track.style.transform = `translate3d(${-offset}px,0,0)`; }
+        function jump(d){ // button paging still works
+          i = Math.max(0, Math.min(i+d, cards.length/2 - per));
+          offset = i*(w+gap);
+          update();
         }
-        function go(d){ i = Math.max(0, Math.min(i+d, cards.length-per)); update(); }
 
-        prev.addEventListener('click', ()=>go(-per));
-        next.addEventListener('click', ()=>go(per));
+        prev.addEventListener('click', ()=>jump(-per));
+        next.addEventListener('click', ()=>jump(per));
         addEventListener('resize', layout);
         layout();
 
-        // touch
-        let sx=0, dx=0;
-        viewport.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; dx=0; }, {passive:true});
-        viewport.addEventListener('touchmove',  e=>{ dx=e.touches[0].clientX - sx; }, {passive:true});
-        viewport.addEventListener('touchend',   ()=>{ if(Math.abs(dx)>50){ go(dx<0?per:-per); } });
-
-        // autoplay
-        const autoplay = c.dataset.autoplay==='true';
-        const interval = parseInt(c.dataset.interval||'4200',10);
-        let timer=null;
-        function play(){ if(!autoplay) return; stop(); timer=setInterval(()=>{ i = (i>=cards.length-per) ? 0 : i+per; update(); }, interval); }
-        function stop(){ if(timer){ clearInterval(timer); timer=null; } }
-        c.addEventListener('mouseenter', stop); c.addEventListener('mouseleave', play); play();
+        // continuous marquee
+        let offset=0; const speed=28; // px/sec
+        let paused=false; let last=performance.now();
+        function frame(now){
+          const dt=Math.min(0.033,(now-last)/1000); last=now;
+          if(!paused){ offset += speed*dt; }
+          const total = (w+gap)*(cards.length/2); // width of original set
+          if(offset>total){ offset-=total; }
+          track.style.transform = `translate3d(${-offset}px,0,0)`;
+          requestAnimationFrame(frame);
+        }
+        c.addEventListener('mouseenter', ()=>paused=true);
+        c.addEventListener('mouseleave', ()=>paused=false);
+        requestAnimationFrame(frame);
       }
       document.querySelectorAll('.carousel').forEach(initCarousel);
     })();
