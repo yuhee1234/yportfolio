@@ -122,13 +122,12 @@
       -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
     }
     .pm-label{
-      position:fixed; right:calc(min(30vw,340px) + 16px); top:140px; z-index:2;
-      transform:rotate(-2deg);
+      position:fixed; right:calc(min(30vw,340px) + 28px); top:140px; z-index:2;
       background:#fff; border:1.5px dashed var(--accent); color:var(--accent);
-      padding:8px 14px; border-radius:999px; box-shadow:var(--shadow); font-weight:700;
+      padding:8px 14px; border-radius:999px; box-shadow:var(--shadow); font-weight:700; font-size:110%;
       animation: bob 3s ease-in-out infinite;
     }
-    @keyframes bob{ 0%,100%{ transform:translateY(0) rotate(-2deg)} 50%{ transform:translateY(-6px) rotate(-2deg)} }
+    @keyframes bob{ 0%,100%{ transform:translateY(0)} 50%{ transform:translateY(-6px)} } 50%{ transform:translateY(-6px) rotate(-2deg)} }
 
     .pm-cube{
       position:absolute; width:180px; height:180px; left:0; top:0;
@@ -198,6 +197,23 @@
             <h3>Capybara Maps</h3>
             <p class="proj-desc">SwiftUI iOS app with MapKit overlays and a Dockerized Node + PostgreSQL (PostGIS) backend for geospatial nearest-neighbor queries. Added caching and async fetch to keep city-wide queries sub‑second, plus fault‑tolerant retries and health checks for global deploys.</p>
             <div class="tags"><span class="tag">SwiftUI</span><span class="tag">MapKit</span><span class="tag">PostGIS</span><span class="tag">Docker</span></div>
+          </article>
+          <article class="proj-card">
+            <h3>StockSphere</h3>
+            <p class="proj-desc">Full‑stack stock analytics with Next.js + Flask microservices. Redis‑cached endpoints and Twilio SMS alerting sustain &lt;100ms responses under load. Built failure recovery and rate‑limit backoff; added portfolio simulations and alert rules for retail users.</p>
+            <div class="tags"><span class="tag">Next.js</span><span class="tag">Flask</span><span class="tag">Redis</span><span class="tag">Twilio</span></div>
+          </article>
+          <article class="proj-card">
+            <h3>CurryStats</h3>
+            <p class="proj-desc">FastAPI dashboard that fuses NBA play data with HuggingFace sentiment on news + social. Interactive charts tie game events to fan mood, with cohort comparisons and event annotations for quick post‑game analysis.</p>
+            <div class="tags"><span class="tag">FastAPI</span><span class="tag">HuggingFace</span><span class="tag">NBA Stats API</span><span class="tag">Plotly</span></div>
+          </article>
+          <article class="proj-card">
+            <h3>Notify.careers Alerts</h3>
+            <p class="proj-desc">Scoped PRD and v1 launch checklist for job alerts; defined success metrics and backlog triage. Implemented rules logic and QA gates to ensure clean GA and measurable engagement impact.</p>
+            <div class="tags"><span class="tag">PRD</span><span class="tag">A/B</span><span class="tag">Metrics</span><span class="tag">Launch</span></div>
+          </article>
+        </div>
           </article>
           <article class="proj-card">
             <h3>StockSphere</h3>
@@ -291,9 +307,9 @@
 
       const ITEMS = [
         { title:'Quilly Growth Experiments', desc:'Designed onboarding A/B tests, mapped event funnels, and shipped weekly KPI reviews to tighten activation and retention loops.' },
-        { title:'Notify.careers — Alerts PM',  desc:'Scoped PRD and v1 checklist for job alerts; defined success metrics, backlog triage, and launch comms to ensure clean GA.' },
-        { title:'BidSwipe Product Ops',       desc:'Built feedback pipeline, prioritized waitlist, and constrained v1 scope for faster time‑to‑value and less churn risk.' },
-        { title:'Dipper Campus Launch',       desc:'Ran influencer seeding + GTM event plan; set content cadence and tracked creator‑led acquisition + retention signals.' },
+        { title:'First‑Session Personalization Sprint', desc:'Shipped micro‑onboarding ("Pick 3 interests") + feed personalization A/B; +9% first‑session and +6pp D7 retention. Owned success metrics, rollout, and analysis.' },
+        { title:'ShopLens — Visual AI Shopping', desc:'Led AI visual search MVP: user uploads outfit → shoppable matches. Ran user tests (n=30), refined UX/copy, and lifted conversion by +18% with scoped metrics.' },
+        { title:'Dipper Campus Launch', desc:'Influencer seeding and GTM event plan; set content cadence and tracked creator‑led acquisition and retention signals.' },
       ];
 
       const SIZE = 180, PAD = 6;
