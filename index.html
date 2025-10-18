@@ -8,10 +8,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
   <style>
     :root{
-      --bg:#ffffff; --fg:#000; --muted:#6b6b6b;
+      --bg:#ffffff; --fg:#0b0b0b; --muted:#5d5d5d;
       --accent:#e04e43;
-      --border:#e0e0e0; --card:#fff; --radius:20px;
-      --shadow:0 4px 20px rgba(0,0,0,.06);
+      --border:#ececec; --card:#fff; --radius:20px;
+      --shadow:0 6px 30px rgba(0,0,0,.08);
       --gap:16px;
       --mx:0px; --my:0px;
     }
@@ -87,17 +87,26 @@
     h2{ text-align:center; margin:0 0 16px; transition:transform .18s ease }
     h2:hover{ transform:translateY(-2px) }
 
-    /* ===== Coding Projects carousel ===== */
+    /* ===== Coding Projects carousel (richer cards) ===== */
     .carousel{position:relative; overflow:hidden; padding:0 60px}
     .viewport{overflow:hidden}
     .track{display:flex; gap:var(--gap); will-change:transform; transition:transform .5s cubic-bezier(.22,.61,.36,1)}
     .proj-card{
-      background:#fff; border:1.5px solid var(--accent); border-radius:var(--radius);
-      padding:20px; box-shadow:var(--shadow); min-height:140px; display:flex; flex-direction:column;
-      transition:transform .18s ease, box-shadow .18s ease
+      background:linear-gradient(180deg, #fff 0%, #fff 60%, #f9f9f9 100%);
+      border:1.5px solid var(--border); border-radius:var(--radius);
+      padding:18px; box-shadow:var(--shadow); min-height:170px; display:flex; flex-direction:column;
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease
     }
-    .proj-card:hover{ transform:translateY(-3px); box-shadow:0 10px 22px rgba(0,0,0,.10) }
+    .proj-card::before{ /* top accent bar */
+      content:""; display:block; height:6px; width:56px; border-radius:999px; margin-bottom:10px;
+      background:linear-gradient(90deg, var(--accent), #ff9d95);
+    }
+    .proj-card:hover{ transform:translateY(-3px); box-shadow:0 14px 28px rgba(0,0,0,.12); border-color:var(--accent) }
     .proj-card h3{margin:0 0 6px}
+    .proj-desc{font-size:14px; color:#333; margin:6px 0 10px; line-height:1.4}
+    .tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:auto}
+    .tag{font-size:12px; padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:#fff}
+
     .nav{position:absolute; top:50%; transform:translateY(-50%); z-index:5;
       background:#fff; border:1.5px solid var(--accent); border-radius:50%;
       width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer}
@@ -106,23 +115,38 @@
 
     /* ===== PM bouncing field (right rail) ===== */
     .pm-field{
-      position:fixed; top:90px; bottom:90px; right:12px;
+      position:fixed; top:120px; bottom:120px; right:12px;
       width:min(30vw, 340px); z-index:1;
       pointer-events:none; /* only cubes handle events */
       mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
       -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
     }
+    .pm-label{
+      position:fixed; right:calc(min(30vw,340px) + 16px); top:140px; z-index:2;
+      transform:rotate(-2deg);
+      background:#fff; border:1.5px dashed var(--accent); color:var(--accent);
+      padding:8px 14px; border-radius:999px; box-shadow:var(--shadow); font-weight:700;
+      animation: bob 3s ease-in-out infinite;
+    }
+    @keyframes bob{ 0%,100%{ transform:translateY(0) rotate(-2deg)} 50%{ transform:translateY(-6px) rotate(-2deg)} }
+
     .pm-cube{
-      position:absolute; width:160px; height:160px; left:0; top:0;
-      background:var(--card); border:1.5px solid var(--accent); border-radius:18px; box-shadow:var(--shadow);
-      padding:14px; display:flex; flex-direction:column; gap:6px; justify-content:flex-start;
+      position:absolute; width:180px; height:180px; left:0; top:0;
+      background:linear-gradient(180deg,#fff 0%,#fff 65%,#fcfcfc 100%);
+      border:1.5px solid var(--border); border-radius:18px; box-shadow:var(--shadow);
+      padding:14px; display:flex; flex-direction:column; gap:8px; justify-content:flex-start;
       pointer-events:auto; cursor:pointer; will-change:transform;
-      transition: box-shadow .18s ease, transform .12s ease;
+      transition: box-shadow .18s ease, transform .12s ease, border-color .18s ease;
       user-select:none;
     }
     .pm-cube h4{margin:0; font-size:16px}
-    .pm-cube p{margin:0; font-size:12px; color:var(--muted)}
-    @media (max-width:980px){ .pm-field{ display:none } }
+    .pm-cube p{margin:0; font-size:12.5px; color:var(--muted); line-height:1.45}
+    .pm-cube::after{ /* corner ribbon */
+      content:"PM"; position:absolute; top:10px; right:10px; font-size:10px; font-weight:800; letter-spacing:.6px;
+      color:#fff; background:var(--accent); padding:4px 8px; border-radius:999px;
+    }
+    .pm-cube:hover{ box-shadow:0 16px 34px rgba(0,0,0,.14); border-color:var(--accent) }
+    @media (max-width:980px){ .pm-field, .pm-label{ display:none } }
 
     /* ===== Per-letter hover (spacing-safe) ===== */
     .char{
@@ -166,21 +190,24 @@
   <!-- Coding Projects (updated to match your SWE resume) -->
   <section class="projects">
     <h2>Coding Projects</h2>
-    <div class="carousel" data-autoplay="true" data-interval="4000">
+    <div class="carousel" data-autoplay="true" data-interval="4200">
       <button class="nav prev" aria-label="Previous">&#x276E;</button>
       <div class="viewport">
         <div class="track">
           <article class="proj-card">
             <h3>Capybara Maps</h3>
-            <p>SwiftUI iOS + MapKit; Node/Postgres (PostGIS) nearest-neighbor API; Dockerized backend w/ caching for sub-second loads.</p>
+            <p class="proj-desc">SwiftUI iOS app with MapKit overlays and a Dockerized Node + PostgreSQL (PostGIS) backend for geospatial nearest-neighbor queries. Added caching and async fetch to keep city-wide queries sub‑second, plus fault‑tolerant retries and health checks for global deploys.</p>
+            <div class="tags"><span class="tag">SwiftUI</span><span class="tag">MapKit</span><span class="tag">PostGIS</span><span class="tag">Docker</span></div>
           </article>
           <article class="proj-card">
             <h3>StockSphere</h3>
-            <p>Next.js + Flask microservices; Redis-cached endpoints + Twilio SMS alerts; sustained &lt;100ms responses under load.</p>
+            <p class="proj-desc">Full‑stack stock analytics with Next.js + Flask microservices. Redis‑cached endpoints and Twilio SMS alerting sustain &lt;100ms responses under load. Built failure recovery and rate‑limit backoff; added portfolio simulations and alert rules for retail users.</p>
+            <div class="tags"><span class="tag">Next.js</span><span class="tag">Flask</span><span class="tag">Redis</span><span class="tag">Twilio</span></div>
           </article>
           <article class="proj-card">
             <h3>CurryStats</h3>
-            <p>FastAPI dashboard using NBA Stats API; HuggingFace sentiment on news/social; interactive charts linking play to fan sentiment.</p>
+            <p class="proj-desc">FastAPI dashboard that fuses NBA play data with HuggingFace sentiment on news + social. Interactive charts tie game events to fan mood, with cohort comparisons and event annotations for quick post‑game analysis.</p>
+            <div class="tags"><span class="tag">FastAPI</span><span class="tag">HuggingFace</span><span class="tag">NBA Stats API</span><span class="tag">Plotly</span></div>
           </article>
         </div>
       </div>
@@ -188,7 +215,8 @@
     </div>
   </section>
 
-  <!-- PM Projects: bouncing squares (hover-to-stick) -->
+  <!-- PM Projects label + bouncing squares (hover pauses; not sticky) -->
+  <div class="pm-label" aria-hidden="true">PM Projects</div>
   <div class="pm-field" aria-label="PM Projects DVD field"></div>
 
   <canvas id="runner"></canvas>
@@ -247,7 +275,7 @@
 
         // autoplay
         const autoplay = c.dataset.autoplay==='true';
-        const interval = parseInt(c.dataset.interval||'4000',10);
+        const interval = parseInt(c.dataset.interval||'4200',10);
         let timer=null;
         function play(){ if(!autoplay) return; stop(); timer=setInterval(()=>{ i = (i>=cards.length-per) ? 0 : i+per; update(); }, interval); }
         function stop(){ if(timer){ clearInterval(timer); timer=null; } }
@@ -256,20 +284,21 @@
       document.querySelectorAll('.carousel').forEach(initCarousel);
     })();
 
-    /* ===== PM Projects: bouncing squares with hover-to-stick & click-off release ===== */
+    /* ===== PM Projects: bouncing squares — slower; hover pauses, NOT sticky ===== */
     (function(){
       const field = document.querySelector('.pm-field');
       if(!field) return;
 
       const ITEMS = [
-        { title:'Quilly Growth Experiments', desc:'A/B onboarding, event funnels, weekly KPIs.' },
-        { title:'Notify.careers PM',        desc:'Roadmap + PRD for alerts; launch checklist.' },
-        { title:'BidSwipe Product Ops',     desc:'Feedback loop, waitlist prioritization, v1 scope.' },
-        { title:'Dipper Launch Plan',       desc:'Influencer seeding, GTM event, content cadence.' },
+        { title:'Quilly Growth Experiments', desc:'Designed onboarding A/B tests, mapped event funnels, and shipped weekly KPI reviews to tighten activation and retention loops.' },
+        { title:'Notify.careers — Alerts PM',  desc:'Scoped PRD and v1 checklist for job alerts; defined success metrics, backlog triage, and launch comms to ensure clean GA.' },
+        { title:'BidSwipe Product Ops',       desc:'Built feedback pipeline, prioritized waitlist, and constrained v1 scope for faster time‑to‑value and less churn risk.' },
+        { title:'Dipper Campus Launch',       desc:'Ran influencer seeding + GTM event plan; set content cadence and tracked creator‑led acquisition + retention signals.' },
       ];
 
-      const SIZE = 160, PAD = 6;
-      const MIN_SPD = 60, MAX_SPD = 120;
+      const SIZE = 180, PAD = 6;
+      // SLOWER SPEEDS
+      const MIN_SPD = 22, MAX_SPD = 38; // px/sec
       const cubes = [];
 
       function rand(a,b){ return Math.random()*(b-a)+a; }
@@ -286,56 +315,26 @@
           y: rand(PAD, Math.max(PAD, r.height - SIZE - PAD)),
           vx: rand(MIN_SPD, MAX_SPD) * (Math.random()<.5?-1:1),
           vy: rand(MIN_SPD, MAX_SPD) * (Math.random()<.5?-1:1),
-          stuck: false,
+          paused:false,
           prev: {vx:0, vy:0},
           scale: 1,
-          hx: 0, hy: 0,
         };
 
-        // Hover => stick to cursor (pause physics) until click-off anywhere
-        const CLAMP = 10;
-        function onMove(e){
-          if(!cube.stuck) return;
-          const fr = field.getBoundingClientRect();
-          // position center under mouse, clamped inside field
-          const targetX = e.clientX - fr.left - SIZE/2;
-          const targetY = e.clientY - fr.top  - SIZE/2;
-          cube.x = Math.max(PAD, Math.min(fr.width  - SIZE - PAD, targetX));
-          cube.y = Math.max(PAD, Math.min(fr.height - SIZE - PAD, targetY));
-          // subtle nudge toward cursor inside the card
-          const cr = el.getBoundingClientRect();
-          const cx = cr.left + cr.width/2, cy = cr.top + cr.height/2;
-          cube.hx = Math.max(-CLAMP, Math.min(CLAMP, (e.clientX - cx) * 0.1));
-          cube.hy = Math.max(-CLAMP, Math.min(CLAMP, (e.clientY - cy) * 0.1));
-          cube.scale = 1.06;
-          el.style.boxShadow = '0 12px 30px rgba(0,0,0,.14)';
-        }
-
+        // Hover: pause motion (no stick). Resume on mouseleave
         el.addEventListener('mouseenter', ()=>{
-          if(cube.stuck) return;
-          cube.stuck = true;
+          if(cube.paused) return;
+          cube.paused = true;
           cube.prev.vx = cube.vx; cube.prev.vy = cube.vy;
-          cube.vx = 0; cube.vy = 0;
-          document.addEventListener('pointermove', onMove, {passive:true});
-          el.style.cursor = 'grabbing';
+          cube.vx = 0; cube.vy = 0; cube.scale = 1.05;
+          el.style.boxShadow = '0 16px 34px rgba(0,0,0,.14)';
         });
-
-        // Click anywhere outside the cube → release it
-        function releaseIfOutside(target){
-          if(!cube.stuck) return;
-          if(target === el || el.contains(target)) return; // ignore clicks on the cube itself
-          cube.stuck = false;
-          document.removeEventListener('pointermove', onMove);
-          cube.scale = 1; cube.hx = cube.hy = 0;
-          el.style.boxShadow = 'var(--shadow)';
-          // resume with previous velocity (randomize angle slightly)
-          const jitter = 0.25;
-          cube.vx = cube.prev.vx || rand(MIN_SPD, MAX_SPD)*(Math.random()<.5?-1:1);
-          cube.vy = cube.prev.vy || rand(MIN_SPD, MAX_SPD)*(Math.random()<.5?-1:1);
-          cube.vx *= (1 + (Math.random()-0.5)*jitter);
-          cube.vy *= (1 + (Math.random()-0.5)*jitter);
-        }
-        document.addEventListener('pointerdown', (e)=>releaseIfOutside(e.target));
+        el.addEventListener('mouseleave', ()=>{
+          if(!cube.paused) return;
+          cube.paused = false; cube.scale = 1; el.style.boxShadow = 'var(--shadow)';
+          // resume previous velocity (slightly damped for smoothness)
+          cube.vx = (cube.prev.vx || rand(MIN_SPD, MAX_SPD)) * 0.95;
+          cube.vy = (cube.prev.vy || rand(MIN_SPD, MAX_SPD)) * 0.95;
+        });
 
         cubes.push(cube);
       }
@@ -354,7 +353,7 @@
           const W = fr.width, H = fr.height;
 
           for(const c of cubes){
-            if(!c.stuck){
+            if(!c.paused){
               c.x += c.vx*dt; c.y += c.vy*dt;
               // wall bounce
               if(c.x <= PAD){ c.x = PAD; c.vx = Math.abs(c.vx); }
@@ -362,8 +361,8 @@
               if(c.y <= PAD){ c.y = PAD; c.vy = Math.abs(c.vy); }
               else if(c.y + SIZE >= H-PAD){ c.y = H-PAD-SIZE; c.vy = -Math.abs(c.vy); }
             }
-            const tx = (c.x|0) + c.hx;
-            const ty = (c.y|0) + c.hy;
+            const tx = (c.x|0);
+            const ty = (c.y|0);
             c.el.style.transform = `translate(${tx}px, ${ty}px) scale(${c.scale})`;
           }
 
