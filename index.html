@@ -8,164 +8,141 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
   <style>
     :root{
-      --bg:#ffffff; --fg:#0b0b0b; --muted:#5d5d5d;
-      --accent:#e04e43;
-      --border:#ececec; --card:#fff; --radius:20px;
-      --shadow:0 6px 30px rgba(0,0,0,.08);
+      --bg:#070812; --fg:#e9ecff; --muted:#9aa2c7;
+      --accent:#7aa5ff; --accent2:#ff79c6;
+      --border:rgba(255,255,255,.08); --card:rgba(10,12,24,.75); --radius:22px;
+      --shadow:0 10px 40px rgba(0,0,0,.45);
       --gap:16px;
       --mx:0px; --my:0px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; background:var(--bg); color:var(--fg);
+      margin:0; background:radial-gradient(1200px 800px at 20% 0%, #0b0e1f 0%, #070812 55%, #06070f 100%); color:var(--fg);
       font-family:Inter,system-ui,sans-serif; overflow-x:hidden; min-height:100vh;
     }
 
-    /* ===== Background blobs + glow ===== */
-    body::before{
-      content:""; position:fixed; inset:0; z-index:-3; pointer-events:none;
+    /* ================= SPACE BACKGROUND ================= */
+    /* Starfield canvas sits behind everything */
+    #starfield{position:fixed; inset:0; z-index:-3; display:block; background:transparent}
+    /* Parallax nebulas */
+    .nebula{position:fixed; inset:-10% -10% -10% -10%; z-index:-2; pointer-events:none;
       background-image:url("data:image/svg+xml;utf8,\
-        <svg xmlns='http://www.w3.org/2000/svg' viewBox='10 10 80 80' preserveAspectRatio='xMidYMid slice'>\
-          <g>\
-            <path fill='%23efefef' d='M37-5C25.1-14.7,5.7-19.1-9.2-10-28.5,1.8-32.7,31.1-19.8,49c15.5,21.5,52.6,22,67.2,2.3C59.4,35,53.7,8.5,37-5Z'>\
-              <animateTransform attributeName=\"transform\" type=\"rotate\" from=\"0 13 25\" to=\"360 13 25\" dur=\"20s\" repeatCount=\"indefinite\"/>\
-            </path>\
-            <path fill='%23f6f6f6' d='M20.6,4.1C11.6,1.5-1.9,2.5-8,11.2-16.3,23.1-8.2,45.6,7.4,50S42.1,38.9,41,24.5C40.2,14.1,29.4,6.6,20.6,4.1Z'>\
-              <animateTransform attributeName=\"transform\" type=\"rotate\" from=\"0 13 25\" to=\"360 13 25\" dur=\"10s\" repeatCount=\"indefinite\"/>\
-            </path>\
-            <path fill='%23e9e9e9' d='M105.9,48.6c-12.4-8.2-29.3-4.8-39.4.8-23.4,12.8-37.7,51.9-19.1,74.1s63.9,15.3,76-5.6c7.6-13.3,1.8-31.1-2.3-43.8C117.6,63.3,114.7,54.3,105.9,48.6Z'>\
-              <animateTransform attributeName=\"transform\" type=\"rotate\" from=\"0 84 93\" to=\"360 84 93\" dur=\"25s\" repeatCount=\"indefinite\"/>\
-            </path>\
-            <path fill='%23f3f3f3' d='M102,67.1c-9.6-6.1-22-3.1-29.5,2-15.4,10.7-19.6,37.5-7.6,47.8s35.9,3.9,44.5-12.5C115.5,92.6,113.9,74.6,102,67.1Z'>\
-              <animateTransform attributeName=\"transform\" type=\"rotate\" from=\"0 84 93\" to=\"360 84 93\" dur=\"15s\" repeatCount=\"indefinite\"/>\
-            </path>\
-          </g>\
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid slice'>\
+          <defs>\
+            <radialGradient id='g1' cx='25%' cy='30%'>\
+              <stop offset='0%' stop-color='%23555b8a' stop-opacity='.55'/>\
+              <stop offset='100%' stop-color='%23070812' stop-opacity='0'/>\
+            </radialGradient>\
+            <radialGradient id='g2' cx='75%' cy='70%'>\
+              <stop offset='0%' stop-color='%23a05ef5' stop-opacity='.32'/>\
+              <stop offset='100%' stop-color='%23070812' stop-opacity='0'/>\
+            </radialGradient>\
+          </defs>\
+          <rect width='100' height='100' fill='url(%23g1)'/>\
+          <rect width='100' height='100' fill='url(%23g2)'/>\
         </svg>");
-      background-repeat:no-repeat; background-size:cover;
-      background-position:calc(50% + var(--mx)/10) calc(50% + var(--my)/10);
-      filter:saturate(0.9);
+      background-size:cover; background-repeat:no-repeat;
+      background-position:calc(50% + var(--mx)/20) calc(50% + var(--my)/20);
+      filter:saturate(1.1) blur(0.4px);
     }
-    body::after{
-      content:""; position:fixed; inset:0; z-index:-2; pointer-events:none; opacity:.35; filter:blur(10px);
-      background-image:inherit; background-repeat:no-repeat; background-size:cover;
-      background-position:calc(50% + var(--mx)/16) calc(50% + var(--my)/16);
+    /* Comet cursor */
+    .cursor-tail{position:fixed; width:8px; height:8px; border-radius:50%; pointer-events:none; z-index:9999; opacity:.85;
+      background:radial-gradient(circle, #fff, rgba(255,255,255,.2) 60%, rgba(255,255,255,0) 70%);
+      filter:drop-shadow(0 0 10px #b9c8ff);
+      transform:translate(-50%, -50%);
     }
 
-    /* ===== Fireflies ===== */
-    .fireflies{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
-    .firefly{ position:absolute; left:50%; top:50%; width:2px; height:2px; border-radius:50%;
-      background:transparent; box-shadow:0 0 0 0 rgba(255,255,255,0);
-      animation: drift 18s linear infinite, flash 3s ease-in-out infinite; will-change: transform, box-shadow; }
-    .firefly:nth-child(odd){ animation-duration: 22s, 2.6s; }
-    .firefly:nth-child(3n){ animation-duration: 26s, 3.4s; }
-    .firefly::before, .firefly::after{ content:""; position:absolute; inset:-8px; border-radius:50%;
-      background: radial-gradient(circle, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 60%); filter: blur(2px); }
-    .firefly::after{ inset:-3px; background: radial-gradient(circle, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 60%); filter: blur(1px); }
-    @keyframes drift{ 0%{transform:translate3d(-40vw,-35vh,0) scale(1)} 25%{transform:translate3d(10vw,-10vh,0) scale(.9)} 50%{transform:translate3d(40vw,25vh,0) scale(1)} 75%{transform:translate3d(-10vw,35vh,0) scale(1.1)} 100%{transform:translate3d(-40vw,-35vh,0) scale(1)}}
-    @keyframes flash{ 0%,100%{ box-shadow:0 0 0 0 rgba(255,255,255,0); opacity:.2 } 50%{ box-shadow:0 0 12px 4px rgba(255,255,255,.55); opacity:1 } }
-
-    /* ===== Layout ===== */
-    header, footer { max-width:1100px; margin:auto; padding:20px;
+    /* ================= LAYOUT ================= */
+    header, footer { max-width:1100px; margin:auto; padding:22px 20px;
       display:flex; align-items:center; justify-content:space-between; }
-    .brand{font-weight:800}
+    .brand{font-weight:800; letter-spacing:.4px}
     .actions{display:flex; gap:10px}
     .pill{padding:10px 16px; border:1.5px solid var(--accent); border-radius:999px;
-      color:var(--fg); background:#fff; text-decoration:none; font-weight:600; transition:transform .18s ease, box-shadow .18s ease}
-    .pill:hover{ transform:translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,.08) }
+      color:var(--fg); background:linear-gradient(180deg, rgba(16,20,40,.7), rgba(10,12,22,.6)); text-decoration:none; font-weight:600;
+      box-shadow:inset 0 0 0 0 rgba(122,165,255,.35), 0 6px 18px rgba(0,0,0,.25);
+      transition:transform .18s ease, box-shadow .18s ease, border-color .2s ease}
+    .pill:hover{ transform:translateY(-2px); box-shadow:inset 0 0 12px 0 rgba(122,165,255,.45), 0 12px 28px rgba(0,0,0,.35); border-color:var(--accent2) }
 
-    .hero{max-width:1100px; margin:60px auto; padding:0 20px;
-      display:flex; align-items:center; gap:24px}
-    .hero img{width:110px; height:110px; border-radius:18px; object-fit:cover; box-shadow:var(--shadow)}
-    h1{margin:0; font-size:42px; line-height:1.1; font-weight:800; perspective:800px}
-    .accent{color:var(--accent); background:linear-gradient(90deg,var(--accent),var(--accent));
-      background-size:0% 2px; background-repeat:no-repeat; background-position:0 100%; transition:background-size .35s ease}
-    .accent:hover{ background-size:100% 2px }
+    .hero{max-width:1100px; margin:50px auto; padding:0 20px;
+      display:flex; align-items:center; gap:26px}
+    .hero img{width:110px; height:110px; border-radius:20px; object-fit:cover; box-shadow:0 10px 30px rgba(0,0,0,.45)}
+    h1{margin:0; font-size:44px; line-height:1.08; font-weight:800; perspective:800px}
+    .accent{color:#fff; background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow:0 0 18px rgba(122,165,255,.25);} 
     p{margin:8px 0 0; color:var(--muted)}
 
-    .projects{max-width:1100px; margin:40px auto; padding:0 20px}
-    h2{ text-align:center; margin:0 0 16px; transition:transform .18s ease }
+    .projects{max-width:1100px; margin:42px auto; padding:0 20px}
+    h2{ text-align:center; margin:0 0 16px; transition:transform .18s ease; letter-spacing:.2px }
     h2:hover{ transform:translateY(-2px) }
 
-    /* ===== Coding Projects carousel (square-ish cards) ===== */
+    /* ================= CODING PROJECTS: square cards in a marquee carousel ================= */
     .carousel{position:relative; overflow:hidden; padding:0 60px}
     .viewport{overflow:hidden}
     .track{display:flex; gap:var(--gap); will-change:transform; transition:transform .5s cubic-bezier(.22,.61,.36,1)}
     .proj-card{
-      background:linear-gradient(180deg, #fff 0%, #fff 60%, #f9f9f9 100%);
+      background:linear-gradient(180deg, rgba(20,24,42,.85) 0%, rgba(14,16,30,.9) 60%, rgba(10,12,22,.9) 100%);
       border:1.5px solid var(--border); border-radius:var(--radius);
       padding:16px; box-shadow:var(--shadow);
       display:flex; flex-direction:column;
-      transition:transform .22s cubic-bezier(.22,.61,.36,1), box-shadow .22s ease, border-color .18s ease;
-      aspect-ratio: 1 / 1;      /* keeps close to squares */
-      min-height:220px; max-height:280px;
+      transition:transform .22s cubic-bezier(.22,.61,.36,1), box-shadow .22s ease, border-color .18s ease, filter .18s ease;
+      aspect-ratio: 1 / 1; min-height:220px; max-height:280px;
+      backdrop-filter: blur(6px);
     }
     .proj-card::before{
       content:""; display:block; height:6px; width:60px; border-radius:999px; margin-bottom:10px;
-      background:linear-gradient(90deg, var(--accent), #ff9d95);
+      background:linear-gradient(90deg, var(--accent), var(--accent2)); filter:drop-shadow(0 0 8px rgba(122,165,255,.35));
     }
-    .proj-card:hover{ transform:translateY(-4px) scale(1.02); box-shadow:0 18px 36px rgba(0,0,0,.14); border-color:var(--accent) }
+    .proj-card:hover{ transform:translateY(-6px) scale(1.02); box-shadow:0 22px 46px rgba(0,0,0,.55); border-color:rgba(122,165,255,.5); filter:saturate(1.05)}
     .proj-card h3{margin:0 0 6px}
-    .proj-desc{
-      font-size:14px; color:#333; margin:6px 0 10px; line-height:1.35;
-      display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden;
-    }
+    .proj-desc{ font-size:14px; color:#d7dbff; margin:6px 0 10px; line-height:1.4; display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden; }
     .proj-card:hover .proj-desc{-webkit-line-clamp:10;}
     .tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:auto}
-    .tag{font-size:12px; padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:#fff}
+    .tag{font-size:12px; padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:rgba(255,255,255,.04)}
 
     .nav{position:absolute; top:50%; transform:translateY(-50%); z-index:5;
-      background:#fff; border:1.5px solid var(--accent); border-radius:50%;
-      width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer}
+      background:rgba(10,12,24,.9); border:1.5px solid var(--accent); border-radius:50%;
+      width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#e9ecff}
     .prev{left:10px} .next{right:10px}
+    .nav:hover{box-shadow:0 0 18px rgba(122,165,255,.45)}
     @media (max-width:900px){ .carousel{padding:0 24px} }
 
-    /* ===== Product Projects (wide stacked cards) ===== */
-    .pm-projects{max-width:1100px; margin:48px auto 0; padding:0 20px}
+    /* ================= PRODUCT PROJECTS (stacked) ================= */
+    .pm-projects{max-width:1100px; margin:52px auto 0; padding:0 20px}
     .pm-heading{text-align:left; margin:0 0 14px;}
     .pm-col{display:flex; flex-direction:column; gap:16px}
     .pm-card{
-      background:#fff; border:1.5px solid var(--border); border-radius:28px; padding:22px 24px; box-shadow:var(--shadow);
+      background:linear-gradient(180deg, rgba(18,22,40,.9) 0%, rgba(10,12,22,.92) 100%);
+      border:1.5px solid var(--border); border-radius:28px; padding:22px 24px; box-shadow:var(--shadow);
       transition: box-shadow .22s ease, transform .22s cubic-bezier(.22,.61,.36,1), border-color .18s ease;
-      position:relative; overflow:hidden;
+      position:relative; overflow:hidden; backdrop-filter: blur(6px);
     }
-    .pm-card::after{ /* subtle sheen */
+    .pm-card::after{ /* warp sheen */
       content:""; position:absolute; top:-40%; left:-20%; width:60%; height:200%; transform:rotate(18deg);
-      background:linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.35) 50%, rgba(255,255,255,0) 100%);
+      background:linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(122,165,255,.25) 50%, rgba(255,255,255,0) 100%);
       opacity:0; transition:opacity .25s ease, transform .8s ease;
+      filter:blur(1px)
     }
-    .pm-card:hover{
-      transform:translateY(-3px) scale(1.01); box-shadow:0 20px 38px rgba(0,0,0,.16); border-color:var(--accent)
-    }
+    .pm-card:hover{ transform:translateY(-3px) scale(1.01); box-shadow:0 26px 50px rgba(0,0,0,.55); border-color:rgba(122,165,255,.5) }
     .pm-card:hover::after{opacity:1; transform:rotate(18deg) translateX(220%)}
     .pm-card h3{margin:4px 0 8px}
     .pm-meta{font-size:12px; font-weight:800; letter-spacing:.6px; color:var(--accent)}
 
-    /* ===== Reveal on scroll ===== */
+    /* ================= REVEAL ================= */
     .reveal{opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease}
     .reveal.in{opacity:1; transform:translateY(0)}
 
-    /* ===== Per-letter hover (spacing-safe) ===== */
-    .char{
-      display:inline-block;
-      transform: translate3d(0,0,0) rotate(0deg) scale(1);
-      transition: transform .28s cubic-bezier(.22,.61,.36,1);
-      will-change: transform;
-    }
+    /* ================= HERO LETTER HOVER ================= */
+    .char{ display:inline-block; transform: translate3d(0,0,0) rotate(0deg) scale(1); transition: transform .28s cubic-bezier(.22,.61,.36,1); will-change: transform; }
 
-    /* ===== Runner ===== */
-    #runner{display:block; width:100vw; height:130px; margin-top:40px; border:none;
-      background:linear-gradient(0deg,#f6f6f6 0%, #ffffff 60%)}
+    /* ================= T-REX RUNNER (kept) ================= */
+    #runner{display:block; width:100vw; height:130px; margin-top:44px; border:none;
+      background:linear-gradient(0deg,#0c0f22 0%, #0a0d1d 60%) }
   </style>
 </head>
 <body>
-  <!-- Fireflies -->
-  <div class="fireflies" aria-hidden="true">
-    <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
-    <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
-    <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
-    <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
-  </div>
+  <canvas id="starfield"></canvas>
+  <div class="nebula" aria-hidden="true"></div>
 
   <header>
     <div class="brand">yuhee.dev</div>
@@ -186,7 +163,7 @@
 
   <!-- Coding Projects -->
   <section class="projects">
-    <h2>Coding Projects</h2>
+    <h2>🚀 Coding Projects</h2>
     <div class="carousel" data-autoplay="true" data-interval="4200">
       <button class="nav prev" aria-label="Previous">&#x276E;</button>
       <div class="viewport">
@@ -219,7 +196,7 @@
 
   <!-- Product (PM) Projects -->
   <section class="pm-projects">
-    <h2 class="pm-heading">Product Projects</h2>
+    <h2 class="pm-heading">🛰️ Product Projects</h2>
     <div class="pm-col">
       <article class="pm-card reveal">
         <div class="pm-meta">Case Study</div>
@@ -242,7 +219,7 @@
   </footer>
 
   <script>
-    /* ===== Parallax for blobs ===== */
+    /* ================= PARALLAX SOURCE FOR NEBULA ================= */
     (function(){
       let tx=0, ty=0, cx=0, cy=0; const ease=0.06, range=60;
       function set(x,y){ const w=innerWidth||1, h=innerHeight||1; tx=(x/w)*2-1; ty=(y/h)*2-1; }
@@ -255,7 +232,52 @@
       })();
     })();
 
-    /* ===== Coding carousel (continuous marquee + arrows) ===== */
+    /* ================= STARFIELD + METEORS ================= */
+    (function(){
+      const c=document.getElementById('starfield');
+      const x=c.getContext('2d');
+      let W=innerWidth, H=innerHeight; let DPR=Math.max(1, devicePixelRatio||1);
+      let stars=[], meteors=[]; const LAYERS=[0.2, 0.6, 1.0];
+      function resize(){ W=innerWidth; H=innerHeight; c.width=W*DPR; c.height=H*DPR; c.style.width=W+'px'; c.style.height=H+'px'; x.setTransform(DPR,0,0,DPR,0,0);} resize();
+      addEventListener('resize', resize);
+
+      function spawnStars(){ stars.length=0; const count=Math.floor(W*H/9000); for(let i=0;i<count;i++){ stars.push({x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.4+0.2, z:LAYERS[(Math.random()*LAYERS.length)|0]}); } }
+      spawnStars();
+
+      function drawStars(mx=0,my=0){ for(const s of stars){ const par=4*s.z; const sx = s.x + mx/par, sy = s.y + my/par; const tw = (Math.sin((performance.now()+s.x)*0.002)*0.5+0.5)*0.6 + 0.2; x.fillStyle=`rgba(255,255,255,${0.45+0.45*tw})`; x.fillRect(sx, sy, s.r, s.r); }
+      }
+
+      function spawnMeteor(x0= Math.random()*W, y0= -40){ const ang = Math.PI*1.1; const sp= 520 + Math.random()*280; meteors.push({x:x0, y:y0, vx:Math.cos(ang)*sp, vy:Math.sin(ang)*sp, life:0, ttl:1.6+Math.random()*0.6}); }
+      setInterval(()=>{ if(Math.random()<0.18) spawnMeteor(); }, 900);
+      addEventListener('click', e=>{ spawnMeteor(e.clientX, e.clientY-60); });
+
+      let mx=0,my=0, cx=0, cy=0; const ease=0.04;
+      addEventListener('mousemove', e=>{ mx=(e.clientX - W/2)/8; my=(e.clientY - H/2)/8; }, {passive:true});
+
+      let last=performance.now();
+      function loop(now){ const dt=Math.min(0.033,(now-last)/1000); last=now; cx+=(mx-cx)*ease; cy+=(my-cy)*ease;
+        x.clearRect(0,0,W,H);
+        drawStars(cx,cy);
+        // meteors
+        for(let i=meteors.length-1;i>=0;i--){ const m=meteors[i]; m.life+=dt; m.x+=m.vx*dt; m.y+=m.vy*dt; const p=m.life/m.ttl; const alpha=Math.max(0,1-p);
+          const grad=x.createLinearGradient(m.x-120,m.y-120,m.x,m.y); grad.addColorStop(0,`rgba(122,165,255,0)`); grad.addColorStop(1,`rgba(122,165,255,${0.55*alpha})`);
+          x.strokeStyle=grad; x.lineWidth=2; x.beginPath(); x.moveTo(m.x-140,m.y-140); x.lineTo(m.x,m.y); x.stroke();
+          x.fillStyle=`rgba(255,255,255,${0.8*alpha})`; x.beginPath(); x.arc(m.x,m.y,2.4,0,Math.PI*2); x.fill();
+          if(p>=1 || m.x<-200 || m.y>H+200) meteors.splice(i,1);
+        }
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    })();
+
+    /* ================= CURSOR COMET TAIL ================= */
+    (function(){
+      const tail=document.createElement('div'); tail.className='cursor-tail'; document.body.appendChild(tail);
+      let x=0,y=0,cx=0,cy=0; const ease=.22; function move(e){x=e.clientX; y=e.clientY;} addEventListener('mousemove', move, {passive:true});
+      function raf(){ cx+= (x-cx)*ease; cy+= (y-cy)*ease; tail.style.left=cx+'px'; tail.style.top=cy+'px'; requestAnimationFrame(raf);} raf();
+    })();
+
+    /* ================= CAROUSEL (continuous + arrows) ================= */
     (function(){
       function initCarousel(c){
         const viewport=c.querySelector('.viewport');
@@ -264,159 +286,46 @@
         const next=c.querySelector('.next');
         let per=2, w=0, i=0;
         const gap=parseInt(getComputedStyle(track).gap)||16;
-
-        // Duplicate once for seamless loop
-        if(!track.dataset.looped){
-          track.dataset.looped = 'true';
-          const html = track.innerHTML;
-          track.insertAdjacentHTML('beforeend', html); // duplicate
-        }
+        if(!track.dataset.looped){ track.dataset.looped='true'; const html=track.innerHTML; track.insertAdjacentHTML('beforeend', html); }
         const cards=[...track.children];
-
-        function layout(){
-          per = innerWidth>=980 ? 2 : 1;
-          w = (viewport.clientWidth - gap*(per-1)) / per;
-          cards.forEach(el=>{ el.style.minWidth=w+'px'; el.style.maxWidth=w+'px'; });
-          update();
-        }
+        let offset=0; const speed=28; let paused=false; let last=performance.now();
+        function layout(){ per = innerWidth>=980 ? 2 : 1; w = (viewport.clientWidth - gap*(per-1)) / per; cards.forEach(el=>{ el.style.minWidth=w+'px'; el.style.maxWidth=w+'px'; }); update(); }
         function update(){ track.style.transform = `translate3d(${-offset}px,0,0)`; }
-        function jump(d){ // arrow paging of one screen
-          i = Math.max(0, Math.min(i+d, cards.length/2 - per));
-          offset = i*(w+gap);
-          update();
-        }
-
-        prev.addEventListener('click', ()=>jump(-per));
-        next.addEventListener('click', ()=>jump(per));
-        addEventListener('resize', layout);
-        layout();
-
-        // continuous marquee
-        let offset=0; const speed=28; // px/sec
-        let paused=false; let last=performance.now();
-        function frame(now){
-          const dt=Math.min(0.033,(now-last)/1000); last=now;
-          if(!paused){ offset += speed*dt; }
-          const total = (w+gap)*(cards.length/2); // width of original set
-          if(offset>total){ offset-=total; }
-          track.style.transform = `translate3d(${-offset}px,0,0)`;
-          requestAnimationFrame(frame);
-        }
-        c.addEventListener('mouseenter', ()=>paused=true);
-        c.addEventListener('mouseleave', ()=>paused=false);
-        requestAnimationFrame(frame);
+        function jump(d){ i = Math.max(0, Math.min(i+d, cards.length/2 - per)); offset = i*(w+gap); update(); }
+        prev.addEventListener('click', ()=>jump(-per)); next.addEventListener('click', ()=>jump(per)); addEventListener('resize', layout); layout();
+        function frame(now){ const dt=Math.min(0.033,(now-last)/1000); last=now; if(!paused){ offset += speed*dt; } const total=(w+gap)*(cards.length/2); if(offset>total){ offset-=total; } track.style.transform = `translate3d(${-offset}px,0,0)`; requestAnimationFrame(frame); }
+        c.addEventListener('mouseenter', ()=>paused=true); c.addEventListener('mouseleave', ()=>paused=false); requestAnimationFrame(frame);
       }
       document.querySelectorAll('.carousel').forEach(initCarousel);
     })();
 
-    /* ===== HERO TEXT EFFECTS (per-letter burst + gentle tilt) ===== */
+    /* ================= HERO TEXT EFFECTS ================= */
     (function(){
-      const title = document.getElementById('heroTitle');
-      if(!title) return;
-
-      // Wrap text nodes into .char spans but keep spaces as text nodes
-      function wrapChars(root){
-        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-          acceptNode(n){ return n.nodeValue.length ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT; }
-        });
-        const nodes = [];
-        while(walker.nextNode()) nodes.push(walker.currentNode);
-        nodes.forEach(node=>{
-          const frag = document.createDocumentFragment();
-          const text = node.nodeValue;
-          for(let i=0;i<text.length;i++){
-            const ch = text[i];
-            if(ch === ' '){
-              frag.appendChild(document.createTextNode(' '));
-            }else{
-              const span = document.createElement('span');
-              span.className = 'char'; span.textContent = ch;
-              frag.appendChild(span);
-            }
-          }
-          node.parentNode.replaceChild(frag, node);
-        });
-      }
+      const title = document.getElementById('heroTitle'); if(!title) return;
+      function wrapChars(root){ const walker=document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode(n){ return n.nodeValue.length?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT; }});
+        const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(node=>{ const frag=document.createDocumentFragment(); const text=node.nodeValue; for(let i=0;i<text.length;i++){ const ch=text[i]; if(ch===' '){ frag.appendChild(document.createTextNode(' ')); } else { const span=document.createElement('span'); span.className='char'; span.textContent=ch; frag.appendChild(span);} } node.parentNode.replaceChild(frag,node); }); }
       wrapChars(title);
-
-      const chars = Array.from(title.querySelectorAll('.char'));
-      const rand = (min,max)=>Math.random()*(max-min)+min;
-
-      function burst(){
-        chars.forEach((el,i)=>{
-          const dx = rand(-6,6), dy = rand(-8,4), rz = rand(-3,3);
-          el.style.transform = `translate3d(${dx}px,${dy}px,0) rotate(${rz}deg)`;
-          el.style.transitionDelay = `${(i%10)*6}ms`;
-        });
-      }
-      function reset(){
-        chars.forEach((el)=>{ el.style.transform = 'translate3d(0,0,0) rotate(0deg)'; el.style.transitionDelay='0ms'; });
-        title.style.transform = 'rotateX(0deg) rotateY(0deg)';
-      }
-      function onMove(e){
-        const r = title.getBoundingClientRect();
-        const x = (e.clientX - (r.left + r.width/2)) / (r.width/2);
-        const y = (e.clientY - (r.top  + r.height/2)) / (r.height/2);
-        const maxTilt = 4;
-        const rx = Math.max(-1, Math.min(1, -y)) * maxTilt;
-        const ry = Math.max(-1, Math.min(1,  x)) * maxTilt;
-        title.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-      }
-
-      title.addEventListener('mouseenter', burst);
-      title.addEventListener('mouseleave', reset);
-      title.addEventListener('mousemove', onMove, {passive:true});
+      const chars=[...title.querySelectorAll('.char')]; const rand=(min,max)=>Math.random()*(max-min)+min;
+      function burst(){ chars.forEach((el,i)=>{ const dx=rand(-6,6), dy=rand(-8,4), rz=rand(-3,3); el.style.transform=`translate3d(${dx}px,${dy}px,0) rotate(${rz}deg)`; el.style.transitionDelay=`${(i%10)*6}ms`; }); }
+      function reset(){ chars.forEach((el)=>{ el.style.transform='translate3d(0,0,0) rotate(0deg)'; el.style.transitionDelay='0ms'; }); title.style.transform='rotateX(0deg) rotateY(0deg)'; }
+      function onMove(e){ const r=title.getBoundingClientRect(); const x=(e.clientX-(r.left+r.width/2))/(r.width/2); const y=(e.clientY-(r.top+r.height/2))/(r.height/2); const maxTilt=4; const rx=Math.max(-1,Math.min(1,-y))*maxTilt; const ry=Math.max(-1,Math.min(1, x))*maxTilt; title.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`; }
+      title.addEventListener('mouseenter', burst); title.addEventListener('mouseleave', reset); title.addEventListener('mousemove', onMove, {passive:true});
     })();
 
-    /* ===== Scroll reveal for project cards ===== */
+    /* ================= SCROLL REVEAL ================= */
     (function(){
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-        });
-      },{threshold:0.15});
+      const io=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); },{threshold:0.15});
       document.querySelectorAll('.reveal, .proj-card').forEach(el=>io.observe(el));
     })();
 
-    /* ===== Runner ===== */
+    /* ================= T-REX RUNNER ================= */
     (function(){
-      const canvas=document.getElementById('runner');
-      const ctx=canvas.getContext('2d');
-      let W=innerWidth, H=130;
-      function resize(){ W=innerWidth; canvas.width=W; canvas.height=H; }
-      addEventListener('resize', resize); resize();
-
-      const groundY=H-28;
-      const d={x:40,y:groundY,w:22,h:24,vy:0,s:100};
-      const G=460, J=-240;
-      let a=0, t=0;
-
-      function update(dt){
-        t+=dt; a+=dt;
-        if(a>1.5){ d.vy=J; a=0; }
-        d.x += d.s*dt; if(d.x>W+40) d.x=-40;
-        d.vy += G*dt; d.y += d.vy*dt; if(d.y>groundY){ d.y=groundY; d.vy=0; }
-      }
-      function draw(){
-        ctx.clearRect(0,0,W,H);
-        ctx.strokeStyle='#d0d0d0'; ctx.lineWidth=2;
-        ctx.beginPath(); ctx.moveTo(0,groundY+0.5); ctx.lineTo(W,groundY+0.5); ctx.stroke();
-        ctx.strokeStyle='rgba(0,0,0,0.1)'; ctx.beginPath();
-        for(let x=0;x<W;x+=6){ const y=groundY-18+Math.sin((x+t*120)*0.01)*2; if(x===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
-        ctx.stroke();
-
-        const x=Math.round(d.x), y=Math.round(d.y);
-        ctx.fillStyle='#000';
-        ctx.fillRect(x-8,y-18,18,14); ctx.fillRect(x+6,y-22,8,8); ctx.fillRect(x+4,y-14,4,4);
-        const leg=(Math.floor(t*12)%2===0)?-2:2;
-        ctx.fillRect(x-6,y-4,4,6); ctx.fillRect(x+4,y-4+leg,4,6);
-        ctx.fillStyle='#fff'; ctx.fillRect(x+11,y-20,2,2);
-        ctx.fillStyle='rgba(0,0,0,.05)'; ctx.beginPath(); ctx.ellipse(x+2,groundY+3,14,3,0,0,Math.PI*2); ctx.fill();
-      }
-
-      let last=performance.now();
-      function loop(now){ const dt=Math.min(0.033,(now-last)/1000); last=now; update(dt); draw(); requestAnimationFrame(loop); }
-      requestAnimationFrame(loop);
+      const canvas=document.getElementById('runner'); const ctx=canvas.getContext('2d'); let W=innerWidth, H=130; function resize(){ W=innerWidth; canvas.width=W; canvas.height=H; } addEventListener('resize', resize); resize();
+      const groundY=H-28; const d={x:40,y:groundY,w:22,h:24,vy:0,s:100}; const G=460, J=-240; let a=0, t=0;
+      function update(dt){ t+=dt; a+=dt; if(a>1.5){ d.vy=J; a=0; } d.x += d.s*dt; if(d.x>W+40) d.x=-40; d.vy += G*dt; d.y += d.vy*dt; if(d.y>groundY){ d.y=groundY; d.vy=0; } }
+      function draw(){ ctx.clearRect(0,0,W,H); ctx.strokeStyle='#263055'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,groundY+0.5); ctx.lineTo(W,groundY+0.5); ctx.stroke(); ctx.strokeStyle='rgba(186,198,255,0.14)'; ctx.beginPath(); for(let x=0;x<W;x+=6){ const y=groundY-18+Math.sin((x+t*120)*0.01)*2; if(x===0)ctx.moveTo(x,y); else ctx.lineTo(x,y);} ctx.stroke(); const x=Math.round(d.x), y=Math.round(d.y); ctx.fillStyle='#e9ecff'; ctx.fillRect(x-8,y-18,18,14); ctx.fillRect(x+6,y-22,8,8); ctx.fillRect(x+4,y-14,4,4); const leg=(Math.floor(t*12)%2===0)?-2:2; ctx.fillRect(x-6,y-4,4,6); ctx.fillRect(x+4,y-4+leg,4,6); ctx.fillStyle='#070812'; ctx.fillRect(x+11,y-20,2,2); ctx.fillStyle='rgba(233,236,255,.08)'; ctx.beginPath(); ctx.ellipse(x+2,groundY+3,14,3,0,0,Math.PI*2); ctx.fill(); }
+      let last=performance.now(); function loop(now){ const dt=Math.min(0.033,(now-last)/1000); last=now; update(dt); draw(); requestAnimationFrame(loop);} requestAnimationFrame(loop);
     })();
 
     document.getElementById('year').textContent = new Date().getFullYear();
