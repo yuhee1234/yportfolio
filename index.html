@@ -22,7 +22,7 @@
       font-family:Inter,system-ui,sans-serif; overflow-x:hidden; min-height:100vh;
     }
 
-    /* Space background */
+    /* Background */
     #starfield{position:fixed; inset:0; z-index:-3; display:block; background:transparent}
     .nebula{position:fixed; inset:-10% -10% -10% -10%; z-index:-2; pointer-events:none;
       background-image:url("data:image/svg+xml;utf8,\
@@ -62,10 +62,11 @@
 
     .hero{max-width:1100px; margin:50px auto; padding:0 20px;
       display:flex; align-items:center; gap:26px}
+    /* Use JPG/PNG here; HEIC isn’t supported by most browsers */
     .hero img{width:110px; height:110px; border-radius:20px; object-fit:cover; box-shadow:0 10px 30px rgba(0,0,0,.45)}
-    h1{margin:0; font-size:44px; line-height:1.08; font-weight:800; perspective:800px}
-    .accent{background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow:0 0 18px rgba(122,165,255,.25);} 
+    h1{margin:0; font-size:44px; line-height:1.08; font-weight:800}
+    /* Make name crisp (no gradient, no text-shadow) */
+    .accent{color:#ffffff; -webkit-text-fill-color:#ffffff; background:none; text-shadow:none;}
     p{margin:8px 0 0; color:var(--muted)}
 
     .projects{max-width:1100px; margin:42px auto; padding:0 20px}
@@ -126,8 +127,6 @@
     .reveal{opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease}
     .reveal.in{opacity:1; transform:translateY(0)}
 
-    .char{ display:inline-block; transform: translate3d(0,0,0) rotate(0deg) scale(1); transition: transform .28s cubic-bezier(.22,.61,.36,1); will-change: transform; }
-
     #runner{display:block; width:100vw; height:130px; margin-top:44px; border:none;
       background:linear-gradient(0deg,#0c0f22 0%, #0a0d1d 60%) }
   </style>
@@ -146,7 +145,8 @@
   </header>
 
   <section class="hero">
-    <img src="avatar.jpg" alt="Portrait of Yuhee Lefkowitz" />
+    <!-- Use the converted JPG/PNG filename here -->
+    <img src="IMG_5365.jpg" alt="Portrait of Yuhee Lefkowitz" />
     <div>
       <h1 id="heroTitle">hi<br>my name is <span class="accent">Yuhee Lefkowitz</span><br>a strategist and builder</h1>
       <p>I’m a student studying Computer Science at UC Berkeley.</p>
@@ -186,11 +186,10 @@
     </div>
   </section>
 
-  <!-- Product (PM) Projects -->
+  <!-- Product Projects -->
   <section class="pm-projects">
     <h2 class="pm-heading">Product Projects</h2>
     <div class="pm-col">
-      <!-- Linked case study card -->
       <a href="dashboard_1sess.html" target="_blank" style="text-decoration:none; color:inherit;">
         <article class="pm-card reveal" style="cursor:pointer;">
           <div class="pm-meta">Case Study</div>
@@ -227,7 +226,7 @@
       })();
     })();
 
-    /* Starfield + meteors */
+    /* Starfield + meteors (unchanged) */
     (function(){
       const c=document.getElementById('starfield');
       const x=c.getContext('2d');
@@ -263,48 +262,7 @@
       requestAnimationFrame(loop);
     })();
 
-    /* Cursor tail */
-    (function(){
-      const tail=document.createElement('div'); tail.className='cursor-tail'; document.body.appendChild(tail);
-      let x=0,y=0,cx=0,cy=0; const ease=.22; function move(e){x=e.clientX; y=e.clientY;} addEventListener('mousemove', move, {passive:true});
-      function raf(){ cx+= (x-cx)*ease; cy+= (y-cy)*ease; tail.style.left=cx+'px'; tail.style.top=cy+'px'; requestAnimationFrame(raf);} raf();
-    })();
-
-    /* Carousel (continuous + arrows) */
-    (function(){
-      function initCarousel(c){
-        const viewport=c.querySelector('.viewport');
-        const track=c.querySelector('.track');
-        const prev=c.querySelector('.prev');
-        const next=c.querySelector('.next');
-        let per=2, w=0, i=0;
-        const gap=parseInt(getComputedStyle(track).gap)||16;
-        if(!track.dataset.looped){ track.dataset.looped='true'; const html=track.innerHTML; track.insertAdjacentHTML('beforeend', html); }
-        const cards=[...track.children];
-        let offset=0; const speed=28; let paused=false; let last=performance.now();
-        function layout(){ per = innerWidth>=980 ? 2 : 1; w = (viewport.clientWidth - gap*(per-1)) / per; cards.forEach(el=>{ el.style.minWidth=w+'px'; el.style.maxWidth=w+'px'; }); update(); }
-        function update(){ track.style.transform = `translate3d(${-offset}px,0,0)`; }
-        function jump(d){ i = Math.max(0, Math.min(i+d, cards.length/2 - per)); offset = i*(w+gap); update(); }
-        prev.addEventListener('click', ()=>jump(-per)); next.addEventListener('click', ()=>jump(per)); addEventListener('resize', layout); layout();
-        function frame(now){ const dt=Math.min(0.033,(now-last)/1000); last=now; if(!paused){ offset += speed*dt; } const total=(w+gap)*(cards.length/2); if(offset>total){ offset-=total; } track.style.transform = `translate3d(${-offset}px,0,0)`; requestAnimationFrame(frame); }
-        c.addEventListener('mouseenter', ()=>paused=true); c.addEventListener('mouseleave', ()=>paused=false); requestAnimationFrame(frame);
-      }
-      document.querySelectorAll('.carousel').forEach(initCarousel);
-    })();
-
-    /* Hero text hover */
-    (function(){
-      const title = document.getElementById('heroTitle'); if(!title) return;
-      function wrapChars(root){ const walker=document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode(n){ return n.nodeValue.length?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT; }});
-        const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
-        nodes.forEach(node=>{ const frag=document.createDocumentFragment(); const text=node.nodeValue; for(let i=0;i<text.length;i++){ const ch=text[i]; if(ch===' '){ frag.appendChild(document.createTextNode(' ')); } else { const span=document.createElement('span'); span.className='char'; span.textContent=ch; frag.appendChild(span);} } node.parentNode.replaceChild(frag,node); }); }
-      wrapChars(title);
-      const chars=[...title.querySelectorAll('.char')]; const rand=(min,max)=>Math.random()*(max-min)+min;
-      function burst(){ chars.forEach((el,i)=>{ const dx=rand(-6,6), dy=rand(-8,4), rz=rand(-3,3); el.style.transform=`translate3d(${dx}px,${dy}px,0) rotate(${rz}deg)`; el.style.transitionDelay=`${(i%10)*6}ms`; }); }
-      function reset(){ chars.forEach((el)=>{ el.style.transform='translate3d(0,0,0) rotate(0deg)'; el.style.transitionDelay='0ms'; }); title.style.transform='rotateX(0deg) rotateY(0deg)'; }
-      function onMove(e){ const r=title.getBoundingClientRect(); const x=(e.clientX-(r.left+r.width/2))/(r.width/2); const y=(e.clientY-(r.top+r.height/2))/(r.height/2); const maxTilt=4; const rx=Math.max(-1,Math.min(1,-y))*maxTilt; const ry=Math.max(-1,Math.min(1, x))*maxTilt; title.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`; }
-      title.addEventListener('mouseenter', burst); title.addEventListener('mouseleave', reset); title.addEventListener('mousemove', onMove, {passive:true});
-    })();
+    /* Removed per-letter/3D hero hover to keep text razor sharp */
 
     /* Scroll reveal */
     (function(){
@@ -312,7 +270,7 @@
       document.querySelectorAll('.reveal, .proj-card').forEach(el=>io.observe(el));
     })();
 
-    /* T-Rex runner */
+    /* T-Rex runner (unchanged) */
     (function(){
       const canvas=document.getElementById('runner'); const ctx=canvas.getContext('2d'); let W=innerWidth, H=130; function resize(){ W=innerWidth; canvas.width=W; canvas.height=H; } addEventListener('resize', resize); resize();
       const groundY=H-28; const d={x:40,y:groundY,w:22,h:24,vy:0,s:100}; const G=460, J=-240; let a=0, t=0;
