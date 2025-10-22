@@ -22,10 +22,8 @@
       font-family:Inter,system-ui,sans-serif; overflow-x:hidden; min-height:100vh;
     }
 
-    /* ================= SPACE BACKGROUND ================= */
-    /* Starfield canvas sits behind everything */
+    /* Space background */
     #starfield{position:fixed; inset:0; z-index:-3; display:block; background:transparent}
-    /* Parallax nebulas */
     .nebula{position:fixed; inset:-10% -10% -10% -10%; z-index:-2; pointer-events:none;
       background-image:url("data:image/svg+xml;utf8,\
         <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid slice'>\
@@ -46,14 +44,12 @@
       background-position:calc(50% + var(--mx)/20) calc(50% + var(--my)/20);
       filter:saturate(1.1) blur(0.4px);
     }
-    /* Comet cursor */
     .cursor-tail{position:fixed; width:8px; height:8px; border-radius:50%; pointer-events:none; z-index:9999; opacity:.85;
       background:radial-gradient(circle, #fff, rgba(255,255,255,.2) 60%, rgba(255,255,255,0) 70%);
       filter:drop-shadow(0 0 10px #b9c8ff);
       transform:translate(-50%, -50%);
     }
 
-    /* ================= LAYOUT ================= */
     header, footer { max-width:1100px; margin:auto; padding:22px 20px;
       display:flex; align-items:center; justify-content:space-between; }
     .brand{font-weight:800; letter-spacing:.4px}
@@ -68,7 +64,7 @@
       display:flex; align-items:center; gap:26px}
     .hero img{width:110px; height:110px; border-radius:20px; object-fit:cover; box-shadow:0 10px 30px rgba(0,0,0,.45)}
     h1{margin:0; font-size:44px; line-height:1.08; font-weight:800; perspective:800px}
-    .accent{color:#fff; background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;
+    .accent{background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;
       text-shadow:0 0 18px rgba(122,165,255,.25);} 
     p{margin:8px 0 0; color:var(--muted)}
 
@@ -76,7 +72,7 @@
     h2{ text-align:center; margin:0 0 16px; transition:transform .18s ease; letter-spacing:.2px }
     h2:hover{ transform:translateY(-2px) }
 
-    /* ================= CODING PROJECTS: square cards in a marquee carousel ================= */
+    /* Coding projects carousel */
     .carousel{position:relative; overflow:hidden; padding:0 60px}
     .viewport{overflow:hidden}
     .track{display:flex; gap:var(--gap); will-change:transform; transition:transform .5s cubic-bezier(.22,.61,.36,1)}
@@ -107,7 +103,7 @@
     .nav:hover{box-shadow:0 0 18px rgba(122,165,255,.45)}
     @media (max-width:900px){ .carousel{padding:0 24px} }
 
-    /* ================= PRODUCT PROJECTS (stacked) ================= */
+    /* Product projects (stacked) */
     .pm-projects{max-width:1100px; margin:52px auto 0; padding:0 20px}
     .pm-heading{text-align:left; margin:0 0 14px;}
     .pm-col{display:flex; flex-direction:column; gap:16px}
@@ -117,25 +113,21 @@
       transition: box-shadow .22s ease, transform .22s cubic-bezier(.22,.61,.36,1), border-color .18s ease;
       position:relative; overflow:hidden; backdrop-filter: blur(6px);
     }
-    .pm-card::after{ /* warp sheen */
+    .pm-card::after{
       content:""; position:absolute; top:-40%; left:-20%; width:60%; height:200%; transform:rotate(18deg);
       background:linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(122,165,255,.25) 50%, rgba(255,255,255,0) 100%);
-      opacity:0; transition:opacity .25s ease, transform .8s ease;
-      filter:blur(1px)
+      opacity:0; transition:opacity .25s ease, transform .8s ease; filter:blur(1px)
     }
     .pm-card:hover{ transform:translateY(-3px) scale(1.01); box-shadow:0 26px 50px rgba(0,0,0,.55); border-color:rgba(122,165,255,.5) }
     .pm-card:hover::after{opacity:1; transform:rotate(18deg) translateX(220%)}
     .pm-card h3{margin:4px 0 8px}
     .pm-meta{font-size:12px; font-weight:800; letter-spacing:.6px; color:var(--accent)}
 
-    /* ================= REVEAL ================= */
     .reveal{opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease}
     .reveal.in{opacity:1; transform:translateY(0)}
 
-    /* ================= HERO LETTER HOVER ================= */
     .char{ display:inline-block; transform: translate3d(0,0,0) rotate(0deg) scale(1); transition: transform .28s cubic-bezier(.22,.61,.36,1); will-change: transform; }
 
-    /* ================= T-REX RUNNER (kept) ================= */
     #runner{display:block; width:100vw; height:130px; margin-top:44px; border:none;
       background:linear-gradient(0deg,#0c0f22 0%, #0a0d1d 60%) }
   </style>
@@ -163,7 +155,7 @@
 
   <!-- Coding Projects -->
   <section class="projects">
-    <h2>🚀 Coding Projects</h2>
+    <h2>Coding Projects</h2>
     <div class="carousel" data-autoplay="true" data-interval="4200">
       <button class="nav prev" aria-label="Previous">&#x276E;</button>
       <div class="viewport">
@@ -196,13 +188,16 @@
 
   <!-- Product (PM) Projects -->
   <section class="pm-projects">
-    <h2 class="pm-heading">🛰️ Product Projects</h2>
+    <h2 class="pm-heading">Product Projects</h2>
     <div class="pm-col">
-      <article class="pm-card reveal">
-        <div class="pm-meta">Case Study</div>
-        <h3>First-Session Personalization Sprint</h3>
-        <p>Shipped micro-onboarding (“Pick 3 interests”) and feed personalization A/B. Result: <strong>+9% first-session</strong> and <strong>+6pp D7 retention</strong>. Owned success metrics, rollout, and post-launch analysis; coordinated design + eng in a two-week sprint.</p>
-      </article>
+      <!-- Linked case study card -->
+      <a href="dashboard_1sess.html" target="_blank" style="text-decoration:none; color:inherit;">
+        <article class="pm-card reveal" style="cursor:pointer;">
+          <div class="pm-meta">Case Study</div>
+          <h3>First-Session Personalization Sprint</h3>
+          <p>Shipped micro-onboarding (“Pick 3 interests”) and feed personalization A/B. Result: <strong>+9% first-session</strong> and <strong>+6pp D7 retention</strong>. Owned success metrics, rollout, and post-launch analysis; coordinated design + eng in a two-week sprint.</p>
+        </article>
+      </a>
 
       <article class="pm-card reveal">
         <div class="pm-meta">MVP</div>
@@ -215,11 +210,11 @@
   <canvas id="runner"></canvas>
 
   <footer>
-    <span>© <span id="year"></span> Yuhee Lefkowitz. Built with vanilla HTML/CSS.</span>
+    <span>© <span id="year"></span> Yuhee Lefkowitz.</span>
   </footer>
 
   <script>
-    /* ================= PARALLAX SOURCE FOR NEBULA ================= */
+    /* Parallax for nebula */
     (function(){
       let tx=0, ty=0, cx=0, cy=0; const ease=0.06, range=60;
       function set(x,y){ const w=innerWidth||1, h=innerHeight||1; tx=(x/w)*2-1; ty=(y/h)*2-1; }
@@ -232,7 +227,7 @@
       })();
     })();
 
-    /* ================= STARFIELD + METEORS ================= */
+    /* Starfield + meteors */
     (function(){
       const c=document.getElementById('starfield');
       const x=c.getContext('2d');
@@ -244,8 +239,7 @@
       function spawnStars(){ stars.length=0; const count=Math.floor(W*H/9000); for(let i=0;i<count;i++){ stars.push({x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.4+0.2, z:LAYERS[(Math.random()*LAYERS.length)|0]}); } }
       spawnStars();
 
-      function drawStars(mx=0,my=0){ for(const s of stars){ const par=4*s.z; const sx = s.x + mx/par, sy = s.y + my/par; const tw = (Math.sin((performance.now()+s.x)*0.002)*0.5+0.5)*0.6 + 0.2; x.fillStyle=`rgba(255,255,255,${0.45+0.45*tw})`; x.fillRect(sx, sy, s.r, s.r); }
-      }
+      function drawStars(mx=0,my=0){ for(const s of stars){ const par=4*s.z; const sx = s.x + mx/par, sy = s.y + my/par; const tw = (Math.sin((performance.now()+s.x)*0.002)*0.5+0.5)*0.6 + 0.2; x.fillStyle=`rgba(255,255,255,${0.45+0.45*tw})`; x.fillRect(sx, sy, s.r, s.r); } }
 
       function spawnMeteor(x0= Math.random()*W, y0= -40){ const ang = Math.PI*1.1; const sp= 520 + Math.random()*280; meteors.push({x:x0, y:y0, vx:Math.cos(ang)*sp, vy:Math.sin(ang)*sp, life:0, ttl:1.6+Math.random()*0.6}); }
       setInterval(()=>{ if(Math.random()<0.18) spawnMeteor(); }, 900);
@@ -258,7 +252,6 @@
       function loop(now){ const dt=Math.min(0.033,(now-last)/1000); last=now; cx+=(mx-cx)*ease; cy+=(my-cy)*ease;
         x.clearRect(0,0,W,H);
         drawStars(cx,cy);
-        // meteors
         for(let i=meteors.length-1;i>=0;i--){ const m=meteors[i]; m.life+=dt; m.x+=m.vx*dt; m.y+=m.vy*dt; const p=m.life/m.ttl; const alpha=Math.max(0,1-p);
           const grad=x.createLinearGradient(m.x-120,m.y-120,m.x,m.y); grad.addColorStop(0,`rgba(122,165,255,0)`); grad.addColorStop(1,`rgba(122,165,255,${0.55*alpha})`);
           x.strokeStyle=grad; x.lineWidth=2; x.beginPath(); x.moveTo(m.x-140,m.y-140); x.lineTo(m.x,m.y); x.stroke();
@@ -270,14 +263,14 @@
       requestAnimationFrame(loop);
     })();
 
-    /* ================= CURSOR COMET TAIL ================= */
+    /* Cursor tail */
     (function(){
       const tail=document.createElement('div'); tail.className='cursor-tail'; document.body.appendChild(tail);
       let x=0,y=0,cx=0,cy=0; const ease=.22; function move(e){x=e.clientX; y=e.clientY;} addEventListener('mousemove', move, {passive:true});
       function raf(){ cx+= (x-cx)*ease; cy+= (y-cy)*ease; tail.style.left=cx+'px'; tail.style.top=cy+'px'; requestAnimationFrame(raf);} raf();
     })();
 
-    /* ================= CAROUSEL (continuous + arrows) ================= */
+    /* Carousel (continuous + arrows) */
     (function(){
       function initCarousel(c){
         const viewport=c.querySelector('.viewport');
@@ -299,7 +292,7 @@
       document.querySelectorAll('.carousel').forEach(initCarousel);
     })();
 
-    /* ================= HERO TEXT EFFECTS ================= */
+    /* Hero text hover */
     (function(){
       const title = document.getElementById('heroTitle'); if(!title) return;
       function wrapChars(root){ const walker=document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode(n){ return n.nodeValue.length?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT; }});
@@ -313,13 +306,13 @@
       title.addEventListener('mouseenter', burst); title.addEventListener('mouseleave', reset); title.addEventListener('mousemove', onMove, {passive:true});
     })();
 
-    /* ================= SCROLL REVEAL ================= */
+    /* Scroll reveal */
     (function(){
       const io=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); },{threshold:0.15});
       document.querySelectorAll('.reveal, .proj-card').forEach(el=>io.observe(el));
     })();
 
-    /* ================= T-REX RUNNER ================= */
+    /* T-Rex runner */
     (function(){
       const canvas=document.getElementById('runner'); const ctx=canvas.getContext('2d'); let W=innerWidth, H=130; function resize(){ W=innerWidth; canvas.width=W; canvas.height=H; } addEventListener('resize', resize); resize();
       const groundY=H-28; const d={x:40,y:groundY,w:22,h:24,vy:0,s:100}; const G=460, J=-240; let a=0, t=0;
