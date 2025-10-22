@@ -67,37 +67,38 @@
     .accent{color:#ffffff; -webkit-text-fill-color:#ffffff; background:none; text-shadow:none;}
     p{margin:8px 0 0; color:var(--muted)}
 
-    /* Coding projects carousel — restored */
+    /* Buttons */
+    .btn{display:inline-block; padding:8px 12px; border-radius:12px; text-decoration:none; font-weight:700; border:1.5px solid var(--border); background:#111624; color:#e9ecff}
+    .btn:hover{filter:saturate(1.1); transform:translateY(-1px)}
+    .btn.secondary{background:#101425}
+
+    /* Coding projects carousel */
     .projects{max-width:1100px; margin:42px auto; padding:0 20px}
     h2{ text-align:center; margin:0 0 16px; transition:transform .18s ease; letter-spacing:.2px }
     h2:hover{ transform:translateY(-2px) }
-
     .carousel{position:relative; overflow:hidden; padding:0 60px}
     .viewport{overflow:hidden}
-    .track{
-      display:flex; gap:var(--gap);
-      will-change:transform;
-      transition:transform .5s cubic-bezier(.22,.61,.36,1);
-    }
+    .track{display:flex; gap:var(--gap); will-change:transform; transition:transform .5s cubic-bezier(.22,.61,.36,1)}
     .proj-card{
       background:linear-gradient(180deg, rgba(20,24,42,.85) 0%, rgba(14,16,30,.9) 60%, rgba(10,12,22,.9) 100%);
       border:1.5px solid var(--border); border-radius:var(--radius);
       padding:16px; box-shadow:var(--shadow);
-      display:flex; flex-direction:column;
+      display:flex; flex-direction:column; gap:10px;
       transition:transform .22s cubic-bezier(.22,.61,.36,1), box-shadow .22s ease, border-color .18s ease, filter .18s ease;
       aspect-ratio: 1 / 1; min-height:220px; max-height:280px;
       backdrop-filter: blur(6px);
     }
     .proj-card::before{
-      content:""; display:block; height:6px; width:60px; border-radius:999px; margin-bottom:10px;
+      content:""; display:block; height:6px; width:60px; border-radius:999px;
       background:linear-gradient(90deg, var(--accent), var(--accent2)); filter:drop-shadow(0 0 8px rgba(122,165,255,.35));
     }
     .proj-card:hover{ transform:translateY(-6px) scale(1.02); box-shadow:0 22px 46px rgba(0,0,0,.55); border-color:rgba(122,165,255,.5); filter:saturate(1.05)}
     .proj-card h3{margin:0 0 6px}
-    .proj-desc{ font-size:14px; color:#d7dbff; margin:6px 0 10px; line-height:1.4; display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden; }
+    .proj-desc{ font-size:14px; color:#d7dbff; margin:6px 0 2px; line-height:1.4; display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden; }
     .proj-card:hover .proj-desc{-webkit-line-clamp:10;}
     .tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:auto}
     .tag{font-size:12px; padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:rgba(255,255,255,.04)}
+    .cta{display:flex; gap:8px}
 
     .nav{position:absolute; top:50%; transform:translateY(-50%); z-index:5;
       background:rgba(10,12,24,.9); border:1.5px solid var(--accent); border-radius:50%;
@@ -126,6 +127,15 @@
     .pm-card h3{margin:4px 0 8px}
     .pm-meta{font-size:12px; font-weight:800; letter-spacing:.6px; color:var(--accent)}
 
+    /* Live Demos section */
+    .live{max-width:1100px; margin:46px auto 0; padding:0 20px}
+    .live-grid{display:grid; grid-template-columns:1fr; gap:16px}
+    .live-card{background:linear-gradient(180deg, rgba(18,22,40,.9) 0%, rgba(10,12,22,.92) 100%); border:1.5px solid var(--border); border-radius:24px; padding:18px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px}
+    .live-title{margin:0}
+    .live-actions{display:flex; gap:10px}
+    .live-btn{display:inline-block; padding:10px 14px; border-radius:12px; background:#101425; border:1.5px solid var(--border); color:#e9ecff; text-decoration:none; font-weight:700}
+    .live-btn:hover{transform:translateY(-1px); filter:saturate(1.05)}
+
     .reveal{opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease}
     .reveal.in{opacity:1; transform:translateY(0)}
 
@@ -142,19 +152,20 @@
     <nav class="actions">
       <a class="pill" href="https://www.linkedin.com/in/yuhee123/">LinkedIn</a>
       <a class="pill" href="resume.pdf">Resume</a>
-      <a class="pill" href="https://github.com/yuhee123">GitHub</a>
+      <a class="pill" href="https://github.com/yuhee1234">GitHub</a>
     </nav>
   </header>
 
   <section class="hero">
+    <!-- NOTE: Convert your HEIC to JPG/PNG and name it exactly IMG_5365.jpg -->
     <img src="IMG_5365.jpg" alt="Portrait of Yuhee Lefkowitz" />
     <div>
-      <h1 id="heroTitle">hi<br>my name is <span class="accent">Yuhee Lefkowitz</span><br>a strategist and builder</h1>
+      <h1>hi<br>my name is <span class="accent">Yuhee Lefkowitz</span><br>a strategist and builder</h1>
       <p>I’m a student studying Computer Science at UC Berkeley.</p>
     </div>
   </section>
 
-  <!-- Coding Projects (carousel ABOVE product projects) -->
+  <!-- Coding Projects -->
   <section class="projects">
     <h2>Coding Projects</h2>
     <div class="carousel" data-autoplay="true" data-interval="4200">
@@ -164,21 +175,36 @@
           <article class="proj-card">
             <h3>Capybara Maps</h3>
             <p class="proj-desc">SwiftUI iOS app with MapKit overlays and a Dockerized Node + PostgreSQL (PostGIS) backend for geospatial nearest-neighbor queries. Added caching and async fetch to keep city-wide queries sub-second, plus fault-tolerant retries and health checks for global deploys.</p>
+            <div class="cta">
+              <a class="btn" href="https://github.com/yuhee1234/capybaramaps" target="_blank">GitHub</a>
+            </div>
             <div class="tags"><span class="tag">SwiftUI</span><span class="tag">MapKit</span><span class="tag">PostGIS</span><span class="tag">Docker</span></div>
           </article>
+
           <article class="proj-card">
             <h3>StockSphere</h3>
             <p class="proj-desc">Full-stack stock analytics with Next.js + Flask microservices. Redis-cached endpoints and Twilio SMS alerting sustain &lt;100ms responses under load. Built failure recovery and rate-limit backoff; added portfolio simulations and alert rules for retail users.</p>
+            <div class="cta">
+              <a class="btn" href="https://github.com/yuhee1234/StockSphere" target="_blank">GitHub</a>
+            </div>
             <div class="tags"><span class="tag">Next.js</span><span class="tag">Flask</span><span class="tag">Redis</span><span class="tag">Twilio</span></div>
           </article>
+
           <article class="proj-card">
             <h3>CurryStats</h3>
             <p class="proj-desc">FastAPI dashboard that fuses NBA play data with HuggingFace sentiment on news + social. Interactive charts tie game events to fan mood, with cohort comparisons and event annotations for quick post-game analysis.</p>
+            <div class="cta">
+              <a class="btn" href="https://github.com/yuhee1234/CurryStats" target="_blank">GitHub</a>
+            </div>
             <div class="tags"><span class="tag">FastAPI</span><span class="tag">HuggingFace</span><span class="tag">NBA Stats API</span><span class="tag">Plotly</span></div>
           </article>
+
           <article class="proj-card">
             <h3>Notify.careers Alerts</h3>
             <p class="proj-desc">Scoped PRD and v1 launch checklist for job alerts; defined success metrics and backlog triage. Implemented rules logic and QA gates to ensure clean GA and measurable engagement impact.</p>
+            <div class="cta">
+              <a class="btn" href="https://github.com/yuhee1234" target="_blank">GitHub</a>
+            </div>
             <div class="tags"><span class="tag">PRD</span><span class="tag">A/B</span><span class="tag">Metrics</span><span class="tag">Launch</span></div>
           </article>
         </div>
@@ -204,6 +230,33 @@
         <h3>ShopLens — Visual AI Shopping</h3>
         <p>Led AI visual search MVP: user uploads outfit → shoppable matches. Ran user tests (n=30), refined UX/copy, and improved add-to-cart conversion <strong>+18%</strong>. Scoped KPIs, set guardrails, and managed phased rollout.</p>
       </article>
+    </div>
+  </section>
+
+  <!-- Live Demos (last quarter) -->
+  <section class="live">
+    <h2 class="pm-heading">Live Demos</h2>
+    <div class="live-grid">
+      <div class="live-card">
+        <div>
+          <div class="pm-meta">Case Study</div>
+          <h3 class="live-title">First-Session Personalization Sprint</h3>
+        </div>
+        <div class="live-actions">
+          <a class="live-btn" href="dashboard_1sess.html" target="_blank">Open Case Study</a>
+        </div>
+      </div>
+
+      <div class="live-card">
+        <div>
+          <div class="pm-meta">MVP</div>
+          <h3 class="live-title">ShopLens — Visual AI Shopping</h3>
+        </div>
+        <div class="live-actions">
+          <a class="live-btn" href="https://yuhee1234.github.io/shoplens/" target="_blank">Open Live Demo</a>
+          <a class="live-btn" href="https://github.com/yuhee1234/shoplens" target="_blank">GitHub</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -263,7 +316,7 @@
       requestAnimationFrame(loop);
     })();
 
-    /* Carousel (continuous + arrows) — restored */
+    /* Carousel (continuous + arrows) */
     (function(){
       function initCarousel(c){
         const viewport = c.querySelector('.viewport');
