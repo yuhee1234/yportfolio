@@ -62,21 +62,23 @@
 
     .hero{max-width:1100px; margin:50px auto; padding:0 20px;
       display:flex; align-items:center; gap:26px}
-    /* Use JPG/PNG here; HEIC isn’t supported by most browsers */
     .hero img{width:110px; height:110px; border-radius:20px; object-fit:cover; box-shadow:0 10px 30px rgba(0,0,0,.45)}
     h1{margin:0; font-size:44px; line-height:1.08; font-weight:800}
-    /* Make name crisp (no gradient, no text-shadow) */
     .accent{color:#ffffff; -webkit-text-fill-color:#ffffff; background:none; text-shadow:none;}
     p{margin:8px 0 0; color:var(--muted)}
 
+    /* Coding projects carousel — restored */
     .projects{max-width:1100px; margin:42px auto; padding:0 20px}
     h2{ text-align:center; margin:0 0 16px; transition:transform .18s ease; letter-spacing:.2px }
     h2:hover{ transform:translateY(-2px) }
 
-    /* Coding projects carousel */
     .carousel{position:relative; overflow:hidden; padding:0 60px}
     .viewport{overflow:hidden}
-    .track{display:flex; gap:var(--gap); will-change:transform; transition:transform .5s cubic-bezier(.22,.61,.36,1)}
+    .track{
+      display:flex; gap:var(--gap);
+      will-change:transform;
+      transition:transform .5s cubic-bezier(.22,.61,.36,1);
+    }
     .proj-card{
       background:linear-gradient(180deg, rgba(20,24,42,.85) 0%, rgba(14,16,30,.9) 60%, rgba(10,12,22,.9) 100%);
       border:1.5px solid var(--border); border-radius:var(--radius);
@@ -145,7 +147,6 @@
   </header>
 
   <section class="hero">
-    <!-- Use the converted JPG/PNG filename here -->
     <img src="IMG_5365.jpg" alt="Portrait of Yuhee Lefkowitz" />
     <div>
       <h1 id="heroTitle">hi<br>my name is <span class="accent">Yuhee Lefkowitz</span><br>a strategist and builder</h1>
@@ -153,7 +154,7 @@
     </div>
   </section>
 
-  <!-- Coding Projects -->
+  <!-- Coding Projects (carousel ABOVE product projects) -->
   <section class="projects">
     <h2>Coding Projects</h2>
     <div class="carousel" data-autoplay="true" data-interval="4200">
@@ -226,7 +227,7 @@
       })();
     })();
 
-    /* Starfield + meteors (unchanged) */
+    /* Starfield + meteors */
     (function(){
       const c=document.getElementById('starfield');
       const x=c.getContext('2d');
@@ -262,7 +263,69 @@
       requestAnimationFrame(loop);
     })();
 
-    /* Removed per-letter/3D hero hover to keep text razor sharp */
+    /* Carousel (continuous + arrows) — restored */
+    (function(){
+      function initCarousel(c){
+        const viewport = c.querySelector('.viewport');
+        const track    = c.querySelector('.track');
+        const prev     = c.querySelector('.prev');
+        const next     = c.querySelector('.next');
+
+        if (!track.dataset.looped){
+          track.dataset.looped = 'true';
+          track.insertAdjacentHTML('beforeend', track.innerHTML);
+        }
+
+        const cards = [...track.children];
+        const gap   = parseInt(getComputedStyle(track).gap) || 16;
+
+        let per = 2;
+        let w   = 0;
+        let i   = 0;
+        let offset = 0;
+        let paused = false;
+        let last = performance.now();
+        const speed = 28;
+
+        function layout(){
+          per = innerWidth >= 980 ? 2 : 1;
+          w   = (viewport.clientWidth - gap*(per-1)) / per;
+          cards.forEach(el => { el.style.minWidth = w+'px'; el.style.maxWidth = w+'px'; });
+          offset = i*(w+gap);
+          track.style.transform = `translate3d(${-offset}px,0,0)`;
+        }
+
+        function jump(delta){
+          const totalPages = cards.length/2 - per;
+          i = Math.max(0, Math.min(i + delta, totalPages));
+          offset = i*(w+gap);
+          track.style.transform = `translate3d(${-offset}px,0,0)`;
+        }
+
+        function frame(now){
+          const dt = Math.min(0.033, (now - last)/1000);
+          last = now;
+          if (!paused){
+            offset += speed * dt;
+            const loopLen = (w+gap) * (cards.length/2);
+            if (offset > loopLen){ offset -= loopLen; }
+            track.style.transform = `translate3d(${-offset}px,0,0)`;
+          }
+          requestAnimationFrame(frame);
+        }
+
+        prev.addEventListener('click', () => jump(-per));
+        next.addEventListener('click', () => jump(per));
+        c.addEventListener('mouseenter', () => paused = true);
+        c.addEventListener('mouseleave', () => paused = false);
+        addEventListener('resize', layout);
+
+        layout();
+        requestAnimationFrame(frame);
+      }
+
+      document.querySelectorAll('.carousel').forEach(initCarousel);
+    })();
 
     /* Scroll reveal */
     (function(){
@@ -270,7 +333,7 @@
       document.querySelectorAll('.reveal, .proj-card').forEach(el=>io.observe(el));
     })();
 
-    /* T-Rex runner (unchanged) */
+    /* T-Rex runner */
     (function(){
       const canvas=document.getElementById('runner'); const ctx=canvas.getContext('2d'); let W=innerWidth, H=130; function resize(){ W=innerWidth; canvas.width=W; canvas.height=H; } addEventListener('resize', resize); resize();
       const groundY=H-28; const d={x:40,y:groundY,w:22,h:24,vy:0,s:100}; const G=460, J=-240; let a=0, t=0;
