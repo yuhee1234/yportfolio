@@ -24,7 +24,6 @@
 
     /* ===== Background ===== */
     canvas#stars{position:fixed; inset:0; z-index:-300}
-    /* FX canvas for rocket exhaust */
     canvas#fx{position:fixed; inset:0; z-index:-200; pointer-events:none}
 
     .planet{position:fixed; border-radius:50%; opacity:.9; will-change:transform; z-index:-220}
@@ -56,14 +55,15 @@
     main{padding-top:calc(var(--nav-h) + 12px)}
 
     /* ===== Hero ===== */
-    .hero{position:relative; min-height:80vh; display:grid; place-items:center}
-    .scene{position:relative; width:min(1000px,92vw); height:520px}
+    .hero{position:relative; min-height:86vh; display:grid; place-items:center}
+    .scene{position:relative; width:min(1200px,94vw); height:560px}
 
     .sign{
-      position:absolute; left:50%; top:46%; transform:translate(-50%,-50%);
-      width:min(560px,86vw); aspect-ratio:3/2; display:grid; place-items:center; text-align:center;
+      position:absolute; left:58%; top:46%; transform:translate(-50%,-50%);
+      width:min(600px,86vw); aspect-ratio:3/2; display:grid; place-items:center; text-align:center;
       font:800 64px/0.9 Outfit; color:#0a1a2e;
       animation:popIn .9s cubic-bezier(.22,1,.36,1) .05s both;
+      z-index:2;
     }
     .sign .board{position:absolute; inset:0; border-radius:18px; background:linear-gradient(180deg,#fff8dc,#fff3bf); border:6px solid #5ea6ff; box-shadow:0 12px 40px rgba(0,0,0,.45)}
     .sign .pin{position:absolute; left:50%; bottom:-30px; width:0; height:0; border-left:18px solid transparent; border-right:18px solid transparent; border-top:34px solid #5ea6ff}
@@ -71,40 +71,43 @@
     .date{font:800 16px Outfit; letter-spacing:2px; color:#1c3f62; margin-top:6px}
     @keyframes popIn{0%{transform:translate(-50%,-50%) scale(.96); opacity:0}60%{transform:translate(-50%,-50%) scale(1.05); opacity:1}100%{transform:translate(-50%,-50%) scale(1)}}
 
-    /* Ship = wrapper around the SVG so we can add flame pseudo elements */
+    /* Ship (bigger, shifted left) */
     .ship{
-      position:absolute; left:-4vw; bottom:-6px; width:min(24vw,320px); z-index:2;
-      will-change:transform; transform:translate3d(0,0,0) scale(.82);
+      position:absolute; left:-2vw; bottom:-6px; width:min(32vw,420px); z-index:3;
+      will-change:transform; transform:translate3d(0,0,0) scale(.92);
       filter: drop-shadow(0 14px 30px rgba(0,0,0,.35));
     }
-    /* small ground glow */
     .ship::after{
       content:""; position:absolute; left:8%; right:8%; bottom:-10px; height:16px;
       background:radial-gradient(50% 100% at 50% 0%, rgba(0,0,0,.35), rgba(0,0,0,0));
       pointer-events:none;
     }
-
-    /* FLAME under the tower — hidden until ignition */
     .flame{
-      position:absolute; left:50%; bottom:-6px; width:16px; height:38px; transform:translateX(-50%);
+      position:absolute; left:50%; bottom:-6px; width:18px; height:44px; transform:translateX(-50%);
       background:radial-gradient(ellipse at 50% 80%, rgba(255,233,150,.95) 0%, rgba(255,160,0,.85) 45%, rgba(255,90,0,.6) 70%, rgba(255,90,0,0) 75%);
-      filter:blur(0.4px) drop-shadow(0 0 8px rgba(255,170,0,.6));
+      filter:blur(0.5px) drop-shadow(0 0 10px rgba(255,170,0,.65));
       border-radius:12px 12px 50% 50%;
       opacity:0; pointer-events:none;
       animation:flameFlicker .08s infinite alternate ease-in-out;
     }
-    @keyframes flameFlicker{
-      from{ transform:translateX(-50%) scaleX(.90) scaleY(1.02) }
-      to  { transform:translateX(-50%) scaleX(1.10) scaleY(.92) }
-    }
-    /* stronger plume when mid-flight (we’ll toggle .boost on ship) */
-    .ship.boost .flame{ height:56px; filter:blur(0.6px) drop-shadow(0 0 12px rgba(255,190,40,.8)); }
+    .ship.boost .flame{height:64px; filter:blur(0.6px) drop-shadow(0 0 14px rgba(255,190,40,.85));}
+    @keyframes flameFlicker{from{transform:translateX(-50%) scaleX(.9) scaleY(1.02)}to{transform:translateX(-50%) scaleX(1.1) scaleY(.92)}}
 
-    /* reveal + sections */
+    /* Floating astronaut that follows scroll */
+    .astro{
+      position:fixed; width:140px; height:140px; left:60vw; top:20vh; z-index:4; pointer-events:none;
+      filter: drop-shadow(0 10px 22px rgba(0,0,0,.35));
+      transform-origin:50% 50%;
+    }
+    .astro svg{width:100%; height:100%}
+    .tether{
+      position:fixed; left:0; top:0; width:100vw; height:100vh; pointer-events:none; z-index:3;
+    }
+
+    /* Sections / Cards */
     .reveal{opacity:0; transform:translateY(12px); transition:opacity .6s ease, transform .6s ease}
     .reveal.in{opacity:1; transform:none}
 
-    /* ===== About / Tracks / Cards (same as before) ===== */
     .about{max-width:1100px; margin:80px auto 0; padding:0 20px; display:grid; grid-template-columns:1.1fr 1fr; gap:22px}
     .about-card{background:var(--card); border:1.5px solid var(--border); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow)}
     .video{aspect-ratio:16/9; width:100%; border-radius:16px; overflow:hidden}
@@ -206,11 +209,43 @@
         </div>
 
         <!-- Floating UI bits -->
-        <div class="doodad chip" style="right:8%; top:10%"></div>
-        <div class="doodad brick gold" style="left:16%; top:6%"></div>
-        <div class="doodad brick" style="right:14%; bottom:8%"></div>
+        <div class="doodad chip" style="position:absolute; right:8%; top:10%; width:120px; height:80px; background:linear-gradient(180deg,#9cc5ff,#6da0f0); border:3px solid #d7e7ff; border-radius:10px"></div>
+        <div class="doodad brick" style="position:absolute; left:16%; top:6%; width:72px; height:42px; background:#6aa0ff; border:3px solid #d7e7ff; border-radius:8px"></div>
+        <div class="doodad brick" style="position:absolute; right:14%; bottom:8%; width:72px; height:42px; background:#ffc84d; border:3px solid #ffe39b; border-radius:8px"></div>
       </div>
     </section>
+
+    <!-- FOLLOWING ASTRONAUT + TETHER -->
+    <svg class="tether" id="tether" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path id="tetherPath" d="M0,0 C25,25 50,50 100,100" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="0.8" stroke-linecap="round"/>
+    </svg>
+    <div class="astro" id="astro" aria-hidden="true">
+      <!-- cute astronaut (helmet, face, boots) -->
+      <svg viewBox="0 0 160 160">
+        <!-- shadow -->
+        <ellipse cx="80" cy="150" rx="34" ry="12" fill="rgba(0,0,0,.25)"/>
+        <!-- body -->
+        <rect x="60" y="70" width="40" height="46" rx="10" fill="#6aa0ff" />
+        <!-- arms -->
+        <rect x="40" y="82" width="24" height="10" rx="5" fill="#6aa0ff"/>
+        <rect x="96" y="82" width="24" height="10" rx="5" fill="#6aa0ff"/>
+        <!-- legs -->
+        <rect x="66" y="114" width="12" height="18" rx="6" fill="#5b7bd1"/>
+        <rect x="82" y="114" width="12" height="18" rx="6" fill="#5b7bd1"/>
+        <!-- boots -->
+        <ellipse cx="72" cy="138" rx="12" ry="8" fill="#9c6531"/>
+        <ellipse cx="88" cy="138" rx="12" ry="8" fill="#9c6531"/>
+        <!-- head -->
+        <circle cx="80" cy="60" r="26" fill="#ffd6a3"/>
+        <circle cx="80" cy="60" r="44" fill="rgba(255,255,255,.12)"/>
+        <circle cx="80" cy="60" r="46" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="4"/>
+        <!-- eyes -->
+        <circle cx="73" cy="60" r="5" fill="#173056"/>
+        <circle cx="87" cy="60" r="5" fill="#173056"/>
+        <!-- highlight -->
+        <circle cx="102" cy="42" r="6" fill="rgba(255,255,255,.5)"/>
+      </svg>
+    </div>
 
     <!-- ABOUT -->
     <section class="about reveal" id="about">
@@ -321,7 +356,7 @@
 
   <footer>© <span id="year"></span> Yuhee Lefkowitz — Made with 💛 & Cal spirit.</footer>
 
-  <!-- ===== Scripts: starfield, FX, orbit, rocket, reveal, accordion, active tab ===== -->
+  <!-- ===== Scripts ===== -->
   <script>
     // STARFIELD + COMETS
     (function(){
@@ -330,7 +365,7 @@
       let stars=[], meteors=[]; const L=[0.25,0.6,1];
       function R(){W=innerWidth;H=innerHeight;c.width=W*D;c.height=H*D;c.style.width=W+'px';c.style.height=H+'px';x.setTransform(D,0,0,D,0,0);} R(); addEventListener('resize',R);
 
-      function make(){stars.length=0;const n=Math.floor(W*H/8000);for(let i=0;i<n;i++){stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+0.2,z:L[(Math.random()*L.length)|0]});}} make();
+      function make(){stars.length=0;const n=Math.floor(W*H/8000);for(let i=0;i<n;i++){stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+0.2,z=L[(Math.random()*L.length)|0]});}} make();
       function spawnMeteor(x0=Math.random()*W,y0=-40){const ang=Math.PI*1.12, sp=520+Math.random()*320; meteors.push({x:x0,y:y0,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,t:0,ttl:1.4+Math.random()*0.8});}
       setInterval(()=>{if(Math.random()<0.18) spawnMeteor();},900);
       addEventListener('click',e=>spawnMeteor(e.clientX,e.clientY-60));
@@ -352,7 +387,7 @@
       requestAnimationFrame(loop);
     })();
 
-    // FX CANVAS for exhaust particles
+    // FX CANVAS for rocket exhaust particles
     (function(){
       const fx=document.getElementById('fx'), ctx=fx.getContext('2d');
       let W=innerWidth,H=innerHeight, D=Math.max(1,devicePixelRatio||1);
@@ -375,9 +410,7 @@
         requestAnimationFrame(loop);
       }
       requestAnimationFrame(loop);
-
-      // expose emitter
-      window.__emitExhaust = spawn;
+      window.__emitExhaust = spawn; // expose
     })();
 
     // CAMPANILE ROCKET: scroll-driven takeoff + flame + exhaust
@@ -385,9 +418,7 @@
       const ship=document.getElementById('ship');
       const flame=document.getElementById('flame');
       if(!ship || !flame) return;
-
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let ignited=false;
 
       function easeOutCubic(t){return 1 - Math.pow(1-t,3)}
       function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
@@ -396,46 +427,44 @@
         const vh = innerHeight || 1;
         const y  = scrollY || 0;
 
-        // progress: start ignition around 10% viewport scrolled
+        // start ignite at ~10% viewport; finish by ~110% (bigger run since ship is larger)
         const start = 0.10 * vh;
-        const end   = 0.95 * vh;          // when it is basically off the hero
+        const end   = 1.10 * vh;
         const raw   = (y - start) / (end - start);
-        const p     = clamp(raw, 0, 1.25);   // allow slight overshoot
+        const p     = clamp(raw, 0, 1.3);
 
-        // ignition state
-        ignited = p > 0.02;
+        // ignition
+        const ignited = p > 0.02;
         flame.style.opacity = ignited ? 1 : 0;
         ship.classList.toggle('boost', p > 0.35);
 
-        // small ignition shake
+        // ignition shake
         let shakeX = 0, shakeY = 0;
         if (p > 0 && p < 0.12){
-          const s = (0.12 - p) * 10; // diminishes quickly
+          const s = (0.12 - p) * 12;
           shakeX = (Math.random()*2-1) * s;
           shakeY = (Math.random()*2-1) * s;
         }
 
-        // flight path: up & right with a slight nose tilt
+        // flight path: more dramatic left-anchored arc
         const e = easeOutCubic(clamp(p,0,1));
-        const dx = 520 * e;         // right
-        const dy = -600 * e;        // up
-        const rot = -18 * e;        // nose up a bit
+        const dx = 620 * e;        // right
+        const dy = -720 * e;       // up
+        const rot = -20 * e;       // nose up
 
-        ship.style.transform = `translate(${dx + shakeX}px, ${dy + shakeY}px) scale(.82) rotate(${rot}deg)`;
+        ship.style.transform = `translate(${dx + shakeX}px, ${dy + shakeY}px) scale(.92) rotate(${rot}deg)`;
 
-        // exhaust emitter (from nozzle under tower)
+        // exhaust emitter
         if (ignited && window.__emitExhaust){
           const r = ship.getBoundingClientRect();
           const nozzleX = r.left + r.width * 0.50;
-          const nozzleY = r.bottom - 4;
-          // a couple of puffs per frame
+          const nozzleY = r.bottom - 6;
           window.__emitExhaust(nozzleX, nozzleY);
           window.__emitExhaust(nozzleX + (Math.random()*6-3), nozzleY + 2);
         }
-
         requestAnimationFrame(update);
       }
-      requestAnimationFrame(update);
+      if (!reduce) requestAnimationFrame(update);
     })();
 
     // PLANET DRIFT (slow wobble)
@@ -474,6 +503,56 @@
         const q=it.querySelector('.q'), a=it.querySelector('.a');
         q.addEventListener('click',()=>{const open=a.classList.toggle('open'); q.setAttribute('aria-expanded',String(open));});
       });
+    })();
+
+    // ASTRONAUT FOLLOW: lerp toward scroll target + cursor drift; redraw tether curve
+    (function(){
+      const astro = document.getElementById('astro');
+      const tetherPath = document.getElementById('tetherPath');
+      if(!astro || !tetherPath) return;
+
+      let cx = innerWidth*0.62, cy = innerHeight*0.22;   // current
+      let tx = cx, ty = cy;                               // target
+      let mx = 0,  my = 0;                                // mouse influence
+      const ease = 0.06;
+
+      addEventListener('mousemove', e=>{
+        const w=innerWidth, h=innerHeight;
+        mx = (e.clientX - w/2) * 0.06;
+        my = (e.clientY - h/2) * 0.04;
+      }, {passive:true});
+
+      function update(){
+        // target slides with scroll, using a gentle factor
+        const s = scrollY || 0;
+        const t = performance.now()/1000;
+
+        tx = innerWidth*0.66 + Math.sin(t*0.5)*20 + mx;
+        ty = innerHeight*0.25 + s*0.35 + Math.cos(t*0.8)*14 + my;
+
+        // lerp
+        cx += (tx - cx)*ease;
+        cy += (ty - cy)*ease;
+
+        astro.style.left = (cx - 70) + 'px';
+        astro.style.top  = (cy - 70) + 'px';
+        astro.style.transform = `rotate(${Math.sin(t*0.6)*4}deg)`;
+
+        // update tether curve from near bottom-right of sign to astronaut
+        const sign = document.querySelector('.sign').getBoundingClientRect();
+        const startX = sign.right - 40;
+        const startY = sign.bottom - 14;
+        const ctrl1X = startX + 60;
+        const ctrl1Y = startY + 40;
+        const ctrl2X = cx - 60;
+        const ctrl2Y = cy - 40;
+        tetherPath.setAttribute('d',
+          `M ${startX},${startY} C ${ctrl1X},${ctrl1Y} ${ctrl2X},${ctrl2Y} ${cx},${cy}`
+        );
+
+        requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
     })();
 
     // ACTIVE TAB HIGHLIGHT
