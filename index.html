@@ -126,6 +126,7 @@
     <nav class="tabs" aria-label="Site">
       <a href="#about">about</a>
       <a href="#tracks">tracks</a>
+      <a href="#projects">projects</a>
       <a href="#sponsors">sponsors</a>
       <a href="#faq">faq</a>
     </nav>
@@ -172,17 +173,17 @@
     <section class="about reveal" id="about">
       <div class="about-card">
         <h2 style="margin:0 0 8px; font:800 32px Outfit">ABOUT</h2>
-        <p>Welcome! I’m Yuhee — a builder at UC Berkeley. I love shipping fun, useful tech in fast sprints. This site mirrors a hackathon landing: big energy, smooth motion, and clear sections.</p>
-        <p>Meals, travel, and lodging… okay, not really — but I do handle end‑to‑end product builds from PRDs to APIs to mobile polish.</p>
+        <p>Hey! I’m Yuhee — a strategist & builder studying Computer Science and Data Science (Business & Industrial Analytics emphasis) at UC Berkeley. From engineering scalable APIs in internships to leading social product launches, I love creating experiences that blend human insight with technical depth.</p>
+        <p>Outside of work, I’m usually playing tennis, running 5’s in basketball, or training for a nearby half‑marathon. I also care a lot about content creation. I’m currently building things like Capybara Maps (SwiftUI + MapKit + PostGIS), StockSphere (Next.js + Flask + Redis + Twilio), and CurryStats (FastAPI + HuggingFace + NBA data).</p>
       </div>
       <div class="about-card">
         <div class="video" style="background:#000">
           <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
         <div class="stats" style="margin-top:12px">
-          <div class="stat">36 HOURS</div>
-          <div class="stat">30 UNIVERSITIES*</div>
-          <div class="stat">12 COUNTRIES*</div>
+          <div class="stat">APIs & Backends</div>
+          <div class="stat">Product & Growth</div>
+          <div class="stat">iOS & ML</div>
         </div>
       </div>
     </section>
@@ -191,12 +192,56 @@
     <section class="tracks reveal" id="tracks">
       <h2 style="text-align:center; font:800 40px Outfit; margin:0 0 10px">TRACKS</h2>
       <div class="ring">
-        <div class="token" style="transform:translate(-50%,-50%) rotate(0deg) translate(0,-280px)"><div class="oct"></div><div style="position:absolute; bottom:-30px">EDGE AI</div></div>
-        <div class="token" style="transform:translate(-50%,-50%) rotate(60deg) translate(0,-280px)"><div class="oct"></div><div style="position:absolute; bottom:-30px">AUTONOMY</div></div>
-        <div class="token" style="transform:translate(-50%,-50%) rotate(120deg) translate(0,-280px)"><div class="oct"></div><div style="position:absolute; bottom:-30px">FINTECH</div></div>
-        <div class="token" style="transform:translate(-50%,-50%) rotate(180deg) translate(0,-280px)"><div class="oct"></div><div style="position:absolute; bottom:-30px">EDUCATION</div></div>
-        <div class="token" style="transform:translate(-50%,-50%) rotate(240deg) translate(0,-280px)"><div class="oct"></div><div style="position:absolute; bottom:-30px">HEALTH</div></div>
-        <div class="token" style="transform:translate(-50%,-50%) rotate(300deg) translate(0,-280px)"><div class="oct"></div><div style="position:absolute; bottom:-30px">SUSTAINABILITY</div></div>
+        <div class="token" style="transform:translate(-50%,-50%) rotate(0deg) translate(0,-280px)"><div class="oct"></div><div style="position:absolute; bottom:-30px">BACKEND/APIs</div></div>
+        <div class="token" style="transform:translate(-50%,-50%) rotate(60deg) translate(0,-280px)"><div class="oct"></div><div style="position:absolute; bottom:-30px">iOS</div></div>
+        <div class="token" style="transform:translate(-50%,-50%) rotate(120deg) translate(0,-280px)"><div class="oct"></div><div style="position:absolute; bottom:-30px">ML / AI</div></div>
+        <div class="token" style="transform:translate(-50%,-50%) rotate(180deg) translate(0,-280px)"><div class="oct"></div><div style="position:absolute; bottom:-30px">DATA VIZ</div></div>
+        <div class="token" style="transform:translate(-50%,-50%) rotate(240deg) translate(0,-280px)"><div class="oct"></div><div style="position:absolute; bottom:-30px">PRODUCT</div></div>
+        <div class="token" style="transform:translate(-50%,-50%) rotate(300deg) translate(0,-280px)"><div class="oct"></div><div style="position:absolute; bottom:-30px">SOCIAL LAUNCHES</div></div>
+      </div>
+    </section>
+
+    <!-- PROJECTS (from your original site) -->
+    <section class="reveal" id="projects" style="max-width:1100px; margin:40px auto; padding:0 20px">
+      <h2 style="text-align:center; font:800 40px Outfit; margin:0 0 16px">PROJECTS</h2>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px">
+        <article class="about-card" style="display:flex; flex-direction:column; gap:10px">
+          <h3 style="margin:0">Capybara Maps</h3>
+          <p style="margin:0; color:#d7dbff">SwiftUI iOS app with MapKit overlays and a Dockerized Node + PostgreSQL (PostGIS) backend for geospatial nearest‑neighbor queries. Caching + async fetch keep city‑wide queries sub‑second.</p>
+          <div style="margin-top:auto; display:flex; gap:8px"><a class="pill" href="https://github.com/yuhee1234/capybaramaps" target="_blank" rel="noreferrer">GitHub</a></div>
+        </article>
+        <article class="about-card" style="display:flex; flex-direction:column; gap:10px">
+          <h3 style="margin:0">StockSphere</h3>
+          <p style="margin:0; color:#d7dbff">Full‑stack stock analytics with Next.js + Flask microservices. Redis‑cached endpoints and Twilio SMS alerts sustain &lt;100ms responses; includes portfolio simulations and alert rules.</p>
+          <div style="margin-top:auto; display:flex; gap:8px"><a class="pill" href="https://github.com/yuhee1234/StockSphere" target="_blank" rel="noreferrer">GitHub</a></div>
+        </article>
+        <article class="about-card" style="display:flex; flex-direction:column; gap:10px">
+          <h3 style="margin:0">CurryStats</h3>
+          <p style="margin:0; color:#d7dbff">FastAPI dashboard fusing NBA play data with HuggingFace sentiment. Interactive charts tie game events to fan mood with cohort comparisons and event annotations.</p>
+          <div style="margin-top:auto; display:flex; gap:8px"><a class="pill" href="https://github.com/yuhee1234/CurryStats" target="_blank" rel="noreferrer">GitHub</a></div>
+        </article>
+        <article class="about-card" style="display:flex; flex-direction:column; gap:10px">
+          <h3 style="margin:0">Notify.careers Alerts</h3>
+          <p style="margin:0; color:#d7dbff">Scoped PRD and v1 launch checklist; defined success metrics and backlog triage. Implemented rules logic and QA gates for clean GA and measurable impact.</p>
+          <div style="margin-top:auto; display:flex; gap:8px"><a class="pill" href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">GitHub</a></div>
+        </article>
+      </div>
+
+      <h3 style="text-align:center; font:800 24px Outfit; margin:24px 0 12px">Live Demos</h3>
+      <div style="display:grid; grid-template-columns:1fr; gap:12px">
+        <div class="placard" style="display:flex; align-items:center; justify-content:space-between; gap:12px">
+          <div><strong>First‑Session Personalization Sprint</strong></div>
+          <div style="display:flex; gap:10px">
+            <a class="pill" href="dashboard_1sess.html" target="_blank" rel="noreferrer">Open Case Study</a>
+          </div>
+        </div>
+        <div class="placard" style="display:flex; align-items:center; justify-content:space-between; gap:12px">
+          <div><strong>ShopLens — Visual AI Shopping</strong></div>
+          <div style="display:flex; gap:10px">
+            <a class="pill" href="https://yuhee1234.github.io/shoplens/" target="_blank" rel="noreferrer">Open Live Demo</a>
+            <a class="pill" href="https://github.com/yuhee1234/shoplens" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </div>
       </div>
     </section>
 
