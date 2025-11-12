@@ -24,6 +24,9 @@
 
     /* ===== Background ===== */
     canvas#stars{position:fixed; inset:0; z-index:-300}
+    /* FX canvas for rocket exhaust */
+    canvas#fx{position:fixed; inset:0; z-index:-200; pointer-events:none}
+
     .planet{position:fixed; border-radius:50%; opacity:.9; will-change:transform; z-index:-220}
     .p1{width:280px; height:280px; left:6vw; top:18vh; background:radial-gradient(circle at 30% 30%,#8db0ff,#3a64ce 60%,#1b2f68 100%)}
     .p2{width:340px; height:340px; right:8vw; top:35vh; background:radial-gradient(circle at 40% 40%,#ffe39b,#FDB515 55%,#a86f00 100%)}
@@ -68,33 +71,46 @@
     .date{font:800 16px Outfit; letter-spacing:2px; color:#1c3f62; margin-top:6px}
     @keyframes popIn{0%{transform:translate(-50%,-50%) scale(.96); opacity:0}60%{transform:translate(-50%,-50%) scale(1.05); opacity:1}100%{transform:translate(-50%,-50%) scale(1)}}
 
-    .campanile{
+    /* Ship = wrapper around the SVG so we can add flame pseudo elements */
+    .ship{
       position:absolute; left:-4vw; bottom:-6px; width:min(24vw,320px); z-index:2;
-      filter: drop-shadow(0 14px 30px rgba(0,0,0,.35)); will-change:transform;
+      will-change:transform; transform:translate3d(0,0,0) scale(.82);
+      filter: drop-shadow(0 14px 30px rgba(0,0,0,.35));
     }
-    .campanile::after{
+    /* small ground glow */
+    .ship::after{
       content:""; position:absolute; left:8%; right:8%; bottom:-10px; height:16px;
       background:radial-gradient(50% 100% at 50% 0%, rgba(0,0,0,.35), rgba(0,0,0,0));
       pointer-events:none;
     }
 
-    .doodad{position:absolute; opacity:.95; filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))}
-    .chip{width:120px; height:80px; background:linear-gradient(180deg,#9cc5ff,#6da0f0); border:3px solid #d7e7ff; border-radius:10px}
-    .brick{width:72px; height:42px; background:#6aa0ff; border:3px solid #d7e7ff; border-radius:8px}
-    .brick.gold{background:#ffc84d; border-color:#ffe39b}
+    /* FLAME under the tower — hidden until ignition */
+    .flame{
+      position:absolute; left:50%; bottom:-6px; width:16px; height:38px; transform:translateX(-50%);
+      background:radial-gradient(ellipse at 50% 80%, rgba(255,233,150,.95) 0%, rgba(255,160,0,.85) 45%, rgba(255,90,0,.6) 70%, rgba(255,90,0,0) 75%);
+      filter:blur(0.4px) drop-shadow(0 0 8px rgba(255,170,0,.6));
+      border-radius:12px 12px 50% 50%;
+      opacity:0; pointer-events:none;
+      animation:flameFlicker .08s infinite alternate ease-in-out;
+    }
+    @keyframes flameFlicker{
+      from{ transform:translateX(-50%) scaleX(.90) scaleY(1.02) }
+      to  { transform:translateX(-50%) scaleX(1.10) scaleY(.92) }
+    }
+    /* stronger plume when mid-flight (we’ll toggle .boost on ship) */
+    .ship.boost .flame{ height:56px; filter:blur(0.6px) drop-shadow(0 0 12px rgba(255,190,40,.8)); }
 
-    /* ===== Reveal ===== */
+    /* reveal + sections */
     .reveal{opacity:0; transform:translateY(12px); transition:opacity .6s ease, transform .6s ease}
     .reveal.in{opacity:1; transform:none}
 
-    /* ===== About ===== */
+    /* ===== About / Tracks / Cards (same as before) ===== */
     .about{max-width:1100px; margin:80px auto 0; padding:0 20px; display:grid; grid-template-columns:1.1fr 1fr; gap:22px}
     .about-card{background:var(--card); border:1.5px solid var(--border); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow)}
     .video{aspect-ratio:16/9; width:100%; border-radius:16px; overflow:hidden}
     .stat{background:linear-gradient(180deg,#fff8dc,#fff3bf); color:#0b2b4a; border:4px solid #5ea6ff; border-radius:14px; padding:10px 14px; font:800 14px Outfit}
     .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
 
-    /* ===== Tracks Orbit ===== */
     .tracks{position:relative; max-width:1200px; margin:60px auto; padding:0 20px}
     .tracks h2{text-align:center; font:800 40px Outfit; margin:0 0 10px}
     .ring{position:relative; width:min(90vw,900px); height:min(90vw,900px); margin:0 auto; border-radius:50%; background:radial-gradient(closest-side, rgba(125,157,255,.06), rgba(125,157,255,0))}
@@ -107,14 +123,12 @@
       box-shadow:inset 0 -10px 40px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.28)
     }
 
-    /* ===== Projects ===== */
     .projects{max-width:1100px; margin:40px auto; padding:0 20px}
     .projects h2{text-align:center; font:800 40px Outfit; margin:0 0 16px}
     .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
     .card{background:var(--card); border:1.5px solid var(--border); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px}
     .cta-row{margin-top:auto; display:flex; gap:8px}
 
-    /* ===== Sponsors / FAQ ===== */
     .sponsors{position:relative; max-width:1100px; margin:60px auto; padding:0 20px; text-align:center}
     .placard{display:inline-block; min-width:360px; max-width:min(88vw,560px); padding:22px 18px; background:linear-gradient(180deg,#fef9e6,#fff7cf); color:#0b2b4a; border:6px solid #5ea6ff; border-radius:16px; box-shadow:0 12px 40px rgba(0,0,0,.45); font:800 18px Outfit; transition:transform .18s ease, box-shadow .18s ease}
     .placard:hover{transform:translateY(-2px); box-shadow:0 18px 44px rgba(0,0,0,.55)}
@@ -132,12 +146,15 @@
     footer{max-width:1100px; margin:40px auto; padding:0 20px 24px; color:var(--muted); text-align:center}
 
     html{scroll-behavior:smooth}
-    @media (prefers-reduced-motion:reduce){ .floatY{animation:none} .sign,.planet,.doodad{animation:none} }
+    @media (prefers-reduced-motion:reduce){
+      .floatY{animation:none} .sign,.planet,.doodad{animation:none}
+    }
   </style>
 </head>
 <body>
   <!-- Background Layers -->
   <canvas id="stars"></canvas>
+  <canvas id="fx"></canvas>
   <div class="planet p1 floatY"></div>
   <div class="planet p2 floatY"></div>
   <div class="planet p3 floatY"></div>
@@ -169,21 +186,24 @@
           <div class="pin"></div>
         </div>
 
-        <!-- Campanile -->
-        <svg class="campanile" viewBox="0 0 140 360" aria-hidden="true">
-          <defs>
-            <linearGradient id="tower" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stop-color="#E8CDA5"/><stop offset="100%" stop-color="#CBA678"/>
-            </linearGradient>
-          </defs>
-          <g transform="translate(10,10)">
-            <rect x="30" y="60" width="60" height="240" rx="4" fill="url(#tower)" stroke="#9e7d4d" stroke-width="2"/>
-            <rect x="50" y="30" width="20" height="30" fill="#E8CDA5" stroke="#9e7d4d" stroke-width="2"/>
-            <polygon points="60,0 90,30 30,30" fill="#CBA678" stroke="#9e7d4d" stroke-width="2"/>
-            <rect x="46" y="90" width="8" height="24" fill="#0b2b4a"/>
-            <rect x="66" y="90" width="8" height="24" fill="#0b2b4a"/>
-          </g>
-        </svg>
+        <!-- Ship wrapper (SVG + flame) -->
+        <div class="ship" id="ship">
+          <svg class="campanile" viewBox="0 0 140 360" aria-hidden="true">
+            <defs>
+              <linearGradient id="tower" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#E8CDA5"/><stop offset="100%" stop-color="#CBA678"/>
+              </linearGradient>
+            </defs>
+            <g transform="translate(10,10)">
+              <rect x="30" y="60" width="60" height="240" rx="4" fill="url(#tower)" stroke="#9e7d4d" stroke-width="2"/>
+              <rect x="50" y="30" width="20" height="30" fill="#E8CDA5" stroke="#9e7d4d" stroke-width="2"/>
+              <polygon points="60,0 90,30 30,30" fill="#CBA678" stroke="#9e7d4d" stroke-width="2"/>
+              <rect x="46" y="90" width="8" height="24" fill="#0b2b4a"/>
+              <rect x="66" y="90" width="8" height="24" fill="#0b2b4a"/>
+            </g>
+          </svg>
+          <div class="flame" id="flame"></div>
+        </div>
 
         <!-- Floating UI bits -->
         <div class="doodad chip" style="right:8%; top:10%"></div>
@@ -301,7 +321,7 @@
 
   <footer>© <span id="year"></span> Yuhee Lefkowitz — Made with 💛 & Cal spirit.</footer>
 
-  <!-- ===== Scripts: starfield, comets, orbit, parallax, reveal, accordion, active tab ===== -->
+  <!-- ===== Scripts: starfield, FX, orbit, rocket, reveal, accordion, active tab ===== -->
   <script>
     // STARFIELD + COMETS
     (function(){
@@ -332,24 +352,100 @@
       requestAnimationFrame(loop);
     })();
 
-    // CAMPANILE PARALLAX (cursor + scroll)
+    // FX CANVAS for exhaust particles
     (function(){
-      const el=document.querySelector('.campanile'); if(!el) return;
-      let cx=0,cy=0,tx=0,ty=0; const ease=0.06; let lastY=0;
-      addEventListener('mousemove',e=>{const w=innerWidth||1,h=innerHeight||1; tx=((e.clientX/w)*2-1)*12; ty=((e.clientY/h)*2-1)*8;},{passive:true});
-      addEventListener('scroll',()=>{lastY=scrollY;},{passive:true});
-      function frame(){cx+=(tx-cx)*ease; cy+=(ty-cy)*ease; const py=-(lastY*0.04); el.style.transform=`translate(${cx}px,${cy+py}px) scale(.82)`; requestAnimationFrame(frame);}
-      requestAnimationFrame(frame);
+      const fx=document.getElementById('fx'), ctx=fx.getContext('2d');
+      let W=innerWidth,H=innerHeight, D=Math.max(1,devicePixelRatio||1);
+      function R(){W=innerWidth;H=innerHeight;fx.width=W*D;fx.height=H*D;fx.style.width=W+'px';fx.style.height=H+'px';ctx.setTransform(D,0,0,D,0,0);} R(); addEventListener('resize',R);
+      const particles=[];
+      function spawn(x,y){
+        for(let i=0;i<4;i++){
+          particles.push({x,y, vx:(Math.random()*80-40), vy:(120+Math.random()*120), life:0, ttl:.6+Math.random()*.4, r:2+Math.random()*2});
+        }
+      }
+      let last=performance.now();
+      function loop(now){
+        const dt=Math.min(.033,(now-last)/1e3); last=now;
+        ctx.clearRect(0,0,W,H);
+        for(let i=particles.length-1;i>=0;i--){
+          const p=particles[i]; p.life+=dt; p.x+=p.vx*dt; p.y+=p.vy*dt; const a=Math.max(0,1-p.life/p.ttl);
+          ctx.fillStyle=`rgba(255,200,120,${.35*a})`; ctx.beginPath(); ctx.arc(p.x,p.y, p.r*(1+p.life), 0, Math.PI*2); ctx.fill();
+          if(p.life>=p.ttl) particles.splice(i,1);
+        }
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+
+      // expose emitter
+      window.__emitExhaust = spawn;
     })();
 
-    // PLANET DRIFT (slow independent wobble)
+    // CAMPANILE ROCKET: scroll-driven takeoff + flame + exhaust
+    (function(){
+      const ship=document.getElementById('ship');
+      const flame=document.getElementById('flame');
+      if(!ship || !flame) return;
+
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let ignited=false;
+
+      function easeOutCubic(t){return 1 - Math.pow(1-t,3)}
+      function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
+
+      function update(){
+        const vh = innerHeight || 1;
+        const y  = scrollY || 0;
+
+        // progress: start ignition around 10% viewport scrolled
+        const start = 0.10 * vh;
+        const end   = 0.95 * vh;          // when it is basically off the hero
+        const raw   = (y - start) / (end - start);
+        const p     = clamp(raw, 0, 1.25);   // allow slight overshoot
+
+        // ignition state
+        ignited = p > 0.02;
+        flame.style.opacity = ignited ? 1 : 0;
+        ship.classList.toggle('boost', p > 0.35);
+
+        // small ignition shake
+        let shakeX = 0, shakeY = 0;
+        if (p > 0 && p < 0.12){
+          const s = (0.12 - p) * 10; // diminishes quickly
+          shakeX = (Math.random()*2-1) * s;
+          shakeY = (Math.random()*2-1) * s;
+        }
+
+        // flight path: up & right with a slight nose tilt
+        const e = easeOutCubic(clamp(p,0,1));
+        const dx = 520 * e;         // right
+        const dy = -600 * e;        // up
+        const rot = -18 * e;        // nose up a bit
+
+        ship.style.transform = `translate(${dx + shakeX}px, ${dy + shakeY}px) scale(.82) rotate(${rot}deg)`;
+
+        // exhaust emitter (from nozzle under tower)
+        if (ignited && window.__emitExhaust){
+          const r = ship.getBoundingClientRect();
+          const nozzleX = r.left + r.width * 0.50;
+          const nozzleY = r.bottom - 4;
+          // a couple of puffs per frame
+          window.__emitExhaust(nozzleX, nozzleY);
+          window.__emitExhaust(nozzleX + (Math.random()*6-3), nozzleY + 2);
+        }
+
+        requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    })();
+
+    // PLANET DRIFT (slow wobble)
     (function(){
       const nodes=[...document.querySelectorAll('.planet')]; let t0=performance.now();
       function loop(t){const dt=(t-t0)/1000; nodes.forEach((n,i)=>{const dx=Math.cos(dt*0.15+i)*6; const dy=Math.sin(dt*0.12+i*1.7)*5; n.style.translate=`${dx}px ${dy}px`;}); requestAnimationFrame(loop);}
       requestAnimationFrame(loop);
     })();
 
-    // TRACKS ORBIT (rotation + label stability)
+    // TRACKS ORBIT
     (function(){
       const ring=document.getElementById('orbit'); if(!ring) return;
       const tokens=[...ring.querySelectorAll('.token')]; let base=0;
