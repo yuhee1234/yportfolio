@@ -7,127 +7,211 @@
   <meta name="description" content="Berkeley-themed hackathon-style portfolio for Yuhee Lefkowitz." />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
   <style>
-    :root {
+    :root{
       --bg:#07122a; --ink:#EAF0FF; --muted:#b7c6ef;
       --cal:#FDB515; --cal2:#ffe39b; --blue:#003262;
       --card:rgba(14,18,40,.8); --border:rgba(255,255,255,.1);
       --shadow:0 12px 44px rgba(0,0,0,.5);
       --nav-h:84px;
     }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;color:var(--ink);background:radial-gradient(1200px 900px at 20% -10%,#0b1a33 0%,var(--bg) 55%,#050c1d 100%);
-      font-family:Inter,system-ui,sans-serif;overflow-x:hidden}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--ink);
+      background:radial-gradient(1200px 900px at 20% -10%,#0b1a33 0%,var(--bg) 55%,#050c1d 100%);
+      font-family:Inter,system-ui,sans-serif; overflow-x:hidden;
+    }
 
-    /* background */
-    canvas#stars{position:fixed;inset:0;z-index:-300}
-    .planet{position:fixed;border-radius:50%;opacity:.9;will-change:transform;z-index:-220}
-    .p1{width:280px;height:280px;left:6vw;top:18vh;background:radial-gradient(circle at 30% 30%,#8db0ff,#3a64ce 60%,#1b2f68 100%)}
-    .p2{width:340px;height:340px;right:8vw;top:35vh;background:radial-gradient(circle at 40% 40%,#ffe39b,#FDB515 55%,#a86f00 100%)}
-    .p3{width:420px;height:420px;left:-8vw;bottom:-14vh;background:radial-gradient(circle at 35% 35%,#c6d9ff,#7496ff 55%,#2b4ea3 100%)}
+    /* ===== Background ===== */
+    canvas#stars{position:fixed; inset:0; z-index:-300}
+    .planet{position:fixed; border-radius:50%; opacity:.9; will-change:transform; z-index:-220}
+    .p1{width:280px; height:280px; left:6vw; top:18vh; background:radial-gradient(circle at 30% 30%,#8db0ff,#3a64ce 60%,#1b2f68 100%)}
+    .p2{width:340px; height:340px; right:8vw; top:35vh; background:radial-gradient(circle at 40% 40%,#ffe39b,#FDB515 55%,#a86f00 100%)}
+    .p3{width:420px; height:420px; left:-8vw; bottom:-14vh; background:radial-gradient(circle at 35% 35%,#c6d9ff,#7496ff 55%,#2b4ea3 100%)}
     @keyframes floatY{0%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-10px,0)}100%{transform:translate3d(0,0,0)}}
     .floatY{animation:floatY 8s ease-in-out infinite}
 
-    /* nav */
-    .nav{position:fixed;inset:0 0 auto 0;height:var(--nav-h);
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:0 18px;z-index:1000;background:linear-gradient(180deg,rgba(0,20,40,.85),rgba(10,12,22,.35));backdrop-filter:blur(7px);
-      border-bottom:1px solid rgba(255,255,255,.06)}
-    .brand{display:flex;align-items:center;gap:12px;font:800 20px Outfit}
-    .brand .leaf{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--cal),var(--cal2));box-shadow:0 0 22px rgba(253,181,21,.35)}
-    .tabs{display:flex;gap:20px}
-    .tabs a{color:var(--muted);text-decoration:none;font:700 14px Outfit}
+    /* ===== Nav ===== */
+    .nav{
+      position:fixed; inset:0 0 auto 0; height:var(--nav-h);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:0 18px; z-index:1000;
+      background:linear-gradient(180deg,rgba(0,20,40,.85),rgba(10,12,22,.35)); backdrop-filter: blur(7px);
+      border-bottom:1px solid rgba(255,255,255,.06)
+    }
+    .brand{display:flex; align-items:center; gap:12px; font:800 20px Outfit}
+    .brand .leaf{width:28px; height:28px; border-radius:50%; background:radial-gradient(circle at 35% 35%, var(--cal), var(--cal2)); box-shadow:0 0 22px rgba(253,181,21,.35)}
+    .tabs{display:flex; gap:20px}
+    .tabs a{color:var(--muted); text-decoration:none; font:700 14px Outfit}
     .tabs a:hover{color:#fff}
-    .pill{padding:9px 14px;border:1.5px solid var(--cal);border-radius:999px;color:#fff;text-decoration:none;font:700 14px Inter;background:rgba(16,20,40,.7);transition:.2s}
-    .pill:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.3);border-color:#ffe39b}
+    .pill{
+      padding:9px 14px; border:1.5px solid var(--cal); border-radius:999px; color:#fff; text-decoration:none; font:700 14px Inter;
+      background:rgba(16,20,40,.7); transition:transform .18s ease, box-shadow .18s ease, border-color .2s ease
+    }
+    .pill:hover{transform:translateY(-2px); box-shadow:0 10px 22px rgba(0,0,0,.3); border-color:#ffe39b}
 
     main{padding-top:calc(var(--nav-h) + 12px)}
 
-    /* hero */
-    .hero{position:relative;min-height:80vh;display:grid;place-items:center}
-    .scene{position:relative;width:min(1000px,92vw);height:520px}
-    .sign{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);
-      width:min(560px,86vw);aspect-ratio:3/2;display:grid;place-items:center;
-      text-align:center;font:800 64px/0.9 Outfit;color:#0a1a2e;animation:popIn .9s cubic-bezier(.22,1,.36,1)}
-    .sign .board{position:absolute;inset:0;border-radius:18px;background:linear-gradient(180deg,#fff8dc,#fff3bf);border:6px solid #5ea6ff;box-shadow:0 12px 40px rgba(0,0,0,.45)}
-    .sign .pin{position:absolute;left:50%;bottom:-30px;width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-top:34px solid #5ea6ff}
-    .sign .title{position:relative;z-index:2;letter-spacing:1.5px;color:#0b2b4a;text-shadow:0 2px 0 rgba(255,255,255,.6)}
-    .date{font:800 16px Outfit;letter-spacing:2px;color:#1c3f62;margin-top:6px}
-    @keyframes popIn{0%{transform:translate(-50%,-50%) scale(.96);opacity:0}60%{transform:translate(-50%,-50%) scale(1.05);opacity:1}100%{transform:translate(-50%,-50%) scale(1)}}
+    /* ===== Hero ===== */
+    .hero{position:relative; min-height:80vh; display:grid; place-items:center}
+    .scene{position:relative; width:min(1000px,92vw); height:520px}
 
-    .campanile{position:absolute;left:-4vw;bottom:-6px;width:min(24vw,320px);z-index:2;
-      filter:drop-shadow(0 14px 30px rgba(0,0,0,.35));will-change:transform}
-    .campanile::after{content:'';position:absolute;left:8%;right:8%;bottom:-10px;height:16px;
-      background:radial-gradient(50% 100% at 50% 0%,rgba(0,0,0,.35),rgba(0,0,0,0))}
+    .sign{
+      position:absolute; left:50%; top:46%; transform:translate(-50%,-50%);
+      width:min(560px,86vw); aspect-ratio:3/2; display:grid; place-items:center; text-align:center;
+      font:800 64px/0.9 Outfit; color:#0a1a2e;
+      animation:popIn .9s cubic-bezier(.22,1,.36,1) .05s both;
+    }
+    .sign .board{position:absolute; inset:0; border-radius:18px; background:linear-gradient(180deg,#fff8dc,#fff3bf); border:6px solid #5ea6ff; box-shadow:0 12px 40px rgba(0,0,0,.45)}
+    .sign .pin{position:absolute; left:50%; bottom:-30px; width:0; height:0; border-left:18px solid transparent; border-right:18px solid transparent; border-top:34px solid #5ea6ff}
+    .sign .title{position:relative; z-index:2; letter-spacing:1.5px; color:#0b2b4a; text-shadow:0 2px 0 rgba(255,255,255,.6)}
+    .date{font:800 16px Outfit; letter-spacing:2px; color:#1c3f62; margin-top:6px}
+    @keyframes popIn{0%{transform:translate(-50%,-50%) scale(.96); opacity:0}60%{transform:translate(-50%,-50%) scale(1.05); opacity:1}100%{transform:translate(-50%,-50%) scale(1)}}
 
-    .doodad{position:absolute;opacity:.95;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))}
-    .chip{width:120px;height:80px;background:linear-gradient(180deg,#9cc5ff,#6da0f0);border:3px solid #d7e7ff;border-radius:10px}
-    .brick{width:72px;height:42px;background:#6aa0ff;border:3px solid #d7e7ff;border-radius:8px}
-    .brick.gold{background:#ffc84d;border-color:#ffe39b}
+    .campanile{
+      position:absolute; left:-4vw; bottom:-6px; width:min(24vw,320px); z-index:2;
+      filter: drop-shadow(0 14px 30px rgba(0,0,0,.35)); will-change:transform;
+    }
+    .campanile::after{
+      content:""; position:absolute; left:8%; right:8%; bottom:-10px; height:16px;
+      background:radial-gradient(50% 100% at 50% 0%, rgba(0,0,0,.35), rgba(0,0,0,0));
+      pointer-events:none;
+    }
 
-    /* reveal fade */
-    .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease}
-    .reveal.in{opacity:1;transform:none}
+    .doodad{position:absolute; opacity:.95; filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))}
+    .chip{width:120px; height:80px; background:linear-gradient(180deg,#9cc5ff,#6da0f0); border:3px solid #d7e7ff; border-radius:10px}
+    .brick{width:72px; height:42px; background:#6aa0ff; border:3px solid #d7e7ff; border-radius:8px}
+    .brick.gold{background:#ffc84d; border-color:#ffe39b}
 
-    /* tracks orbit */
-    .tracks{max-width:1200px;margin:60px auto;text-align:center}
-    .ring{position:relative;width:min(90vw,900px);height:min(90vw,900px);margin:0 auto;border-radius:50%;background:radial-gradient(closest-side,rgba(125,157,255,.06),rgba(125,157,255,0))}
-    .token{position:absolute;width:170px;height:170px;left:50%;top:50%;display:grid;place-items:center;text-align:center;color:#fff;font:800 14px Outfit}
-    .token .oct{width:100%;height:100%;clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%);
-      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(0,0,0,.2));border:1.5px solid rgba(255,255,255,.16);border-radius:18px;
-      box-shadow:inset 0 -10px 40px rgba(0,0,0,.28),0 8px 18px rgba(0,0,0,.28)}
+    /* ===== Reveal ===== */
+    .reveal{opacity:0; transform:translateY(12px); transition:opacity .6s ease, transform .6s ease}
+    .reveal.in{opacity:1; transform:none}
 
-    /* cards */
-    .about{max-width:1100px;margin:80px auto;padding:0 20px;display:grid;grid-template-columns:1.1fr 1fr;gap:22px}
-    .about-card{background:var(--card);border:1.5px solid var(--border);border-radius:22px;padding:18px 20px;box-shadow:var(--shadow)}
-    .video{aspect-ratio:16/9;width:100%;border-radius:16px;overflow:hidden}
-    .stat{background:linear-gradient(180deg,#fff8dc,#fff3bf);color:#0b2b4a;border:4px solid #5ea6ff;border-radius:14px;padding:10px 14px;font:800 14px Outfit}
-    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    /* ===== About ===== */
+    .about{max-width:1100px; margin:80px auto 0; padding:0 20px; display:grid; grid-template-columns:1.1fr 1fr; gap:22px}
+    .about-card{background:var(--card); border:1.5px solid var(--border); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow)}
+    .video{aspect-ratio:16/9; width:100%; border-radius:16px; overflow:hidden}
+    .stat{background:linear-gradient(180deg,#fff8dc,#fff3bf); color:#0b2b4a; border:4px solid #5ea6ff; border-radius:14px; padding:10px 14px; font:800 14px Outfit}
+    .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
 
-    footer{max-width:1100px;margin:40px auto;padding:0 20px 24px;color:var(--muted);text-align:center}
+    /* ===== Tracks Orbit ===== */
+    .tracks{position:relative; max-width:1200px; margin:60px auto; padding:0 20px}
+    .tracks h2{text-align:center; font:800 40px Outfit; margin:0 0 10px}
+    .ring{position:relative; width:min(90vw,900px); height:min(90vw,900px); margin:0 auto; border-radius:50%; background:radial-gradient(closest-side, rgba(125,157,255,.06), rgba(125,157,255,0))}
+    .token{position:absolute; width:170px; height:170px; left:50%; top:50%; display:grid; place-items:center; text-align:center; color:#fff; font:800 14px Outfit}
+    .token .oct{
+      width:100%; height:100%;
+      clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.2));
+      border:1.5px solid rgba(255,255,255,.16); border-radius:18px;
+      box-shadow:inset 0 -10px 40px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.28)
+    }
+
+    /* ===== Projects ===== */
+    .projects{max-width:1100px; margin:40px auto; padding:0 20px}
+    .projects h2{text-align:center; font:800 40px Outfit; margin:0 0 16px}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
+    .card{background:var(--card); border:1.5px solid var(--border); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px}
+    .cta-row{margin-top:auto; display:flex; gap:8px}
+
+    /* ===== Sponsors / FAQ ===== */
+    .sponsors{position:relative; max-width:1100px; margin:60px auto; padding:0 20px; text-align:center}
+    .placard{display:inline-block; min-width:360px; max-width:min(88vw,560px); padding:22px 18px; background:linear-gradient(180deg,#fef9e6,#fff7cf); color:#0b2b4a; border:6px solid #5ea6ff; border-radius:16px; box-shadow:0 12px 40px rgba(0,0,0,.45); font:800 18px Outfit; transition:transform .18s ease, box-shadow .18s ease}
+    .placard:hover{transform:translateY(-2px); box-shadow:0 18px 44px rgba(0,0,0,.55)}
+
+    .faq{max-width:1200px; margin:60px auto 80px; padding:0 20px; display:grid; grid-template-columns:360px 1fr; gap:22px}
+    .faq-left{background:#003262; color:#fff; border-radius:20px; box-shadow:2px 2px 6px #0b1a33; padding:14px 10px}
+    .accordion{border-radius:16px; overflow:hidden}
+    .item{border-bottom:1px solid rgba(255,255,255,.16)}
+    .item:last-child{border-bottom:0}
+    .q{width:100%; background:transparent; border:0; color:#fff; text-align:left; padding:14px 12px; font:800 16px Outfit; display:flex; align-items:center; justify-content:space-between; cursor:pointer}
+    .a{display:grid; grid-template-rows:0fr; transition:grid-template-rows .2s ease}
+    .a.open{grid-template-rows:1fr}
+    .a > div{min-height:0; padding:0 12px 12px; color:#EAF0FF}
+
+    footer{max-width:1100px; margin:40px auto; padding:0 20px 24px; color:var(--muted); text-align:center}
+
+    html{scroll-behavior:smooth}
+    @media (prefers-reduced-motion:reduce){ .floatY{animation:none} .sign,.planet,.doodad{animation:none} }
   </style>
 </head>
 <body>
+  <!-- Background Layers -->
   <canvas id="stars"></canvas>
   <div class="planet p1 floatY"></div>
   <div class="planet p2 floatY"></div>
   <div class="planet p3 floatY"></div>
 
+  <!-- Nav -->
   <header class="nav">
-    <div class="brand"><span class="leaf"></span><span>YUHEE</span></div>
-    <nav class="tabs"><a href="#about">about</a><a href="#tracks">tracks</a><a href="#projects">projects</a><a href="#sponsors">sponsors</a><a href="#faq">faq</a></nav>
-    <div><a class="pill" href="resume.pdf" target="_blank">Resume</a> <a class="pill" href="https://github.com/yuhee1234" target="_blank">GitHub</a></div>
+    <div class="brand"><span class="leaf"></span> <span>YUHEE</span></div>
+    <nav class="tabs" aria-label="Site">
+      <a href="#about">about</a>
+      <a href="#tracks">tracks</a>
+      <a href="#projects">projects</a>
+      <a href="#sponsors">sponsors</a>
+      <a href="#faq">faq</a>
+    </nav>
+    <div>
+      <a class="pill" href="resume.pdf" target="_blank" rel="noreferrer">Resume</a>
+      <a class="pill" href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">GitHub</a>
+    </div>
   </header>
 
   <main>
+    <!-- HERO -->
     <section class="hero" id="home">
       <div class="scene">
-        <div class="sign"><div class="board"></div><div class="title">YUHEE HACKS</div><div class="date">UC BERKELEY • 2026</div><div class="pin"></div></div>
-        <svg class="campanile" viewBox="0 0 140 360">
-          <defs><linearGradient id="tower" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#E8CDA5"/><stop offset="100%" stop-color="#CBA678"/></linearGradient></defs>
+        <div class="sign">
+          <div class="board"></div>
+          <div class="title">YUHEE HACKS</div>
+          <div class="date">UC BERKELEY • 2026</div>
+          <div class="pin"></div>
+        </div>
+
+        <!-- Campanile -->
+        <svg class="campanile" viewBox="0 0 140 360" aria-hidden="true">
+          <defs>
+            <linearGradient id="tower" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#E8CDA5"/><stop offset="100%" stop-color="#CBA678"/>
+            </linearGradient>
+          </defs>
           <g transform="translate(10,10)">
             <rect x="30" y="60" width="60" height="240" rx="4" fill="url(#tower)" stroke="#9e7d4d" stroke-width="2"/>
             <rect x="50" y="30" width="20" height="30" fill="#E8CDA5" stroke="#9e7d4d" stroke-width="2"/>
             <polygon points="60,0 90,30 30,30" fill="#CBA678" stroke="#9e7d4d" stroke-width="2"/>
-            <rect x="46" y="90" width="8" height="24" fill="#0b2b4a"/><rect x="66" y="90" width="8" height="24" fill="#0b2b4a"/>
+            <rect x="46" y="90" width="8" height="24" fill="#0b2b4a"/>
+            <rect x="66" y="90" width="8" height="24" fill="#0b2b4a"/>
           </g>
         </svg>
-        <div class="doodad chip" style="right:8%;top:10%"></div>
-        <div class="doodad brick gold" style="left:16%;top:6%"></div>
-        <div class="doodad brick" style="right:14%;bottom:8%"></div>
+
+        <!-- Floating UI bits -->
+        <div class="doodad chip" style="right:8%; top:10%"></div>
+        <div class="doodad brick gold" style="left:16%; top:6%"></div>
+        <div class="doodad brick" style="right:14%; bottom:8%"></div>
       </div>
     </section>
 
+    <!-- ABOUT -->
     <section class="about reveal" id="about">
       <div class="about-card">
-        <h2>ABOUT</h2>
-        <p>Hey! I’m Yuhee — a strategist & builder studying Computer Science and Data Science (Business & Industrial Analytics emphasis) at UC Berkeley...</p>
+        <h2 style="margin:0 0 8px; font:800 32px Outfit">ABOUT</h2>
+        <p>Hey! I’m Yuhee — a strategist & builder studying Computer Science and Data Science (Business & Industrial Analytics emphasis) at UC Berkeley. From engineering scalable APIs in internships to leading social product launches, I love creating experiences that blend human insight with technical depth.</p>
+        <p>Outside of work, I’m usually playing tennis, running 5’s in basketball, or training for a nearby half-marathon. I also care a lot about content creation. I’m currently building things like Capybara Maps (SwiftUI + MapKit + PostGIS), StockSphere (Next.js + Flask + Redis + Twilio), and CurryStats (FastAPI + HuggingFace + NBA data).</p>
       </div>
       <div class="about-card">
-        <div class="video"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe></div>
-        <div class="stats" style="margin-top:12px"><div class="stat">APIs & Backends</div><div class="stat">Product & Growth</div><div class="stat">iOS & ML</div></div>
+        <div class="video">
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        <div class="stats" style="margin-top:12px">
+          <div class="stat">APIs & Backends</div>
+          <div class="stat">Product & Growth</div>
+          <div class="stat">iOS & ML</div>
+        </div>
       </div>
     </section>
 
+    <!-- TRACKS -->
     <section class="tracks reveal" id="tracks">
       <h2>TRACKS</h2>
       <div class="ring" id="orbit">
@@ -140,56 +224,171 @@
       </div>
     </section>
 
-    <!-- You can reinsert your Projects, Sponsors, and FAQ sections here -->
+    <!-- PROJECTS -->
+    <section class="projects reveal" id="projects">
+      <h2>PROJECTS</h2>
+      <div class="grid">
+        <article class="card">
+          <h3 style="margin:0">Capybara Maps</h3>
+          <p style="margin:0; color:#d7dbff">SwiftUI iOS app with MapKit overlays and a Dockerized Node + PostgreSQL (PostGIS) backend for geospatial nearest-neighbor queries. Caching + async fetch keep city-wide queries sub-second.</p>
+          <div class="cta-row"><a class="pill" href="https://github.com/yuhee1234/capybaramaps" target="_blank" rel="noreferrer">GitHub</a></div>
+        </article>
+        <article class="card">
+          <h3 style="margin:0">StockSphere</h3>
+          <p style="margin:0; color:#d7dbff">Full-stack stock analytics with Next.js + Flask microservices. Redis-cached endpoints and Twilio SMS alerts sustain &lt;100ms responses; includes portfolio simulations and alert rules.</p>
+          <div class="cta-row"><a class="pill" href="https://github.com/yuhee1234/StockSphere" target="_blank" rel="noreferrer">GitHub</a></div>
+        </article>
+        <article class="card">
+          <h3 style="margin:0">CurryStats</h3>
+          <p style="margin:0; color:#d7dbff">FastAPI dashboard fusing NBA play data with HuggingFace sentiment. Interactive charts tie game events to fan mood with cohort comparisons and event annotations.</p>
+          <div class="cta-row"><a class="pill" href="https://github.com/yuhee1234/CurryStats" target="_blank" rel="noreferrer">GitHub</a></div>
+        </article>
+        <article class="card">
+          <h3 style="margin:0">Notify.careers Alerts</h3>
+          <p style="margin:0; color:#d7dbff">Scoped PRD and v1 launch checklist; defined success metrics and backlog triage. Implemented rules logic and QA gates for clean GA and measurable impact.</p>
+          <div class="cta-row"><a class="pill" href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">GitHub</a></div>
+        </article>
+      </div>
+
+      <h3 style="text-align:center; font:800 24px Outfit; margin:24px 0 12px">Live Demos</h3>
+      <div style="display:grid; grid-template-columns:1fr; gap:12px; place-items:center">
+        <div class="placard" style="width:min(88vw,720px); display:flex; align-items:center; justify-content:space-between; gap:12px">
+          <div><strong>First-Session Personalization Sprint</strong></div>
+          <div style="display:flex; gap:10px">
+            <a class="pill" href="dashboard_1sess.html" target="_blank" rel="noreferrer">Open Case Study</a>
+          </div>
+        </div>
+        <div class="placard" style="width:min(88vw,720px); display:flex; align-items:center; justify-content:space-between; gap:12px">
+          <div><strong>ShopLens — Visual AI Shopping</strong></div>
+          <div style="display:flex; gap:10px">
+            <a class="pill" href="https://yuhee1234.github.io/shoplens/" target="_blank" rel="noreferrer">Open Live Demo</a>
+            <a class="pill" href="https://github.com/yuhee1234/shoplens" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPONSORS -->
+    <section class="sponsors reveal" id="sponsors">
+      <h2 style="font:800 40px Outfit; margin:0 0 10px">SPONSORS</h2>
+      <div class="placard">Sponsors to be announced. Check back from Mission Control.</div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq reveal" id="faq">
+      <div class="faq-left">
+        <h3 style="margin:10px 12px; font:800 22px Outfit">FAQs</h3>
+        <div class="accordion">
+          <div class="item">
+            <button class="q" aria-expanded="false">What is this site? <span>▾</span></button>
+            <div class="a"><div>This is my portfolio dressed as a hackathon landing page.</div></div>
+          </div>
+          <div class="item">
+            <button class="q" aria-expanded="false">Can we work together? <span>▾</span></button>
+            <div class="a"><div>Yes — DM me on LinkedIn or open an issue in a repo.</div></div>
+          </div>
+          <div class="item">
+            <button class="q" aria-expanded="false">Resume? <span>▾</span></button>
+            <div class="a"><div>Top right. Always current.</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="align-self:start">
+        <div class="placard" style="min-width:auto; display:block">Your mission launches here.</div>
+      </div>
+    </section>
   </main>
+
   <footer>© <span id="year"></span> Yuhee Lefkowitz — Made with 💛 & Cal spirit.</footer>
 
+  <!-- ===== Scripts: starfield, comets, orbit, parallax, reveal, accordion, active tab ===== -->
   <script>
-  // stars with comets
-  (function(){
-    const c=document.getElementById('stars'),x=c.getContext('2d');
-    let W=innerWidth,H=innerHeight,D=devicePixelRatio||1;
-    let stars=[],meteors=[];
-    function R(){W=innerWidth;H=innerHeight;c.width=W*D;c.height=H*D;x.setTransform(D,0,0,D,0,0);} R();addEventListener('resize',R);
-    function make(){stars=[];for(let i=0;i<W*H/9000;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+0.2});}
-    make();
-    function spawn(){meteors.push({x:Math.random()*W,y:-50,vx:400,vy:400,t:0,ttl:1.4});}
-    setInterval(()=>Math.random()<0.15&&spawn(),1000);
-    let last=0;
-    function loop(t){
-      const dt=(t-last)/1000;last=t;x.clearRect(0,0,W,H);
-      for(const s of stars){x.fillStyle='rgba(255,255,255,.4)';x.fillRect(s.x,s.y,s.r,s.r);}
-      for(let i=meteors.length-1;i>=0;i--){const m=meteors[i];m.t+=dt;m.x+=m.vx*dt;m.y+=m.vy*dt;
-        const a=1-m.t/m.ttl;x.strokeStyle=`rgba(122,165,255,${.55*a})`;x.lineWidth=2;x.beginPath();x.moveTo(m.x-160,m.y-160);x.lineTo(m.x,m.y);x.stroke();
-        if(a<=0)meteors.splice(i,1);}
-      requestAnimationFrame(loop);}
-    requestAnimationFrame(loop);
-  })();
+    // STARFIELD + COMETS
+    (function(){
+      const c=document.getElementById('stars'),x=c.getContext('2d');
+      let W=innerWidth,H=innerHeight,D=Math.max(1,devicePixelRatio||1);
+      let stars=[], meteors=[]; const L=[0.25,0.6,1];
+      function R(){W=innerWidth;H=innerHeight;c.width=W*D;c.height=H*D;c.style.width=W+'px';c.style.height=H+'px';x.setTransform(D,0,0,D,0,0);} R(); addEventListener('resize',R);
 
-  // orbit rotation
-  (function(){
-    const ring=document.getElementById('orbit');if(!ring)return;
-    const tokens=[...ring.querySelectorAll('.token')];let base=0;
-    function frame(t){base+=.0035*tokens.length;
-      const R=ring.clientWidth/2-120,n=tokens.length;
-      tokens.forEach((el,i)=>{const ang=base+i*(Math.PI*2/n);
-        const x=Math.cos(ang)*R,y=Math.sin(ang)*R;
-        el.style.transform=`translate(-50%,-50%) translate(${x}px,${y}px) rotate(${ang}rad)`;});
-      requestAnimationFrame(frame);}
-    requestAnimationFrame(frame);
-  })();
+      function make(){stars.length=0;const n=Math.floor(W*H/8000);for(let i=0;i<n;i++){stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+0.2,z:L[(Math.random()*L.length)|0]});}} make();
+      function spawnMeteor(x0=Math.random()*W,y0=-40){const ang=Math.PI*1.12, sp=520+Math.random()*320; meteors.push({x:x0,y:y0,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,t:0,ttl:1.4+Math.random()*0.8});}
+      setInterval(()=>{if(Math.random()<0.18) spawnMeteor();},900);
+      addEventListener('click',e=>spawnMeteor(e.clientX,e.clientY-60));
 
-  // campanile parallax
-  (function(){
-    const el=document.querySelector('.campanile');if(!el)return;
-    let cx=0,cy=0,tx=0,ty=0,ease=0.06,lastY=0;
-    addEventListener('mousemove',e=>{
-      const w=innerWidth,h=innerHeight;tx=((e.clientX/w)*2-1)*12;ty=((e.clientY/h)*2-1)*8;},{passive:true});
-    addEventListener('scroll',()=>lastY=scrollY,{passive:true});
-    function loop(){cx+=(tx-cx)*ease;cy+=(ty-cy)*ease;
-      const py=-(lastY*0.04);
-      el.style.transform=`translate(${cx}px,${cy+py}px) scale(.82)`;requestAnimationFrame(loop);}
-    requestAnimationFrame(loop);
-  })();
+      let mx=0,my=0,cx=0,cy=0; addEventListener('mousemove',e=>{mx=(e.clientX-W/2)/8; my=(e.clientY-H/2)/8;},{passive:true});
 
- 
+      let last=performance.now();
+      function loop(t){
+        const dt=Math.min(.033,(t-last)/1e3); last=t; cx+=(mx-cx)*.04; cy+=(my-cy)*.04;
+        x.clearRect(0,0,W,H);
+        for(const s of stars){const sx=s.x+cx*4*s.z, sy=s.y+cy*4*s.z; const tw=(Math.sin((t+s.x)*.002)*.5+.5)*.6+.2; x.fillStyle=`rgba(255,255,255,${.42+.5*tw})`; x.fillRect(sx,sy,s.r,s.r);}
+        for(let i=meteors.length-1;i>=0;i--){const m=meteors[i]; m.t+=dt; m.x+=m.vx*dt; m.y+=m.vy*dt; const p=m.t/m.ttl; const a=Math.max(0,1-p);
+          const g=x.createLinearGradient(m.x-140,m.y-140,m.x,m.y); g.addColorStop(0,'rgba(122,165,255,0)'); g.addColorStop(1,`rgba(122,165,255,${.55*a})`);
+          x.strokeStyle=g; x.lineWidth=2; x.beginPath(); x.moveTo(m.x-160,m.y-160); x.lineTo(m.x,m.y); x.stroke();
+          if(p>=1||m.x<-200||m.y>H+200) meteors.splice(i,1);
+        }
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    })();
+
+    // CAMPANILE PARALLAX (cursor + scroll)
+    (function(){
+      const el=document.querySelector('.campanile'); if(!el) return;
+      let cx=0,cy=0,tx=0,ty=0; const ease=0.06; let lastY=0;
+      addEventListener('mousemove',e=>{const w=innerWidth||1,h=innerHeight||1; tx=((e.clientX/w)*2-1)*12; ty=((e.clientY/h)*2-1)*8;},{passive:true});
+      addEventListener('scroll',()=>{lastY=scrollY;},{passive:true});
+      function frame(){cx+=(tx-cx)*ease; cy+=(ty-cy)*ease; const py=-(lastY*0.04); el.style.transform=`translate(${cx}px,${cy+py}px) scale(.82)`; requestAnimationFrame(frame);}
+      requestAnimationFrame(frame);
+    })();
+
+    // PLANET DRIFT (slow independent wobble)
+    (function(){
+      const nodes=[...document.querySelectorAll('.planet')]; let t0=performance.now();
+      function loop(t){const dt=(t-t0)/1000; nodes.forEach((n,i)=>{const dx=Math.cos(dt*0.15+i)*6; const dy=Math.sin(dt*0.12+i*1.7)*5; n.style.translate=`${dx}px ${dy}px`;}); requestAnimationFrame(loop);}
+      requestAnimationFrame(loop);
+    })();
+
+    // TRACKS ORBIT (rotation + label stability)
+    (function(){
+      const ring=document.getElementById('orbit'); if(!ring) return;
+      const tokens=[...ring.querySelectorAll('.token')]; let base=0;
+      function frame(){
+        base += 0.0035 * tokens.length;
+        const R=ring.clientWidth/2 - 120, n=tokens.length, TWO=Math.PI*2;
+        for(let i=0;i<n;i++){
+          const ang=base + i*(TWO/n);
+          const x=Math.cos(ang)*R, y=Math.sin(ang)*R;
+          tokens[i].style.transform=`translate(-50%,-50%) translate(${x}px,${y}px) rotate(${ang}rad)`;
+        }
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    })();
+
+    // SCROLL REVEAL
+    (function(){
+      const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target)}})},{threshold:.15});
+      document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    })();
+
+    // FAQ ACCORDION
+    (function(){
+      document.querySelectorAll('.item').forEach(it=>{
+        const q=it.querySelector('.q'), a=it.querySelector('.a');
+        q.addEventListener('click',()=>{const open=a.classList.toggle('open'); q.setAttribute('aria-expanded',String(open));});
+      });
+    })();
+
+    // ACTIVE TAB HIGHLIGHT
+    (function(){
+      const links=[...document.querySelectorAll('.tabs a')];
+      const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      function on(){ let idx=0; const y=scrollY+innerHeight*0.28; for(let i=0;i<secs.length;i++){ if(secs[i].offsetTop<=y) idx=i; } links.forEach((a,j)=>a.style.color=j===idx?'#fff':'var(--muted)'); }
+      addEventListener('scroll',on,{passive:true}); on();
+    })();
+
+    document.getElementById('year').textContent=new Date().getFullYear();
+  </script>
+</body>
+</html>
