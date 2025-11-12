@@ -13,7 +13,9 @@
       --border:rgba(255,255,255,.08); --card:rgba(10,12,24,.75); --radius:22px;
       --shadow:0 10px 40px rgba(0,0,0,.45);
       --gap:16px;
-      --mx:0px; --my:0px;
+      --mx:0px; --my:0px; /* cursor parallax */
+      --scroll:0;          /* scroll progress for parallax */
+      --nav-h:76px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -22,9 +24,10 @@
       font-family:Inter,system-ui,sans-serif; overflow-x:hidden; min-height:100vh;
     }
 
-    /* Background */
-    #starfield{position:fixed; inset:0; z-index:-3; display:block; background:transparent}
-    .nebula{position:fixed; inset:-10% -10% -10% -10%; z-index:-2; pointer-events:none;
+    /* ===== TreeHacks-like background layers ===== */
+    #starfield{position:fixed; inset:0; z-index:-300; display:block; background:transparent}
+    .bg-layer{position:fixed; inset:0; z-index:-250; pointer-events:none; will-change:transform;}
+    .nebula{position:fixed; inset:-10% -10% -10% -10%; z-index:-260; pointer-events:none;
       background-image:url("data:image/svg+xml;utf8,\
         <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid slice'>\
           <defs>\
@@ -44,14 +47,28 @@
       background-position:calc(50% + var(--mx)/20) calc(50% + var(--my)/20);
       filter:saturate(1.1) blur(0.4px);
     }
-    .cursor-tail{position:fixed; width:8px; height:8px; border-radius:50%; pointer-events:none; z-index:9999; opacity:.85;
-      background:radial-gradient(circle, #fff, rgba(255,255,255,.2) 60%, rgba(255,255,255,0) 70%);
-      filter:drop-shadow(0 0 10px #b9c8ff);
-      transform:translate(-50%, -50%);
-    }
+    /* Decorative "planets" akin to TreeHacks assets */
+    .planet{position:fixed; border-radius:50%; filter:blur(0.2px) saturate(1.05); opacity:.8; z-index:-200; will-change:transform}
+    .planet.p1{width:220px; height:220px; left:6vw; top:18vh; background:radial-gradient(circle at 30% 30%, #a5b4ff, #5b6cd4 60%, #2a2e66 100%);} 
+    .planet.p2{width:300px; height:300px; right:8vw; top:32vh; background:radial-gradient(circle at 40% 40%, #ffbde6, #d46ab4 55%, #732b66 100%);} 
+    .planet.p3{width:420px; height:420px; left:-8vw; bottom:-12vh; background:radial-gradient(circle at 35% 35%, #b7ffef, #6ed3c7 55%, #2b7d73 100%);} 
 
-    header, footer { max-width:1100px; margin:auto; padding:22px 20px;
-      display:flex; align-items:center; justify-content:space-between; }
+    /* Float/bob utilities (TreeHacks-style micro motion) */
+    @keyframes floatY{0%{transform:translateY(0)}50%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+    @keyframes floatYSmall{0%{transform:translateY(0)}50%{transform:translateY(-5px)}100%{transform:translateY(0)}}
+    @keyframes floatTilt{0%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-6px) rotate(1deg)}100%{transform:translateY(0) rotate(-1deg)}}
+    .float-5s-5px{animation:floatYSmall 5s ease-in-out infinite}
+    .float-8s-10px{animation:floatY 8s ease-in-out infinite}
+    .float-6s-tilt{animation:floatTilt 6s ease-in-out infinite}
+
+    /* Scroll-linked parallax: elements move slightly with scroll */
+    .parallax-1{transform:translateY(calc(var(--scroll) * -0.06px));}
+    .parallax-2{transform:translateY(calc(var(--scroll) * -0.12px));}
+
+    /* ===== Navigation (fixed) ===== */
+    .site-nav{position:fixed; top:0; left:0; right:0; height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; padding:0 18px; z-index:1000;
+      background:linear-gradient(180deg, rgba(7,8,18,.85), rgba(7,8,18,.35)); backdrop-filter: blur(6px); border-bottom:1px solid rgba(255,255,255,.06);
+      transition:transform .3s ease;}
     .brand{font-weight:800; letter-spacing:.4px}
     .actions{display:flex; gap:10px}
     .pill{padding:10px 16px; border:1.5px solid var(--accent); border-radius:999px;
@@ -59,23 +76,38 @@
       box-shadow:inset 0 0 0 0 rgba(122,165,255,.35), 0 6px 18px rgba(0,0,0,.25);
       transition:transform .18s ease, box-shadow .18s ease, border-color .2s ease}
     .pill:hover{ transform:translateY(-2px); box-shadow:inset 0 0 12px 0 rgba(122,165,255,.45), 0 12px 28px rgba(0,0,0,.35); border-color:var(--accent2) }
+    .links{display:flex; gap:14px}
+    .link{color:var(--muted); text-decoration:none; font-weight:600}
+    .link:hover{text-decoration:underline}
 
-    .hero{max-width:1100px; margin:50px auto; padding:0 20px;
-      display:flex; align-items:center; gap:26px}
+    /* Mobile drawer */
+    .menu-btn{display:none}
+    .drawer{position:fixed; inset:0; display:grid; grid-template-columns:1fr min(72vw,380px); pointer-events:none; opacity:0; transition:opacity .3s ease; z-index:1200}
+    .drawer.open{pointer-events:auto; opacity:1}
+    .drawer .shade{background:rgba(0,0,0,.6)}
+    .drawer .panel{background:rgba(5,6,14,.92); backdrop-filter: blur(8px); border-left:1px solid rgba(255,255,255,.08); transform:translateX(100%); transition:transform .3s ease; padding:18px}
+    .drawer.open .panel{transform:none}
+
+    @media (max-width:980px){
+      .links{display:none}
+      .menu-btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; border:1.5px solid var(--border); border-radius:12px; background:#101425; color:var(--fg); cursor:pointer}
+    }
+
+    /* ===== Sections ===== */
+    main{padding-top:calc(var(--nav-h) + 8px)}
+    section{scroll-margin-top:calc(var(--nav-h) + 12px)}
+
+    .hero{max-width:1100px; margin:50px auto; padding:0 20px; display:flex; align-items:center; gap:26px}
     .hero img{width:110px; height:110px; border-radius:20px; object-fit:cover; box-shadow:0 10px 30px rgba(0,0,0,.45)}
     h1{margin:0; font-size:44px; line-height:1.08; font-weight:800}
     .accent{color:#ffffff; -webkit-text-fill-color:#ffffff; background:none; text-shadow:none;}
     p{margin:8px 0 0; color:var(--muted)}
 
-    /* Buttons */
-    .btn{display:inline-block; padding:8px 12px; border-radius:12px; text-decoration:none; font-weight:700; border:1.5px solid var(--border); background:#111624; color:#e9ecff}
-    .btn:hover{filter:saturate(1.1); transform:translateY(-1px)}
-    .btn.secondary{background:#101425}
-
-    /* Coding projects carousel */
-    .projects{max-width:1100px; margin:42px auto; padding:0 20px}
-    h2{ text-align:center; margin:0 0 16px; transition:transform .18s ease; letter-spacing:.2px }
+    h2{text-align:center; margin:0 0 16px; transition:transform .18s ease; letter-spacing:.2px}
     h2:hover{ transform:translateY(-2px) }
+
+    /* ===== Projects carousel (kept, refined) ===== */
+    .projects{max-width:1100px; margin:42px auto; padding:0 20px}
     .carousel{position:relative; overflow:hidden; padding:0 60px}
     .viewport{overflow:hidden}
     .track{display:flex; gap:var(--gap); will-change:transform; transition:transform .5s cubic-bezier(.22,.61,.36,1)}
@@ -107,7 +139,7 @@
     .nav:hover{box-shadow:0 0 18px rgba(122,165,255,.45)}
     @media (max-width:900px){ .carousel{padding:0 24px} }
 
-    /* Product projects (stacked) */
+    /* ===== Product projects (stacked) ===== */
     .pm-projects{max-width:1100px; margin:52px auto 0; padding:0 20px}
     .pm-heading{text-align:left; margin:0 0 14px;}
     .pm-col{display:flex; flex-direction:column; gap:16px}
@@ -127,7 +159,7 @@
     .pm-card h3{margin:4px 0 8px}
     .pm-meta{font-size:12px; font-weight:800; letter-spacing:.6px; color:var(--accent)}
 
-    /* Live Demos section */
+    /* ===== Live Demos ===== */
     .live{max-width:1100px; margin:46px auto 0; padding:0 20px}
     .live-grid{display:grid; grid-template-columns:1fr; gap:16px}
     .live-card{background:linear-gradient(180deg, rgba(18,22,40,.9) 0%, rgba(10,12,22,.92) 100%); border:1.5px solid var(--border); border-radius:24px; padding:18px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px}
@@ -136,139 +168,223 @@
     .live-btn{display:inline-block; padding:10px 14px; border-radius:12px; background:#101425; border:1.5px solid var(--border); color:#e9ecff; text-decoration:none; font-weight:700}
     .live-btn:hover{transform:translateY(-1px); filter:saturate(1.05)}
 
+    /* ===== FAQ (accordion, TreeHacks-like) ===== */
+    .faqs{max-width:1100px; margin:56px auto; padding:0 20px}
+    .accordion{border-radius:24px; background:#373FA8; box-shadow:2px 2px 6px 0 #15176C; padding:8px 16px}
+    .ac-item{border-bottom:1px solid rgba(255,255,255,.12)}
+    .ac-item:last-child{border-bottom:0}
+    .ac-btn{width:100%; text-align:left; background:transparent; border:0; padding:16px 6px; color:#fff; font-size:20px; font-weight:700; display:flex; align-items:center; justify-content:space-between; cursor:pointer}
+    .ac-panel{overflow:hidden; transition:grid-template-rows .2s ease; display:grid; grid-template-rows:0fr}
+    .ac-panel.open{grid-template-rows:1fr}
+    .ac-inner{min-height:0}
+    .faq-divider{height:1px; background:linear-gradient(90deg, #93a8ff 0, transparent 100%); opacity:.5}
+
+    /* ===== Reveal on scroll ===== */
     .reveal{opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease}
     .reveal.in{opacity:1; transform:translateY(0)}
 
+    /* Runner line */
     #runner{display:block; width:100vw; height:130px; margin-top:44px; border:none;
       background:linear-gradient(0deg,#0c0f22 0%, #0a0d1d 60%) }
+
+    footer { max-width:1100px; margin:auto; padding:22px 20px; display:flex; align-items:center; justify-content:space-between; }
   </style>
 </head>
 <body>
-  <canvas id="starfield"></canvas>
-  <div class="nebula" aria-hidden="true"></div>
+  <!-- Background -->
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <div class="nebula parallax-1" aria-hidden="true"></div>
+  <div class="planet p1 float-8s-10px parallax-2" aria-hidden="true"></div>
+  <div class="planet p2 float-6s-tilt parallax-1" aria-hidden="true"></div>
+  <div class="planet p3 float-5s-5px parallax-2" aria-hidden="true"></div>
 
-  <header>
+  <!-- Nav -->
+  <nav class="site-nav" role="navigation">
     <div class="brand">yuhee.dev</div>
-    <nav class="actions">
-      <a class="pill" href="https://www.linkedin.com/in/yuhee123/">LinkedIn</a>
-      <a class="pill" href="resume.pdf">Resume</a>
-      <a class="pill" href="https://github.com/yuhee1234">GitHub</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <!-- NOTE: Convert your HEIC to JPG/PNG and name it exactly IMG_5365.jpg -->
-    <img src="IMG_5365_3.jpg" alt="Portrait of Yuhee Lefkowitz" />
-
-    <div>
-      <h1>hi<br>my name is <span class="accent">Yuhee Lefkowitz</span><br>a strategist and builder</h1>
-      <p>I'm a student studying Computer and Data Science (emphasis in Business & Industrial Analytics) at UC Berkeley. I've done things like engineer scalable APIs in my internships to leading social product launches. I really enjoy creating experiences that blend human insight with technical depth. Outside of work though, I like to stay pretty active whether it's playing tennis, running 5's in basketball, or maybe running in a nearby half-marathon. I also am really passionate about content creation! </p>
+    <div class="links" aria-label="Primary">
+      <a class="link" href="#home">home</a>
+      <a class="link" href="#projects">projects</a>
+      <a class="link" href="#product">product</a>
+      <a class="link" href="#live">live demos</a>
+      <a class="link" href="#faq">faq</a>
     </div>
-  </section>
-
-  <!-- Coding Projects -->
-  <section class="projects">
-    <h2>Coding Projects</h2>
-    <div class="carousel" data-autoplay="true" data-interval="4200">
-      <button class="nav prev" aria-label="Previous">&#x276E;</button>
-      <div class="viewport">
-        <div class="track">
-          <article class="proj-card">
-            <h3>Capybara Maps</h3>
-            <p class="proj-desc">SwiftUI iOS app with MapKit overlays and a Dockerized Node + PostgreSQL (PostGIS) backend for geospatial nearest-neighbor queries. Added caching and async fetch to keep city-wide queries sub-second, plus fault-tolerant retries and health checks for global deploys.</p>
-            <div class="cta">
-              <a class="btn" href="https://github.com/yuhee1234/capybaramaps" target="_blank">GitHub</a>
-            </div>
-            <div class="tags"><span class="tag">SwiftUI</span><span class="tag">MapKit</span><span class="tag">PostGIS</span><span class="tag">Docker</span></div>
-          </article>
-
-          <article class="proj-card">
-            <h3>StockSphere</h3>
-            <p class="proj-desc">Full-stack stock analytics with Next.js + Flask microservices. Redis-cached endpoints and Twilio SMS alerting sustain &lt;100ms responses under load. Built failure recovery and rate-limit backoff; added portfolio simulations and alert rules for retail users.</p>
-            <div class="cta">
-              <a class="btn" href="https://github.com/yuhee1234/StockSphere" target="_blank">GitHub</a>
-            </div>
-            <div class="tags"><span class="tag">Next.js</span><span class="tag">Flask</span><span class="tag">Redis</span><span class="tag">Twilio</span></div>
-          </article>
-
-          <article class="proj-card">
-            <h3>CurryStats</h3>
-            <p class="proj-desc">FastAPI dashboard that fuses NBA play data with HuggingFace sentiment on news + social. Interactive charts tie game events to fan mood, with cohort comparisons and event annotations for quick post-game analysis.</p>
-            <div class="cta">
-              <a class="btn" href="https://github.com/yuhee1234/CurryStats" target="_blank">GitHub</a>
-            </div>
-            <div class="tags"><span class="tag">FastAPI</span><span class="tag">HuggingFace</span><span class="tag">NBA Stats API</span><span class="tag">Plotly</span></div>
-          </article>
-
-          <article class="proj-card">
-            <h3>Notify.careers Alerts</h3>
-            <p class="proj-desc">Scoped PRD and v1 launch checklist for job alerts; defined success metrics and backlog triage. Implemented rules logic and QA gates to ensure clean GA and measurable engagement impact.</p>
-            <div class="cta">
-              <a class="btn" href="https://github.com/yuhee1234" target="_blank">GitHub</a>
-            </div>
-            <div class="tags"><span class="tag">PRD</span><span class="tag">A/B</span><span class="tag">Metrics</span><span class="tag">Launch</span></div>
-          </article>
-        </div>
+    <div class="actions">
+      <a class="pill" href="https://www.linkedin.com/in/yuhee123/" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a class="pill" href="resume.pdf" target="_blank" rel="noreferrer">Resume</a>
+      <a class="pill" href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">GitHub</a>
+      <button class="menu-btn" id="openMenu" aria-label="Open menu">Menu ▾</button>
+    </div>
+  </nav>
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="shade" id="closeMenu"></div>
+    <div class="panel">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px">
+        <strong>Navigate</strong>
+        <button class="menu-btn" id="closeBtn">Close ✕</button>
       </div>
-      <button class="nav next" aria-label="Next">&#x276F;</button>
-    </div>
-  </section>
-
-  <!-- Product Projects -->
-  <section class="pm-projects">
-    <h2 class="pm-heading">Product Projects</h2>
-    <div class="pm-col">
-      <a href="dashboard_1sess.html" target="_blank" style="text-decoration:none; color:inherit;">
-        <article class="pm-card reveal" style="cursor:pointer;">
-          <div class="pm-meta">Case Study</div>
-          <h3>First-Session Personalization Sprint</h3>
-          <p>Shipped micro-onboarding (“Pick 3 interests”) and feed personalization A/B. Result: <strong>+9% first-session</strong> and <strong>+6pp D7 retention</strong>. Owned success metrics, rollout, and post-launch analysis; coordinated design + eng in a two-week sprint.</p>
-        </article>
-      </a>
-
-      <article class="pm-card reveal">
-        <div class="pm-meta">MVP</div>
-        <h3>ShopLens — Visual AI Shopping</h3>
-        <p>Led AI visual search MVP: user uploads outfit → shoppable matches. Ran user tests (n=30), refined UX/copy, and improved add-to-cart conversion <strong>+18%</strong>. Scoped KPIs, set guardrails, and managed phased rollout.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- Live Demos (last quarter) -->
-  <section class="live">
-    <h2 class="pm-heading">Live Demos</h2>
-    <div class="live-grid">
-      <div class="live-card">
-        <div>
-          <div class="pm-meta">Case Study</div>
-          <h3 class="live-title">First-Session Personalization Sprint</h3>
-        </div>
-        <div class="live-actions">
-          <a class="live-btn" href="dashboard_1sess.html" target="_blank">Open Case Study</a>
-        </div>
+      <div style="display:flex; flex-direction:column; gap:12px">
+        <a class="link" href="#home">home</a>
+        <a class="link" href="#projects">projects</a>
+        <a class="link" href="#product">product</a>
+        <a class="link" href="#live">live demos</a>
+        <a class="link" href="#faq">faq</a>
       </div>
+    </div>
+  </div>
 
-      <div class="live-card">
-        <div>
+  <main id="home">
+    <!-- Hero -->
+    <section class="hero">
+      <img src="IMG_5365_3.jpg" alt="Portrait of Yuhee Lefkowitz" class="float-6s-tilt" />
+      <div>
+        <h1>hi<br>my name is <span class="accent">Yuhee Lefkowitz</span><br>a strategist and builder</h1>
+        <p>I'm a student studying Computer and Data Science (emphasis in Business & Industrial Analytics) at UC Berkeley. I've done things like engineer scalable APIs in my internships to leading social product launches. I really enjoy creating experiences that blend human insight with technical depth. Outside of work though, I like to stay pretty active whether it's playing tennis, running 5's in basketball, or maybe running in a nearby half-marathon. I also am really passionate about content creation! </p>
+      </div>
+    </section>
+
+    <!-- Coding Projects -->
+    <section class="projects reveal" id="projects">
+      <h2>Coding Projects</h2>
+      <div class="carousel" data-autoplay="true" data-interval="4200">
+        <button class="nav prev" aria-label="Previous">&#x276E;</button>
+        <div class="viewport">
+          <div class="track">
+            <article class="proj-card">
+              <h3>Capybara Maps</h3>
+              <p class="proj-desc">SwiftUI iOS app with MapKit overlays and a Dockerized Node + PostgreSQL (PostGIS) backend for geospatial nearest-neighbor queries. Added caching and async fetch to keep city-wide queries sub-second, plus fault-tolerant retries and health checks for global deploys.</p>
+              <div class="cta">
+                <a class="btn" href="https://github.com/yuhee1234/capybaramaps" target="_blank" rel="noreferrer">GitHub</a>
+              </div>
+              <div class="tags"><span class="tag">SwiftUI</span><span class="tag">MapKit</span><span class="tag">PostGIS</span><span class="tag">Docker</span></div>
+            </article>
+
+            <article class="proj-card">
+              <h3>StockSphere</h3>
+              <p class="proj-desc">Full-stack stock analytics with Next.js + Flask microservices. Redis-cached endpoints and Twilio SMS alerting sustain &lt;100ms responses under load. Built failure recovery and rate-limit backoff; added portfolio simulations and alert rules for retail users.</p>
+              <div class="cta">
+                <a class="btn" href="https://github.com/yuhee1234/StockSphere" target="_blank" rel="noreferrer">GitHub</a>
+              </div>
+              <div class="tags"><span class="tag">Next.js</span><span class="tag">Flask</span><span class="tag">Redis</span><span class="tag">Twilio</span></div>
+            </article>
+
+            <article class="proj-card">
+              <h3>CurryStats</h3>
+              <p class="proj-desc">FastAPI dashboard that fuses NBA play data with HuggingFace sentiment on news + social. Interactive charts tie game events to fan mood, with cohort comparisons and event annotations for quick post-game analysis.</p>
+              <div class="cta">
+                <a class="btn" href="https://github.com/yuhee1234/CurryStats" target="_blank" rel="noreferrer">GitHub</a>
+              </div>
+              <div class="tags"><span class="tag">FastAPI</span><span class="tag">HuggingFace</span><span class="tag">NBA Stats API</span><span class="tag">Plotly</span></div>
+            </article>
+
+            <article class="proj-card">
+              <h3>Notify.careers Alerts</h3>
+              <p class="proj-desc">Scoped PRD and v1 launch checklist for job alerts; defined success metrics and backlog triage. Implemented rules logic and QA gates to ensure clean GA and measurable engagement impact.</p>
+              <div class="cta">
+                <a class="btn" href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">GitHub</a>
+              </div>
+              <div class="tags"><span class="tag">PRD</span><span class="tag">A/B</span><span class="tag">Metrics</span><span class="tag">Launch</span></div>
+            </article>
+          </div>
+        </div>
+        <button class="nav next" aria-label="Next">&#x276F;</button>
+      </div>
+    </section>
+
+    <!-- Product Projects -->
+    <section class="pm-projects reveal" id="product">
+      <h2 class="pm-heading">Product Projects</h2>
+      <div class="pm-col">
+        <a href="dashboard_1sess.html" target="_blank" style="text-decoration:none; color:inherit;">
+          <article class="pm-card" style="cursor:pointer;">
+            <div class="pm-meta">Case Study</div>
+            <h3>First-Session Personalization Sprint</h3>
+            <p>Shipped micro-onboarding (“Pick 3 interests”) and feed personalization A/B. Result: <strong>+9% first-session</strong> and <strong>+6pp D7 retention</strong>. Owned success metrics, rollout, and post-launch analysis; coordinated design + eng in a two-week sprint.</p>
+          </article>
+        </a>
+
+        <article class="pm-card">
           <div class="pm-meta">MVP</div>
-          <h3 class="live-title">ShopLens — Visual AI Shopping</h3>
+          <h3>ShopLens — Visual AI Shopping</h3>
+          <p>Led AI visual search MVP: user uploads outfit → shoppable matches. Ran user tests (n=30), refined UX/copy, and improved add-to-cart conversion <strong>+18%</strong>. Scoped KPIs, set guardrails, and managed phased rollout.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Live Demos (last quarter) -->
+    <section class="live reveal" id="live">
+      <h2 class="pm-heading">Live Demos</h2>
+      <div class="live-grid">
+        <div class="live-card">
+          <div>
+            <div class="pm-meta">Case Study</div>
+            <h3 class="live-title">First-Session Personalization Sprint</h3>
+          </div>
+          <div class="live-actions">
+            <a class="live-btn" href="dashboard_1sess.html" target="_blank" rel="noreferrer">Open Case Study</a>
+          </div>
         </div>
-        <div class="live-actions">
-          <a class="live-btn" href="https://yuhee1234.github.io/shoplens/" target="_blank">Open Live Demo</a>
-          <a class="live-btn" href="https://github.com/yuhee1234/shoplens" target="_blank">GitHub</a>
+
+        <div class="live-card">
+          <div>
+            <div class="pm-meta">MVP</div>
+            <h3 class="live-title">ShopLens — Visual AI Shopping</h3>
+          </div>
+          <div class="live-actions">
+            <a class="live-btn" href="https://yuhee1234.github.io/shoplens/" target="_blank" rel="noreferrer">Open Live Demo</a>
+            <a class="live-btn" href="https://github.com/yuhee1234/shoplens" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <canvas id="runner"></canvas>
+    <!-- FAQs -->
+    <section class="faqs reveal" id="faq">
+      <h2>FAQ</h2>
+      <div class="accordion">
+        <div class="ac-item">
+          <button class="ac-btn" aria-expanded="false">Who are you?<span>▾</span></button>
+          <div class="ac-panel" hidden>
+            <div class="ac-inner">
+              <p>I'm Yuhee — a strategist & builder studying Computer Science and Data Science at UC Berkeley, focused on product, APIs, and ML-powered experiences.</p>
+            </div>
+          </div>
+        </div>
+        <div class="faq-divider"></div>
+        <div class="ac-item">
+          <button class="ac-btn" aria-expanded="false">How can we work together?<span>▾</span></button>
+          <div class="ac-panel" hidden>
+            <div class="ac-inner"><p>Reach out on LinkedIn, or open an issue in any repo. I love fast iterations, clear metrics, and shipping polished MVPs.</p></div>
+          </div>
+        </div>
+        <div class="faq-divider"></div>
+        <div class="ac-item">
+          <button class="ac-btn" aria-expanded="false">Do you have a resume?<span>▾</span></button>
+          <div class="ac-panel" hidden>
+            <div class="ac-inner"><p>Yep — tap the Resume button in the nav for a current PDF.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <footer>
-    <span>© <span id="year"></span> Yuhee Lefkowitz.</span>
-  </footer>
+    <canvas id="runner" aria-hidden="true"></canvas>
+
+    <footer>
+      <span>© <span id="year"></span> Yuhee Lefkowitz.</span>
+    </footer>
+  </main>
 
   <script>
-    /* Parallax for nebula */
+    /* Maintain scroll variable for parallax */
+    (function(){
+      const d=document.documentElement; const b=document.body;
+      function raf(){
+        const sc = (d.scrollTop||b.scrollTop)||0; d.style.setProperty('--scroll', sc);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    })();
+
+    /* Cursor parallax to nebula */
     (function(){
       let tx=0, ty=0, cx=0, cy=0; const ease=0.06, range=60;
       function set(x,y){ const w=innerWidth||1, h=innerHeight||1; tx=(x/w)*2-1; ty=(y/h)*2-1; }
@@ -281,7 +397,7 @@
       })();
     })();
 
-    /* Starfield + meteors */
+    /* Starfield + meteors (background) */
     (function(){
       const c=document.getElementById('starfield');
       const x=c.getContext('2d');
@@ -387,7 +503,34 @@
       document.querySelectorAll('.reveal, .proj-card').forEach(el=>io.observe(el));
     })();
 
-    /* T-Rex runner */
+    /* FAQ accordion */
+    (function(){
+      document.querySelectorAll('.ac-item').forEach(item=>{
+        const btn=item.querySelector('.ac-btn');
+        const panel=item.querySelector('.ac-panel');
+        btn.addEventListener('click',()=>{
+          const open = panel.classList.toggle('open');
+          btn.setAttribute('aria-expanded', String(open));
+          if(open){ panel.removeAttribute('hidden'); } else { panel.setAttribute('hidden',''); }
+        });
+      });
+    })();
+
+    /* Mobile drawer */
+    (function(){
+      const drawer=document.getElementById('drawer');
+      const openBtn=document.getElementById('openMenu');
+      const closeBtn=document.getElementById('closeBtn');
+      const shade=document.getElementById('closeMenu');
+      function open(){ drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); }
+      function close(){ drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); }
+      openBtn && openBtn.addEventListener('click', open);
+      closeBtn && closeBtn.addEventListener('click', close);
+      shade && shade.addEventListener('click', close);
+      drawer.querySelectorAll('a.link').forEach(a=>a.addEventListener('click', close));
+    })();
+
+    /* T-Rex runner-ish footer line */
     (function(){
       const canvas=document.getElementById('runner'); const ctx=canvas.getContext('2d'); let W=innerWidth, H=130; function resize(){ W=innerWidth; canvas.width=W; canvas.height=H; } addEventListener('resize', resize); resize();
       const groundY=H-28; const d={x:40,y:groundY,w:22,h:24,vy:0,s:100}; const G=460, J=-240; let a=0, t=0;
