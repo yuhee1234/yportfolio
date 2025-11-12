@@ -189,6 +189,24 @@
 
     footer { max-width:1100px; margin:auto; padding:22px 20px; display:flex; align-items:center; justify-content:space-between; }
   </style>
+  <style id="berkeley-theme-overrides">
+    :root{ --accent:#FDB515; --accent2:#7aa5ff; }
+    body{ background:radial-gradient(1400px 900px at 20% 0%, #0b1a33 0%, #0a0d1a 55%, #070a14 100%); }
+    .brand{ color:#FDB515; }
+    .pill{ border-color:#FDB515; box-shadow:inset 0 0 0 0 rgba(253,181,21,.35), 0 6px 18px rgba(0,0,0,.25); }
+    .pill:hover{ box-shadow:inset 0 0 12px 0 rgba(253,181,21,.45), 0 12px 28px rgba(0,0,0,.35); border-color:#ffe39b }
+    .proj-card::before{ background:linear-gradient(90deg,#FDB515,#ffe39b); filter:drop-shadow(0 0 8px rgba(253,181,21,.35)); }
+    .nav{ border-color:#FDB515 }
+    .nav:hover{ box-shadow:0 0 18px rgba(253,181,21,.45) }
+    .pm-meta{ color:#FDB515 }
+    .accordion{ background:#003262; box-shadow:2px 2px 6px 0 #0b1a33; }
+    .faq-divider{ background:linear-gradient(90deg,#FDB515 0, transparent 100%); opacity:.6 }
+    .accent{ color:#ffe39b }
+    .planet.p1{ background:radial-gradient(circle at 30% 30%, #8db0ff, #3a64ce 60%, #1b2f68 100%);} 
+    .planet.p2{ background:radial-gradient(circle at 40% 40%, #ffe39b, #FDB515 55%, #a86f00 100%);} 
+    .planet.p3{ background:radial-gradient(circle at 35% 35%, #c6d9ff, #7496ff 55%, #2b4ea3 100%);} 
+    @media (prefers-reduced-motion:reduce){ .float-5s-5px,.float-8s-10px,.float-6s-tilt{animation:none} }
+  </style>
 </head>
 <body>
   <!-- Background -->
@@ -197,6 +215,22 @@
   <div class="planet p1 float-8s-10px parallax-2" aria-hidden="true"></div>
   <div class="planet p2 float-6s-tilt parallax-1" aria-hidden="true"></div>
   <div class="planet p3 float-5s-5px parallax-2" aria-hidden="true"></div>
+
+  <!-- Campanile (simplified) -->
+  <svg class="campanile parallax-2 float-8s-10px" viewBox="0 0 140 360" aria-hidden="true" style="position:fixed; left:2vw; bottom:2vh; width:min(22vw,340px); z-index:-190; opacity:.95;">
+    <defs>
+      <linearGradient id="tower" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="#E8CDA5"/>
+        <stop offset="100%" stop-color="#CBA678"/>
+      </linearGradient>
+    </defs>
+    <g transform="translate(10,10)">
+      <rect x="30" y="60" width="60" height="240" rx="4" fill="url(#tower)" stroke="#9e7d4d" stroke-width="2"/>
+      <rect x="50" y="30" width="20" height="30" fill="#E8CDA5" stroke="#9e7d4d" stroke-width="2"/>
+      <polygon points="60,0 90,30 30,30" fill="#CBA678" stroke="#9e7d4d" stroke-width="2"/>
+      <rect x="46" y="90" width="8" height="24" fill="#0b2b4a"/><rect x="66" y="90" width="8" height="24" fill="#0b2b4a"/>
+    </g>
+  </svg>
 
   <!-- Nav -->
   <nav class="site-nav" role="navigation">
@@ -242,7 +276,38 @@
       </div>
     </section>
 
-    <!-- Coding Projects -->
+    <!-- Berkeley Orbit Focus Areas (like Tracks) -->
+  <section class="orbit reveal" aria-label="Focus Areas">
+    <h2>Focus Areas</h2>
+    <div class="ring" style="position:relative; width:min(90vw,900px); height:min(90vw,900px); margin:0 auto; border-radius:50%; background:radial-gradient(closest-side, rgba(125,157,255,.06), rgba(125,157,255,0));">
+      <div class="octo" style="position:absolute; width:160px; height:160px; left:50%; top:50%; transform:translate(-50%,-50%) rotate(0deg) translate(0,-260px);">
+        <div class="shape" style="width:100%; height:100%; clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%); background:linear-gradient(180deg, rgba(253,181,21,.22), rgba(0,0,0,.18)); border:1.5px solid rgba(255,255,255,.16); border-radius:18px;"></div>
+        <h3 style="position:absolute; bottom:-34px; left:50%; transform:translateX(-50%); font-size:14px; letter-spacing:.6px">Edge AI</h3>
+      </div>
+      <div class="octo" style="position:absolute; width:160px; height:160px; left:50%; top:50%; transform:translate(-50%,-50%) rotate(60deg) translate(0,-260px);">
+        <div class="shape" style="width:100%; height:100%; clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.18)); border:1.5px solid rgba(255,255,255,.16); border-radius:18px;"></div>
+        <h3 style="position:absolute; bottom:-34px; left:50%; transform:translateX(-50%); font-size:14px; letter-spacing:.6px">Autonomy</h3>
+      </div>
+      <div class="octo" style="position:absolute; width:160px; height:160px; left:50%; top:50%; transform:translate(-50%,-50%) rotate(120deg) translate(0,-260px);">
+        <div class="shape" style="width:100%; height:100%; clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.18)); border:1.5px solid rgba(255,255,255,.16); border-radius:18px;"></div>
+        <h3 style="position:absolute; bottom:-34px; left:50%; transform:translateX(-50%); font-size:14px; letter-spacing:.6px">Fintech</h3>
+      </div>
+      <div class="octo" style="position:absolute; width:160px; height:160px; left:50%; top:50%; transform:translate(-50%,-50%) rotate(180deg) translate(0,-260px);">
+        <div class="shape" style="width:100%; height:100%; clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.18)); border:1.5px solid rgba(255,255,255,.16); border-radius:18px;"></div>
+        <h3 style="position:absolute; bottom:-34px; left:50%; transform:translateX(-50%); font-size:14px; letter-spacing:.6px">Education</h3>
+      </div>
+      <div class="octo" style="position:absolute; width:160px; height:160px; left:50%; top:50%; transform:translate(-50%,-50%) rotate(240deg) translate(0,-260px);">
+        <div class="shape" style="width:100%; height:100%; clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.18)); border:1.5px solid rgba(255,255,255,.16); border-radius:18px;"></div>
+        <h3 style="position:absolute; bottom:-34px; left:50%; transform:translateX(-50%); font-size:14px; letter-spacing:.6px">Health</h3>
+      </div>
+      <div class="octo" style="position:absolute; width:160px; height:160px; left:50%; top:50%; transform:translate(-50%,-50%) rotate(300deg) translate(0,-260px);">
+        <div class="shape" style="width:100%; height:100%; clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.18)); border:1.5px solid rgba(255,255,255,.16); border-radius:18px;"></div>
+        <h3 style="position:absolute; bottom:-34px; left:50%; transform:translateX(-50%); font-size:14px; letter-spacing:.6px">Sustainability</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coding Projects -->
     <section class="projects reveal" id="projects">
       <h2>Coding Projects</h2>
       <div class="carousel" data-autoplay="true" data-interval="4200">
