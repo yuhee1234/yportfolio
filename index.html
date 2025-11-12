@@ -1,161 +1,158 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Yuhee Hacks — UC Berkeley</title>
-  <meta name="description" content="Berkeley-themed hackathon-style portfolio for Yuhee Lefkowitz." />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
-  <style>
-    :root{
-      --bg:#07122a; --ink:#EAF0FF; --muted:#b7c6ef;
-      --cal:#FDB515; --cal2:#ffe39b; --blue:#003262;
-      --card:rgba(14,18,40,.8); --border:rgba(255,255,255,.1);
-      --shadow:0 12px 44px rgba(0,0,0,.5);
-      --nav-h:84px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; color:var(--ink);
-      background:radial-gradient(1200px 900px at 20% -10%,#0b1a33 0%,var(--bg) 55%,#050c1d 100%);
-      font-family:Inter,system-ui,sans-serif; overflow-x:hidden;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Yuhee Hacks — UC Berkeley</title>
+<meta name="description" content="Berkeley-themed hackathon-style portfolio for Yuhee Lefkowitz." />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#07122a; --ink:#EAF0FF; --muted:#b7c6ef;
+    --cal:#FDB515; --cal2:#ffe39b; --blue:#003262;
+    --card:rgba(14,18,40,.8); --border:rgba(255,255,255,.1);
+    --shadow:0 12px 44px rgba(0,0,0,.5);
+    --nav-h:84px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; color:var(--ink);
+    background:radial-gradient(1200px 900px at 20% -10%,#0b1a33 0%,var(--bg) 55%,#050c1d 100%);
+    font-family:Inter,system-ui,sans-serif; overflow-x:hidden;
+  }
 
-    /* ===== Background ===== */
-    canvas#stars{position:fixed; inset:0; z-index:-300}
-    canvas#fx{position:fixed; inset:0; z-index:-200; pointer-events:none}
+  /* ===== BACKGROUND ===== */
+  canvas#stars{position:fixed; inset:0; z-index:-300}
+  canvas#fx{position:fixed; inset:0; z-index:-200; pointer-events:none}
 
-    .planet{position:fixed; border-radius:50%; opacity:.9; will-change:transform; z-index:-220}
-    .p1{width:280px; height:280px; left:6vw; top:18vh; background:radial-gradient(circle at 30% 30%,#8db0ff,#3a64ce 60%,#1b2f68 100%)}
-    .p2{width:340px; height:340px; right:8vw; top:35vh; background:radial-gradient(circle at 40% 40%,#ffe39b,#FDB515 55%,#a86f00 100%)}
-    .p3{width:420px; height:420px; left:-8vw; bottom:-14vh; background:radial-gradient(circle at 35% 35%,#c6d9ff,#7496ff 55%,#2b4ea3 100%)}
-    @keyframes floatY{0%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-10px,0)}100%{transform:translate3d(0,0,0)}}
-    .floatY{animation:floatY 8s ease-in-out infinite}
+  .planet{position:fixed; border-radius:50%; opacity:.9; will-change:transform; z-index:-220}
+  .p1{width:280px; height:280px; left:6vw; top:18vh; background:radial-gradient(circle at 30% 30%,#8db0ff,#3a64ce 60%,#1b2f68 100%)}
+  .p2{width:340px; height:340px; right:8vw; top:35vh; background:radial-gradient(circle at 40% 40%,#ffe39b,#FDB515 55%,#a86f00 100%)}
+  .p3{width:420px; height:420px; left:-8vw; bottom:-14vh; background:radial-gradient(circle at 35% 35%,#c6d9ff,#7496ff 55%,#2b4ea3 100%)}
+  @keyframes floatY{0%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-10px,0)}100%{transform:translate3d(0,0,0)}}
+  .floatY{animation:floatY 8s ease-in-out infinite}
 
-    /* ===== Nav ===== */
-    .nav{
-      position:fixed; inset:0 0 auto 0; height:var(--nav-h);
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      padding:0 18px; z-index:1000;
-      background:linear-gradient(180deg,rgba(0,20,40,.85),rgba(10,12,22,.35)); backdrop-filter: blur(7px);
-      border-bottom:1px solid rgba(255,255,255,.06)
-    }
-    .brand{display:flex; align-items:center; gap:12px; font:800 20px Outfit}
-    .brand .leaf{width:28px; height:28px; border-radius:50%; background:radial-gradient(circle at 35% 35%, var(--cal), var(--cal2)); box-shadow:0 0 22px rgba(253,181,21,.35)}
-    .tabs{display:flex; gap:20px}
-    .tabs a{color:var(--muted); text-decoration:none; font:700 14px Outfit}
-    .tabs a:hover{color:#fff}
-    .pill{
-      padding:9px 14px; border:1.5px solid var(--cal); border-radius:999px; color:#fff; text-decoration:none; font:700 14px Inter;
-      background:rgba(16,20,40,.7); transition:transform .18s ease, box-shadow .18s ease, border-color .2s ease
-    }
-    .pill:hover{transform:translateY(-2px); box-shadow:0 10px 22px rgba(0,0,0,.3); border-color:#ffe39b}
+  /* ===== NAV ===== */
+  .nav{
+    position:fixed; inset:0 0 auto 0; height:var(--nav-h);
+    display:flex; align-items:center; justify-content:space-between; gap:12px; padding:0 18px; z-index:1000;
+    background:linear-gradient(180deg,rgba(0,20,40,.85),rgba(10,12,22,.35)); backdrop-filter: blur(7px);
+    border-bottom:1px solid rgba(255,255,255,.06)
+  }
+  .brand{display:flex; align-items:center; gap:12px; font:800 20px Outfit}
+  .brand .leaf{width:28px; height:28px; border-radius:50%; background:radial-gradient(circle at 35% 35%, var(--cal), var(--cal2)); box-shadow:0 0 22px rgba(253,181,21,.35)}
+  .tabs{display:flex; gap:20px}
+  .tabs a{color:var(--muted); text-decoration:none; font:700 14px Outfit}
+  .tabs a:hover{color:#fff}
+  .pill{
+    padding:9px 14px; border:1.5px solid var(--cal); border-radius:999px; color:#fff; text-decoration:none; font:700 14px Inter;
+    background:rgba(16,20,40,.7); transition:transform .18s ease, box-shadow .18s ease, border-color .2s ease
+  }
+  .pill:hover{transform:translateY(-2px); box-shadow:0 10px 22px rgba(0,0,0,.3); border-color:#ffe39b}
 
-    main{padding-top:calc(var(--nav-h) + 12px)}
+  main{padding-top:calc(var(--nav-h) + 12px)}
 
-    /* ===== Hero ===== */
-    .hero{position:relative; min-height:86vh; display:grid; place-items:center}
-    .scene{position:relative; width:min(1200px,94vw); height:560px}
+  /* ===== HERO ===== */
+  .hero{position:relative; min-height:86vh; display:grid; place-items:center}
+  .scene{position:relative; width:min(1200px,94vw); height:560px}
 
-    .sign{
-      position:absolute; left:58%; top:46%; transform:translate(-50%,-50%);
-      width:min(600px,86vw); aspect-ratio:3/2; display:grid; place-items:center; text-align:center;
-      font:800 64px/0.9 Outfit; color:#0a1a2e;
-      animation:popIn .9s cubic-bezier(.22,1,.36,1) .05s both;
-      z-index:2;
-    }
-    .sign .board{position:absolute; inset:0; border-radius:18px; background:linear-gradient(180deg,#fff8dc,#fff3bf); border:6px solid #5ea6ff; box-shadow:0 12px 40px rgba(0,0,0,.45)}
-    .sign .pin{position:absolute; left:50%; bottom:-30px; width:0; height:0; border-left:18px solid transparent; border-right:18px solid transparent; border-top:34px solid #5ea6ff}
-    .sign .title{position:relative; z-index:2; letter-spacing:1.5px; color:#0b2b4a; text-shadow:0 2px 0 rgba(255,255,255,.6)}
-    .date{font:800 16px Outfit; letter-spacing:2px; color:#1c3f62; margin-top:6px}
-    @keyframes popIn{0%{transform:translate(-50%,-50%) scale(.96); opacity:0}60%{transform:translate(-50%,-50%) scale(1.05); opacity:1}100%{transform:translate(-50%,-50%) scale(1)}}
+  .sign{
+    position:absolute; left:58%; top:46%; transform:translate(-50%,-50%);
+    width:min(600px,86vw); aspect-ratio:3/2; display:grid; place-items:center; text-align:center;
+    font:800 64px/0.9 Outfit; color:#0a1a2e; z-index:2;
+    animation:popIn .9s cubic-bezier(.22,1,.36,1) .05s both;
+  }
+  .sign .board{position:absolute; inset:0; border-radius:18px; background:linear-gradient(180deg,#fff8dc,#fff3bf); border:6px solid #5ea6ff; box-shadow:0 12px 40px rgba(0,0,0,.45)}
+  .sign .pin{position:absolute; left:50%; bottom:-30px; width:0; height:0; border-left:18px solid transparent; border-right:18px solid transparent; border-top:34px solid #5ea6ff}
+  .sign .title{position:relative; z-index:2; letter-spacing:1.5px; color:#0b2b4a; text-shadow:0 2px 0 rgba(255,255,255,.6)}
+  .date{font:800 16px Outfit; letter-spacing:2px; color:#1c3f62; margin-top:6px}
+  @keyframes popIn{0%{transform:translate(-50%,-50%) scale(.96); opacity:0}60%{transform:translate(-50%,-50%) scale(1.05); opacity:1}100%{transform:translate(-50%,-50%) scale(1)}}
 
-    /* Ship (bigger, shifted left) */
-    .ship{
-      position:absolute; left:-2vw; bottom:-6px; width:min(32vw,420px); z-index:3;
-      will-change:transform; transform:translate3d(0,0,0) scale(.92);
-      filter: drop-shadow(0 14px 30px rgba(0,0,0,.35));
-    }
-    .ship::after{
-      content:""; position:absolute; left:8%; right:8%; bottom:-10px; height:16px;
-      background:radial-gradient(50% 100% at 50% 0%, rgba(0,0,0,.35), rgba(0,0,0,0));
-      pointer-events:none;
-    }
-    .flame{
-      position:absolute; left:50%; bottom:-6px; width:18px; height:44px; transform:translateX(-50%);
-      background:radial-gradient(ellipse at 50% 80%, rgba(255,233,150,.95) 0%, rgba(255,160,0,.85) 45%, rgba(255,90,0,.6) 70%, rgba(255,90,0,0) 75%);
-      filter:blur(0.5px) drop-shadow(0 0 10px rgba(255,170,0,.65));
-      border-radius:12px 12px 50% 50%;
-      opacity:0; pointer-events:none;
-      animation:flameFlicker .08s infinite alternate ease-in-out;
-    }
-    .ship.boost .flame{height:64px; filter:blur(0.6px) drop-shadow(0 0 14px rgba(255,190,40,.85));}
-    @keyframes flameFlicker{from{transform:translateX(-50%) scaleX(.9) scaleY(1.02)}to{transform:translateX(-50%) scaleX(1.1) scaleY(.92)}}
+  /* Ship (bigger, left, with flame) */
+  .ship{
+    position:absolute; left:-2vw; bottom:-6px; width:min(32vw,440px); z-index:3;
+    will-change:transform; transform:translate3d(0,0,0) scale(.94);
+    filter: drop-shadow(0 14px 30px rgba(0,0,0,.35));
+  }
+  .ship::after{
+    content:""; position:absolute; left:8%; right:8%; bottom:-10px; height:16px;
+    background:radial-gradient(50% 100% at 50% 0%, rgba(0,0,0,.35), rgba(0,0,0,0));
+    pointer-events:none;
+  }
+  .flame{
+    position:absolute; left:50%; bottom:-6px; width:18px; height:44px; transform:translateX(-50%);
+    background:radial-gradient(ellipse at 50% 80%, rgba(255,233,150,.95) 0%, rgba(255,160,0,.85) 45%, rgba(255,90,0,.6) 70%, rgba(255,90,0,0) 75%);
+    filter:blur(0.5px) drop-shadow(0 0 10px rgba(255,170,0,.65));
+    border-radius:12px 12px 50% 50%; opacity:0; pointer-events:none;
+    animation:flameFlicker .08s infinite alternate ease-in-out;
+  }
+  .ship.boost .flame{height:64px; filter:blur(0.6px) drop-shadow(0 0 14px rgba(255,190,40,.85));}
+  @keyframes flameFlicker{from{transform:translateX(-50%) scaleX(.9) scaleY(1.02)}to{transform:translateX(-50%) scaleX(1.1) scaleY(.92)}}
 
-    /* Floating astronaut that follows scroll */
-    .astro{
-      position:fixed; width:140px; height:140px; left:60vw; top:20vh; z-index:4; pointer-events:none;
-      filter: drop-shadow(0 10px 22px rgba(0,0,0,.35));
-      transform-origin:50% 50%;
-    }
-    .astro svg{width:100%; height:100%}
-    .tether{
-      position:fixed; left:0; top:0; width:100vw; height:100vh; pointer-events:none; z-index:3;
-    }
+  /* Floating astronaut (no clicks captured) */
+  .astro{
+    position:fixed; width:148px; height:148px; left:60vw; top:22vh;
+    pointer-events:none; z-index:800; /* below nav? nav is 1000; clicks pass anyway */
+    filter: drop-shadow(0 10px 22px rgba(0,0,0,.35));
+    transform-origin:50% 50%;
+    will-change:transform,left,top;
+  }
+  .astro svg{width:100%; height:100%}
+  .tether{position:fixed; left:0; top:0; width:100vw; height:100vh; pointer-events:none; z-index:500;}
 
-    /* Sections / Cards */
-    .reveal{opacity:0; transform:translateY(12px); transition:opacity .6s ease, transform .6s ease}
-    .reveal.in{opacity:1; transform:none}
+  /* Sections / Cards */
+  .reveal{opacity:0; transform:translateY(12px); transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1; transform:none}
 
-    .about{max-width:1100px; margin:80px auto 0; padding:0 20px; display:grid; grid-template-columns:1.1fr 1fr; gap:22px}
-    .about-card{background:var(--card); border:1.5px solid var(--border); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow)}
-    .video{aspect-ratio:16/9; width:100%; border-radius:16px; overflow:hidden}
-    .stat{background:linear-gradient(180deg,#fff8dc,#fff3bf); color:#0b2b4a; border:4px solid #5ea6ff; border-radius:14px; padding:10px 14px; font:800 14px Outfit}
-    .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+  .about{max-width:1100px; margin:80px auto 0; padding:0 20px; display:grid; grid-template-columns:1.1fr 1fr; gap:22px}
+  .about-card{background:var(--card); border:1.5px solid var(--border); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow)}
+  .video{aspect-ratio:16/9; width:100%; border-radius:16px; overflow:hidden}
+  .stat{background:linear-gradient(180deg,#fff8dc,#fff3bf); color:#0b2b4a; border:4px solid #5ea6ff; border-radius:14px; padding:10px 14px; font:800 14px Outfit}
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
 
-    .tracks{position:relative; max-width:1200px; margin:60px auto; padding:0 20px}
-    .tracks h2{text-align:center; font:800 40px Outfit; margin:0 0 10px}
-    .ring{position:relative; width:min(90vw,900px); height:min(90vw,900px); margin:0 auto; border-radius:50%; background:radial-gradient(closest-side, rgba(125,157,255,.06), rgba(125,157,255,0))}
-    .token{position:absolute; width:170px; height:170px; left:50%; top:50%; display:grid; place-items:center; text-align:center; color:#fff; font:800 14px Outfit}
-    .token .oct{
-      width:100%; height:100%;
-      clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%);
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.2));
-      border:1.5px solid rgba(255,255,255,.16); border-radius:18px;
-      box-shadow:inset 0 -10px 40px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.28)
-    }
+  .tracks{position:relative; max-width:1200px; margin:60px auto; padding:0 20px}
+  .tracks h2{text-align:center; font:800 40px Outfit; margin:0 0 10px}
+  .ring{position:relative; width:min(90vw,900px); height:min(90vw,900px); margin:0 auto; border-radius:50%; background:radial-gradient(closest-side, rgba(125,157,255,.06), rgba(125,157,255,0))}
+  .token{position:absolute; width:170px; height:170px; left:50%; top:50%; display:grid; place-items:center; text-align:center; color:#fff; font:800 14px Outfit}
+  .token .oct{
+    width:100%; height:100%;
+    clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%);
+    background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.2));
+    border:1.5px solid rgba(255,255,255,.16); border-radius:18px;
+    box-shadow:inset 0 -10px 40px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.28)
+  }
 
-    .projects{max-width:1100px; margin:40px auto; padding:0 20px}
-    .projects h2{text-align:center; font:800 40px Outfit; margin:0 0 16px}
-    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
-    .card{background:var(--card); border:1.5px solid var(--border); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px}
-    .cta-row{margin-top:auto; display:flex; gap:8px}
+  .projects{max-width:1100px; margin:40px auto; padding:0 20px}
+  .projects h2{text-align:center; font:800 40px Outfit; margin:0 0 16px}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
+  .card{background:var(--card); border:1.5px solid var(--border); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px}
+  .cta-row{margin-top:auto; display:flex; gap:8px}
 
-    .sponsors{position:relative; max-width:1100px; margin:60px auto; padding:0 20px; text-align:center}
-    .placard{display:inline-block; min-width:360px; max-width:min(88vw,560px); padding:22px 18px; background:linear-gradient(180deg,#fef9e6,#fff7cf); color:#0b2b4a; border:6px solid #5ea6ff; border-radius:16px; box-shadow:0 12px 40px rgba(0,0,0,.45); font:800 18px Outfit; transition:transform .18s ease, box-shadow .18s ease}
-    .placard:hover{transform:translateY(-2px); box-shadow:0 18px 44px rgba(0,0,0,.55)}
+  .sponsors{position:relative; max-width:1100px; margin:60px auto; padding:0 20px; text-align:center}
+  .placard{display:inline-block; min-width:360px; max-width:min(88vw,560px); padding:22px 18px; background:linear-gradient(180deg,#fef9e6,#fff7cf); color:#0b2b4a; border:6px solid #5ea6ff; border-radius:16px; box-shadow:0 12px 40px rgba(0,0,0,.45); font:800 18px Outfit; transition:transform .18s ease, box-shadow .18s ease}
+  .placard:hover{transform:translateY(-2px); box-shadow:0 18px 44px rgba(0,0,0,.55)}
 
-    .faq{max-width:1200px; margin:60px auto 80px; padding:0 20px; display:grid; grid-template-columns:360px 1fr; gap:22px}
-    .faq-left{background:#003262; color:#fff; border-radius:20px; box-shadow:2px 2px 6px #0b1a33; padding:14px 10px}
-    .accordion{border-radius:16px; overflow:hidden}
-    .item{border-bottom:1px solid rgba(255,255,255,.16)}
-    .item:last-child{border-bottom:0}
-    .q{width:100%; background:transparent; border:0; color:#fff; text-align:left; padding:14px 12px; font:800 16px Outfit; display:flex; align-items:center; justify-content:space-between; cursor:pointer}
-    .a{display:grid; grid-template-rows:0fr; transition:grid-template-rows .2s ease}
-    .a.open{grid-template-rows:1fr}
-    .a > div{min-height:0; padding:0 12px 12px; color:#EAF0FF}
+  .faq{max-width:1200px; margin:60px auto 80px; padding:0 20px; display:grid; grid-template-columns:360px 1fr; gap:22px}
+  .faq-left{background:#003262; color:#fff; border-radius:20px; box-shadow:2px 2px 6px #0b1a33; padding:14px 10px}
+  .accordion{border-radius:16px; overflow:hidden}
+  .item{border-bottom:1px solid rgba(255,255,255,.16)}
+  .item:last-child{border-bottom:0}
+  .q{width:100%; background:transparent; border:0; color:#fff; text-align:left; padding:14px 12px; font:800 16px Outfit; display:flex; align-items:center; justify-content:space-between; cursor:pointer}
+  .a{display:grid; grid-template-rows:0fr; transition:grid-template-rows .2s ease}
+  .a.open{grid-template-rows:1fr}
+  .a > div{min-height:0; padding:0 12px 12px; color:#EAF0FF}
 
-    footer{max-width:1100px; margin:40px auto; padding:0 20px 24px; color:var(--muted); text-align:center}
+  footer{max-width:1100px; margin:40px auto; padding:0 20px 24px; color:var(--muted); text-align:center}
 
-    html{scroll-behavior:smooth}
-    @media (prefers-reduced-motion:reduce){
-      .floatY{animation:none} .sign,.planet,.doodad{animation:none}
-    }
-  </style>
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){
+    .floatY{animation:none} .sign,.planet{animation:none}
+  }
+</style>
 </head>
 <body>
-  <!-- Background Layers -->
+  <!-- Background -->
   <canvas id="stars"></canvas>
   <canvas id="fx"></canvas>
   <div class="planet p1 floatY"></div>
@@ -163,7 +160,7 @@
   <div class="planet p3 floatY"></div>
 
   <!-- Nav -->
-  <header class="nav">
+  <header class="nav" id="nav">
     <div class="brand"><span class="leaf"></span> <span>YUHEE</span></div>
     <nav class="tabs" aria-label="Site">
       <a href="#about">about</a>
@@ -182,14 +179,14 @@
     <!-- HERO -->
     <section class="hero" id="home">
       <div class="scene">
-        <div class="sign">
+        <div class="sign" id="sign">
           <div class="board"></div>
           <div class="title">YUHEE HACKS</div>
           <div class="date">UC BERKELEY • 2026</div>
           <div class="pin"></div>
         </div>
 
-        <!-- Ship wrapper (SVG + flame) -->
+        <!-- Campanile rocket -->
         <div class="ship" id="ship">
           <svg class="campanile" viewBox="0 0 140 360" aria-hidden="true">
             <defs>
@@ -208,41 +205,32 @@
           <div class="flame" id="flame"></div>
         </div>
 
-        <!-- Floating UI bits -->
-        <div class="doodad chip" style="position:absolute; right:8%; top:10%; width:120px; height:80px; background:linear-gradient(180deg,#9cc5ff,#6da0f0); border:3px solid #d7e7ff; border-radius:10px"></div>
-        <div class="doodad brick" style="position:absolute; left:16%; top:6%; width:72px; height:42px; background:#6aa0ff; border:3px solid #d7e7ff; border-radius:8px"></div>
-        <div class="doodad brick" style="position:absolute; right:14%; bottom:8%; width:72px; height:42px; background:#ffc84d; border:3px solid #ffe39b; border-radius:8px"></div>
+        <!-- decorative chips -->
+        <div class="doodad" style="position:absolute; right:8%; top:10%; width:120px; height:80px; background:linear-gradient(180deg,#9cc5ff,#6da0f0); border:3px solid #d7e7ff; border-radius:10px"></div>
+        <div class="doodad" style="position:absolute; left:16%; top:6%; width:72px; height:42px; background:#6aa0ff; border:3px solid #d7e7ff; border-radius:8px"></div>
+        <div class="doodad" style="position:absolute; right:14%; bottom:8%; width:72px; height:42px; background:#ffc84d; border:3px solid #ffe39b; border-radius:8px"></div>
       </div>
     </section>
 
-    <!-- FOLLOWING ASTRONAUT + TETHER -->
+    <!-- Astronaut + Tether -->
     <svg class="tether" id="tether" viewBox="0 0 100 100" preserveAspectRatio="none">
-      <path id="tetherPath" d="M0,0 C25,25 50,50 100,100" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="0.8" stroke-linecap="round"/>
+      <path id="tetherPath" d="M0,0 C25,25 50,50 100,100" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="0.9" stroke-linecap="round"/>
     </svg>
     <div class="astro" id="astro" aria-hidden="true">
-      <!-- cute astronaut (helmet, face, boots) -->
       <svg viewBox="0 0 160 160">
-        <!-- shadow -->
         <ellipse cx="80" cy="150" rx="34" ry="12" fill="rgba(0,0,0,.25)"/>
-        <!-- body -->
         <rect x="60" y="70" width="40" height="46" rx="10" fill="#6aa0ff" />
-        <!-- arms -->
         <rect x="40" y="82" width="24" height="10" rx="5" fill="#6aa0ff"/>
         <rect x="96" y="82" width="24" height="10" rx="5" fill="#6aa0ff"/>
-        <!-- legs -->
         <rect x="66" y="114" width="12" height="18" rx="6" fill="#5b7bd1"/>
         <rect x="82" y="114" width="12" height="18" rx="6" fill="#5b7bd1"/>
-        <!-- boots -->
         <ellipse cx="72" cy="138" rx="12" ry="8" fill="#9c6531"/>
         <ellipse cx="88" cy="138" rx="12" ry="8" fill="#9c6531"/>
-        <!-- head -->
         <circle cx="80" cy="60" r="26" fill="#ffd6a3"/>
         <circle cx="80" cy="60" r="44" fill="rgba(255,255,255,.12)"/>
         <circle cx="80" cy="60" r="46" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="4"/>
-        <!-- eyes -->
         <circle cx="73" cy="60" r="5" fill="#173056"/>
         <circle cx="87" cy="60" r="5" fill="#173056"/>
-        <!-- highlight -->
         <circle cx="102" cy="42" r="6" fill="rgba(255,255,255,.5)"/>
       </svg>
     </div>
@@ -356,214 +344,211 @@
 
   <footer>© <span id="year"></span> Yuhee Lefkowitz — Made with 💛 & Cal spirit.</footer>
 
-  <!-- ===== Scripts ===== -->
-  <script>
-    // STARFIELD + COMETS
-    (function(){
-      const c=document.getElementById('stars'),x=c.getContext('2d');
-      let W=innerWidth,H=innerHeight,D=Math.max(1,devicePixelRatio||1);
-      let stars=[], meteors=[]; const L=[0.25,0.6,1];
-      function R(){W=innerWidth;H=innerHeight;c.width=W*D;c.height=H*D;c.style.width=W+'px';c.style.height=H+'px';x.setTransform(D,0,0,D,0,0);} R(); addEventListener('resize',R);
+<script>
+/* ========== STARFIELD + METEORS ========== */
+(function(){
+  const c=document.getElementById('stars'),x=c.getContext('2d');
+  let W=innerWidth,H=innerHeight,D=Math.max(1,devicePixelRatio||1);
+  let stars=[], meteors=[]; const L=[0.25,0.6,1];
+  function R(){W=innerWidth;H=innerHeight;c.width=W*D;c.height=H*D;c.style.width=W+'px';c.style.height=H+'px';x.setTransform(D,0,0,D,0,0);} R(); addEventListener('resize',R);
+  function make(){stars.length=0;const n=Math.floor(W*H/8000);for(let i=0;i<n;i++){stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+0.2,z:L[(Math.random()*L.length)|0]});}} make();
+  function spawnMeteor(x0=Math.random()*W,y0=-40){const ang=Math.PI*1.12, sp=520+Math.random()*320; meteors.push({x:x0,y:y0,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,t:0,ttl:1.4+Math.random()*0.8});}
+  setInterval(()=>{if(Math.random()<0.18) spawnMeteor();},900);
+  addEventListener('click',e=>spawnMeteor(e.clientX,e.clientY-60));
+  let mx=0,my=0,cx=0,cy=0; addEventListener('mousemove',e=>{mx=(e.clientX-W/2)/8; my=(e.clientY-H/2)/8;},{passive:true});
+  let last=performance.now();
+  function loop(t){
+    const dt=Math.min(.033,(t-last)/1e3); last=t; cx+=(mx-cx)*.04; cy+=(my-cy)*.04;
+    x.clearRect(0,0,W,H);
+    for(const s of stars){const sx=s.x+cx*4*s.z, sy=s.y+cy*4*s.z; const tw=(Math.sin((t+s.x)*.002)*.5+.5)*.6+.2; x.fillStyle=`rgba(255,255,255,${.42+.5*tw})`; x.fillRect(sx,sy,s.r,s.r);}
+    for(let i=meteors.length-1;i>=0;i--){const m=meteors[i]; m.t+=dt; m.x+=m.vx*dt; m.y+=m.vy*dt; const p=m.t/m.ttl; const a=Math.max(0,1-p);
+      const g=x.createLinearGradient(m.x-140,m.y-140,m.x,m.y); g.addColorStop(0,'rgba(122,165,255,0)'); g.addColorStop(1,`rgba(122,165,255,${.55*a})`);
+      x.strokeStyle=g; x.lineWidth=2; x.beginPath(); x.moveTo(m.x-160,m.y-160); x.lineTo(m.x,m.y); x.stroke();
+      if(p>=1||m.x<-200||m.y>H+200) meteors.splice(i,1);
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
 
-      function make(){stars.length=0;const n=Math.floor(W*H/8000);for(let i=0;i<n;i++){stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+0.2,z=L[(Math.random()*L.length)|0]});}} make();
-      function spawnMeteor(x0=Math.random()*W,y0=-40){const ang=Math.PI*1.12, sp=520+Math.random()*320; meteors.push({x:x0,y:y0,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,t:0,ttl:1.4+Math.random()*0.8});}
-      setInterval(()=>{if(Math.random()<0.18) spawnMeteor();},900);
-      addEventListener('click',e=>spawnMeteor(e.clientX,e.clientY-60));
+/* ========== FX CANVAS (rocket exhaust) ========== */
+(function(){
+  const fx=document.getElementById('fx'), ctx=fx.getContext('2d');
+  let W=innerWidth,H=innerHeight, D=Math.max(1,devicePixelRatio||1);
+  function R(){W=innerWidth;H=innerHeight;fx.width=W*D;fx.height=H*D;fx.style.width=W+'px';fx.style.height=H+'px';ctx.setTransform(D,0,0,D,0,0);} R(); addEventListener('resize',R);
+  const particles=[];
+  function spawn(x,y){
+    for(let i=0;i<4;i++){
+      particles.push({x,y, vx:(Math.random()*80-40), vy:(120+Math.random()*120), life:0, ttl:.6+Math.random()*.4, r:2+Math.random()*2});
+    }
+  }
+  let last=performance.now();
+  function loop(now){
+    const dt=Math.min(.033,(now-last)/1e3); last=now;
+    ctx.clearRect(0,0,W,H);
+    for(let i=particles.length-1;i>=0;i--){
+      const p=particles[i]; p.life+=dt; p.x+=p.vx*dt; p.y+=p.vy*dt; const a=Math.max(0,1-p.life/p.ttl);
+      ctx.fillStyle=`rgba(255,200,120,${.35*a})`; ctx.beginPath(); ctx.arc(p.x,p.y, p.r*(1+p.life), 0, Math.PI*2); ctx.fill();
+      if(p.life>=p.ttl) particles.splice(i,1);
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+  window.__emitExhaust = spawn;
+})();
 
-      let mx=0,my=0,cx=0,cy=0; addEventListener('mousemove',e=>{mx=(e.clientX-W/2)/8; my=(e.clientY-H/2)/8;},{passive:true});
+/* ========== ROCKET TAKEOFF (scroll-driven) ========== */
+(function(){
+  const ship=document.getElementById('ship');
+  const flame=document.getElementById('flame');
+  if(!ship || !flame) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function easeOutCubic(t){return 1 - Math.pow(1-t,3)}
+  function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
+  function update(){
+    const vh = innerHeight || 1, y = scrollY || 0;
+    const start = 0.10 * vh, end = 1.10 * vh;
+    const p = clamp((y - start) / (end - start), 0, 1.3);
+    const ignited = p > 0.02;
+    flame.style.opacity = ignited ? 1 : 0;
+    ship.classList.toggle('boost', p > 0.35);
+    let shakeX=0, shakeY=0;
+    if (p > 0 && p < 0.12){
+      const s=(0.12-p)*12; shakeX=(Math.random()*2-1)*s; shakeY=(Math.random()*2-1)*s;
+    }
+    const e=easeOutCubic(clamp(p,0,1));
+    const dx=620*e, dy=-720*e, rot=-20*e;
+    ship.style.transform=`translate(${dx+shakeX}px, ${dy+shakeY}px) scale(.94) rotate(${rot}deg)`;
+    if (ignited && window.__emitExhaust){
+      const r=ship.getBoundingClientRect(), nozzleX=r.left+r.width*0.50, nozzleY=r.bottom-6;
+      window.__emitExhaust(nozzleX, nozzleY); window.__emitExhaust(nozzleX+(Math.random()*6-3), nozzleY+2);
+    }
+    requestAnimationFrame(update);
+  }
+  if(!reduce) requestAnimationFrame(update);
+})();
 
-      let last=performance.now();
-      function loop(t){
-        const dt=Math.min(.033,(t-last)/1e3); last=t; cx+=(mx-cx)*.04; cy+=(my-cy)*.04;
-        x.clearRect(0,0,W,H);
-        for(const s of stars){const sx=s.x+cx*4*s.z, sy=s.y+cy*4*s.z; const tw=(Math.sin((t+s.x)*.002)*.5+.5)*.6+.2; x.fillStyle=`rgba(255,255,255,${.42+.5*tw})`; x.fillRect(sx,sy,s.r,s.r);}
-        for(let i=meteors.length-1;i>=0;i--){const m=meteors[i]; m.t+=dt; m.x+=m.vx*dt; m.y+=m.vy*dt; const p=m.t/m.ttl; const a=Math.max(0,1-p);
-          const g=x.createLinearGradient(m.x-140,m.y-140,m.x,m.y); g.addColorStop(0,'rgba(122,165,255,0)'); g.addColorStop(1,`rgba(122,165,255,${.55*a})`);
-          x.strokeStyle=g; x.lineWidth=2; x.beginPath(); x.moveTo(m.x-160,m.y-160); x.lineTo(m.x,m.y); x.stroke();
-          if(p>=1||m.x<-200||m.y>H+200) meteors.splice(i,1);
-        }
-        requestAnimationFrame(loop);
+/* ========== PLANET WOBBLE ========== */
+(function(){
+  const nodes=[...document.querySelectorAll('.planet')]; let t0=performance.now();
+  function loop(t){const dt=(t-t0)/1000; nodes.forEach((n,i)=>{const dx=Math.cos(dt*0.15+i)*6; const dy=Math.sin(dt*0.12+i*1.7)*5; n.style.translate=`${dx}px ${dy}px`;}); requestAnimationFrame(loop);}
+  requestAnimationFrame(loop);
+})();
+
+/* ========== TRACKS ORBIT ========== */
+(function(){
+  const ring=document.getElementById('orbit'); if(!ring) return;
+  const tokens=[...ring.querySelectorAll('.token')]; let base=0;
+  function frame(){
+    base += 0.0035 * tokens.length;
+    const R=ring.clientWidth/2 - 120, n=tokens.length, TWO=Math.PI*2;
+    for(let i=0;i<n;i++){
+      const ang=base + i*(TWO/n);
+      const x=Math.cos(ang)*R, y=Math.sin(ang)*R;
+      tokens[i].style.transform=`translate(-50%,-50%) translate(${x}px,${y}px) rotate(${ang}rad)`;
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ========== REVEAL + ACCORDION + ACTIVE TAB ========== */
+(function(){
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target)}})},{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  document.querySelectorAll('.item').forEach(it=>{
+    const q=it.querySelector('.q'), a=it.querySelector('.a');
+    q.addEventListener('click',()=>{const open=a.classList.toggle('open'); q.setAttribute('aria-expanded',String(open));});
+  });
+  const links=[...document.querySelectorAll('.tabs a')];
+  const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  function on(){ let idx=0; const y=scrollY+innerHeight*0.28; for(let i=0;i<secs.length;i++){ if(secs[i].offsetTop<=y) idx=i; } links.forEach((a,j)=>a.style.color=j===idx?'#fff':'var(--muted)'); }
+  addEventListener('scroll',on,{passive:true}); on();
+  document.getElementById('year').textContent=new Date().getFullYear();
+})();
+
+/* ========== FLOATING ASTRONAUT (drift + tumble, avoids UI, never blocks clicks) ========== */
+(function(){
+  const astro = document.getElementById('astro');
+  const tetherPath = document.getElementById('tetherPath');
+  const sign = document.getElementById('sign');
+  const nav = document.getElementById('nav');
+  if(!astro || !tetherPath || !sign || !nav) return;
+
+  // physics-ish params
+  let x = innerWidth*0.66, y = innerHeight*0.25; // position
+  let vx = 0, vy = 0;                             // velocity
+  let ax = 0, ay = 0;                             // accel (recomputed)
+  let ang = -8, av = 0.0;                         // angle + angular velocity
+  const cursor = {x:innerWidth/2, y:innerHeight/2};
+
+  addEventListener('mousemove', e => { cursor.x=e.clientX; cursor.y=e.clientY; }, {passive:true});
+
+  function rect(el){
+    const r=el.getBoundingClientRect();
+    return {x:r.left,y:r.top,w:r.width,h:r.height,cx:r.left+r.width/2,cy:r.top+r.height/2};
+  }
+
+  function loop(t){
+    const target = {
+      x: innerWidth*0.66 + Math.sin(t*0.0006)*24 + (cursor.x-innerWidth/2)*0.06,
+      y: innerHeight*0.28 + (scrollY||0)*0.35 + Math.cos(t*0.00085)*18 + (cursor.y-innerHeight/2)*0.04
+    };
+
+    // spring toward target
+    const k = 0.012;  // spring strength
+    const d = 0.88;   // damping factor
+    ax = (target.x - x) * k;
+    ay = (target.y - y) * k + 0.02; // slight gravity-like drift
+
+    // repel from "no-fly" zones (nav + sign) so it doesn't sit on top
+    [rect(nav), rect(sign)].forEach(R => {
+      const dx = x - Math.max(R.x, Math.min(x, R.x+R.w));
+      const dy = y - Math.max(R.y, Math.min(y, R.y+R.h));
+      const dist = Math.hypot(dx,dy) || 1;
+      const min = 120; // safe radius
+      if (dist < min){
+        const push = (min - dist) * 0.0035;
+        ax += (dx/dist) * push * 60;
+        ay += (dy/dist) * push * 60;
       }
-      requestAnimationFrame(loop);
-    })();
+    });
 
-    // FX CANVAS for rocket exhaust particles
-    (function(){
-      const fx=document.getElementById('fx'), ctx=fx.getContext('2d');
-      let W=innerWidth,H=innerHeight, D=Math.max(1,devicePixelRatio||1);
-      function R(){W=innerWidth;H=innerHeight;fx.width=W*D;fx.height=H*D;fx.style.width=W+'px';fx.style.height=H+'px';ctx.setTransform(D,0,0,D,0,0);} R(); addEventListener('resize',R);
-      const particles=[];
-      function spawn(x,y){
-        for(let i=0;i<4;i++){
-          particles.push({x,y, vx:(Math.random()*80-40), vy:(120+Math.random()*120), life:0, ttl:.6+Math.random()*.4, r:2+Math.random()*2});
-        }
-      }
-      let last=performance.now();
-      function loop(now){
-        const dt=Math.min(.033,(now-last)/1e3); last=now;
-        ctx.clearRect(0,0,W,H);
-        for(let i=particles.length-1;i>=0;i--){
-          const p=particles[i]; p.life+=dt; p.x+=p.vx*dt; p.y+=p.vy*dt; const a=Math.max(0,1-p.life/p.ttl);
-          ctx.fillStyle=`rgba(255,200,120,${.35*a})`; ctx.beginPath(); ctx.arc(p.x,p.y, p.r*(1+p.life), 0, Math.PI*2); ctx.fill();
-          if(p.life>=p.ttl) particles.splice(i,1);
-        }
-        requestAnimationFrame(loop);
-      }
-      requestAnimationFrame(loop);
-      window.__emitExhaust = spawn; // expose
-    })();
+    // integrate
+    vx = (vx + ax); vy = (vy + ay);
+    vx *= d; vy *= d;
+    x += vx; y += vy;
 
-    // CAMPANILE ROCKET: scroll-driven takeoff + flame + exhaust
-    (function(){
-      const ship=document.getElementById('ship');
-      const flame=document.getElementById('flame');
-      if(!ship || !flame) return;
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // keep inside viewport-ish (with margins)
+    const margin = 40;
+    x = Math.max(margin, Math.min(innerWidth-margin, x));
+    y = Math.max(nav.offsetHeight+margin, Math.min(innerHeight*1.2, y));
 
-      function easeOutCubic(t){return 1 - Math.pow(1-t,3)}
-      function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
+    // tumble: angular spring toward flight direction + small noise
+    const dir = Math.atan2(vy, vx) * 180/Math.PI;
+    const targetAng = isFinite(dir) ? (dir+90) : ang; // face movement a bit
+    const ak = 0.05; const ad = 0.92;
+    const diff = ((targetAng - ang + 540) % 360) - 180; // shortest angle
+    av = (av + diff*ak + Math.sin(t*0.003+ x*0.01)*0.15);
+    av *= ad;
+    ang += av;
 
-      function update(){
-        const vh = innerHeight || 1;
-        const y  = scrollY || 0;
+    // draw
+    astro.style.left = (x - 74) + 'px';
+    astro.style.top  = (y - 74) + 'px';
+    astro.style.transform = `rotate(${ang}deg)`;
 
-        // start ignite at ~10% viewport; finish by ~110% (bigger run since ship is larger)
-        const start = 0.10 * vh;
-        const end   = 1.10 * vh;
-        const raw   = (y - start) / (end - start);
-        const p     = clamp(raw, 0, 1.3);
+    // tether from sign to astro
+    const sr = sign.getBoundingClientRect();
+    const sx = sr.right - 40, sy = sr.bottom - 14;
+    const c1x = sx + 80, c1y = sy + 50;
+    const c2x = x - 80,  c2y = y - 60;
+    tetherPath.setAttribute('d', `M ${sx},${sy} C ${c1x},${c1y} ${c2x},${c2y} ${x},${y}`);
 
-        // ignition
-        const ignited = p > 0.02;
-        flame.style.opacity = ignited ? 1 : 0;
-        ship.classList.toggle('boost', p > 0.35);
-
-        // ignition shake
-        let shakeX = 0, shakeY = 0;
-        if (p > 0 && p < 0.12){
-          const s = (0.12 - p) * 12;
-          shakeX = (Math.random()*2-1) * s;
-          shakeY = (Math.random()*2-1) * s;
-        }
-
-        // flight path: more dramatic left-anchored arc
-        const e = easeOutCubic(clamp(p,0,1));
-        const dx = 620 * e;        // right
-        const dy = -720 * e;       // up
-        const rot = -20 * e;       // nose up
-
-        ship.style.transform = `translate(${dx + shakeX}px, ${dy + shakeY}px) scale(.92) rotate(${rot}deg)`;
-
-        // exhaust emitter
-        if (ignited && window.__emitExhaust){
-          const r = ship.getBoundingClientRect();
-          const nozzleX = r.left + r.width * 0.50;
-          const nozzleY = r.bottom - 6;
-          window.__emitExhaust(nozzleX, nozzleY);
-          window.__emitExhaust(nozzleX + (Math.random()*6-3), nozzleY + 2);
-        }
-        requestAnimationFrame(update);
-      }
-      if (!reduce) requestAnimationFrame(update);
-    })();
-
-    // PLANET DRIFT (slow wobble)
-    (function(){
-      const nodes=[...document.querySelectorAll('.planet')]; let t0=performance.now();
-      function loop(t){const dt=(t-t0)/1000; nodes.forEach((n,i)=>{const dx=Math.cos(dt*0.15+i)*6; const dy=Math.sin(dt*0.12+i*1.7)*5; n.style.translate=`${dx}px ${dy}px`;}); requestAnimationFrame(loop);}
-      requestAnimationFrame(loop);
-    })();
-
-    // TRACKS ORBIT
-    (function(){
-      const ring=document.getElementById('orbit'); if(!ring) return;
-      const tokens=[...ring.querySelectorAll('.token')]; let base=0;
-      function frame(){
-        base += 0.0035 * tokens.length;
-        const R=ring.clientWidth/2 - 120, n=tokens.length, TWO=Math.PI*2;
-        for(let i=0;i<n;i++){
-          const ang=base + i*(TWO/n);
-          const x=Math.cos(ang)*R, y=Math.sin(ang)*R;
-          tokens[i].style.transform=`translate(-50%,-50%) translate(${x}px,${y}px) rotate(${ang}rad)`;
-        }
-        requestAnimationFrame(frame);
-      }
-      requestAnimationFrame(frame);
-    })();
-
-    // SCROLL REVEAL
-    (function(){
-      const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target)}})},{threshold:.15});
-      document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-    })();
-
-    // FAQ ACCORDION
-    (function(){
-      document.querySelectorAll('.item').forEach(it=>{
-        const q=it.querySelector('.q'), a=it.querySelector('.a');
-        q.addEventListener('click',()=>{const open=a.classList.toggle('open'); q.setAttribute('aria-expanded',String(open));});
-      });
-    })();
-
-    // ASTRONAUT FOLLOW: lerp toward scroll target + cursor drift; redraw tether curve
-    (function(){
-      const astro = document.getElementById('astro');
-      const tetherPath = document.getElementById('tetherPath');
-      if(!astro || !tetherPath) return;
-
-      let cx = innerWidth*0.62, cy = innerHeight*0.22;   // current
-      let tx = cx, ty = cy;                               // target
-      let mx = 0,  my = 0;                                // mouse influence
-      const ease = 0.06;
-
-      addEventListener('mousemove', e=>{
-        const w=innerWidth, h=innerHeight;
-        mx = (e.clientX - w/2) * 0.06;
-        my = (e.clientY - h/2) * 0.04;
-      }, {passive:true});
-
-      function update(){
-        // target slides with scroll, using a gentle factor
-        const s = scrollY || 0;
-        const t = performance.now()/1000;
-
-        tx = innerWidth*0.66 + Math.sin(t*0.5)*20 + mx;
-        ty = innerHeight*0.25 + s*0.35 + Math.cos(t*0.8)*14 + my;
-
-        // lerp
-        cx += (tx - cx)*ease;
-        cy += (ty - cy)*ease;
-
-        astro.style.left = (cx - 70) + 'px';
-        astro.style.top  = (cy - 70) + 'px';
-        astro.style.transform = `rotate(${Math.sin(t*0.6)*4}deg)`;
-
-        // update tether curve from near bottom-right of sign to astronaut
-        const sign = document.querySelector('.sign').getBoundingClientRect();
-        const startX = sign.right - 40;
-        const startY = sign.bottom - 14;
-        const ctrl1X = startX + 60;
-        const ctrl1Y = startY + 40;
-        const ctrl2X = cx - 60;
-        const ctrl2Y = cy - 40;
-        tetherPath.setAttribute('d',
-          `M ${startX},${startY} C ${ctrl1X},${ctrl1Y} ${ctrl2X},${ctrl2Y} ${cx},${cy}`
-        );
-
-        requestAnimationFrame(update);
-      }
-      requestAnimationFrame(update);
-    })();
-
-    // ACTIVE TAB HIGHLIGHT
-    (function(){
-      const links=[...document.querySelectorAll('.tabs a')];
-      const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
-      function on(){ let idx=0; const y=scrollY+innerHeight*0.28; for(let i=0;i<secs.length;i++){ if(secs[i].offsetTop<=y) idx=i; } links.forEach((a,j)=>a.style.color=j===idx?'#fff':'var(--muted)'); }
-      addEventListener('scroll',on,{passive:true}); on();
-    })();
-
-    document.getElementById('year').textContent=new Date().getFullYear();
-  </script>
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
 </body>
 </html>
