@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Yuhee Hacks — UC Berkeley</title>
+<title>Yuhee Lefkowitz — UC Berkeley</title>
 <meta name="description" content="Berkeley-themed hackathon-style portfolio for Yuhee Lefkowitz." />
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
 <style>
@@ -20,6 +20,25 @@
     margin:0; color:var(--ink);
     background:radial-gradient(1200px 900px at 20% -10%,#0b1a33 0%,var(--bg) 55%,#050c1d 100%);
     font-family:Inter,system-ui,sans-serif; overflow-x:hidden;
+  }
+
+  h1,h2,h3{
+    margin:0 0 8px;
+    font-family:Outfit,system-ui,sans-serif;
+    letter-spacing:.03em;
+  }
+  h2{
+    font-weight:800;
+    font-size:32px;
+  }
+  h3{
+    font-weight:700;
+    font-size:20px;
+  }
+  p{
+    margin:0 0 10px;
+    line-height:1.6;
+    color:var(--muted);
   }
 
   /* ===== BACKGROUND ===== */
@@ -43,7 +62,7 @@
   .brand{display:flex; align-items:center; gap:12px; font:800 20px Outfit}
   .brand .leaf{width:28px; height:28px; border-radius:50%; background:radial-gradient(circle at 35% 35%, var(--cal), var(--cal2)); box-shadow:0 0 22px rgba(253,181,21,.35)}
   .tabs{display:flex; gap:20px}
-  .tabs a{color:var(--muted); text-decoration:none; font:700 14px Outfit}
+  .tabs a{color:var(--muted); text-decoration:none; font:700 14px Outfit; text-transform:lowercase}
   .tabs a:hover{color:#fff}
   .pill{
     padding:9px 14px; border:1.5px solid var(--cal); border-radius:999px; color:#fff; text-decoration:none; font:700 14px Inter;
@@ -71,7 +90,7 @@
 
   /* Ship (bigger, left, with flame) */
   .ship{
-    position:absolute; left:-2vw; bottom:-6px; width:min(32vw,440px); z-index:3;
+    position:absolute; left:-4vw; bottom:-6px; width:min(32vw,440px); z-index:3;
     will-change:transform; transform:translate3d(0,0,0) scale(.94);
     filter: drop-shadow(0 14px 30px rgba(0,0,0,.35));
   }
@@ -90,10 +109,21 @@
   .ship.boost .flame{height:64px; filter:blur(0.6px) drop-shadow(0 0 14px rgba(255,190,40,.85));}
   @keyframes flameFlicker{from{transform:translateX(-50%) scaleX(.9) scaleY(1.02)}to{transform:translateX(-50%) scaleX(1.1) scaleY(.92)}}
 
+  /* Berkeley Bear next to Campanile */
+  .bear{
+    position:absolute;
+    left:20vw;
+    bottom:-2px;
+    width:min(12vw,140px);
+    z-index:3;
+    filter:drop-shadow(0 10px 26px rgba(0,0,0,.45));
+  }
+  .bear svg{width:100%; height:auto;}
+
   /* Floating astronaut (no clicks captured) */
   .astro{
     position:fixed; width:148px; height:148px; left:60vw; top:22vh;
-    pointer-events:none; z-index:800; /* below nav? nav is 1000; clicks pass anyway */
+    pointer-events:none; z-index:800;
     filter: drop-shadow(0 10px 22px rgba(0,0,0,.35));
     transform-origin:50% 50%;
     will-change:transform,left,top;
@@ -105,16 +135,45 @@
   .reveal{opacity:0; transform:translateY(12px); transition:opacity .6s ease, transform .6s ease}
   .reveal.in{opacity:1; transform:none}
 
-  .about{max-width:1100px; margin:80px auto 0; padding:0 20px; display:grid; grid-template-columns:1.1fr 1fr; gap:22px}
-  .about-card{background:var(--card); border:1.5px solid var(--border); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow)}
+  .about{
+    max-width:1100px; margin:80px auto 0; padding:0 20px;
+    display:grid; grid-template-columns:1.1fr 1fr; gap:22px;
+  }
+  .about-card{
+    background:var(--card); border:1.5px solid var(--border);
+    border-radius:22px; padding:22px 22px 20px;
+    box-shadow:var(--shadow);
+  }
+  .about-card h2{font-size:30px; margin-bottom:12px;}
+  .about-card p:last-child{margin-bottom:0;}
+
   .video{aspect-ratio:16/9; width:100%; border-radius:16px; overflow:hidden}
-  .stat{background:linear-gradient(180deg,#fff8dc,#fff3bf); color:#0b2b4a; border:4px solid #5ea6ff; border-radius:14px; padding:10px 14px; font:800 14px Outfit}
+  .stat{
+    background:linear-gradient(180deg,#fff8dc,#fff3bf); color:#0b2b4a;
+    border:4px solid #5ea6ff; border-radius:14px;
+    padding:10px 14px; font:800 14px Outfit;
+    text-align:center;
+  }
   .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
 
-  .tracks{position:relative; max-width:1200px; margin:60px auto; padding:0 20px}
-  .tracks h2{text-align:center; font:800 40px Outfit; margin:0 0 10px}
-  .ring{position:relative; width:min(90vw,900px); height:min(90vw,900px); margin:0 auto; border-radius:50%; background:radial-gradient(closest-side, rgba(125,157,255,.06), rgba(125,157,255,0))}
-  .token{position:absolute; width:170px; height:170px; left:50%; top:50%; display:grid; place-items:center; text-align:center; color:#fff; font:800 14px Outfit}
+  .tracks{
+    position:relative; max-width:1200px; margin:70px auto 0; padding:0 20px;
+  }
+  .tracks h2{
+    text-align:center; font:800 40px Outfit;
+    margin:0 0 10px; letter-spacing:.06em;
+  }
+  .ring{
+    position:relative; width:min(90vw,900px); height:min(90vw,900px);
+    margin:10px auto 0; border-radius:50%;
+    background:radial-gradient(closest-side, rgba(125,157,255,.06), rgba(125,157,255,0));
+  }
+  .token{
+    position:absolute; width:170px; height:170px;
+    left:50%; top:50%;
+    display:grid; place-items:center; text-align:center;
+    color:#fff; font:800 14px Outfit;
+  }
   .token .oct{
     width:100%; height:100%;
     clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%);
@@ -122,32 +181,110 @@
     border:1.5px solid rgba(255,255,255,.16); border-radius:18px;
     box-shadow:inset 0 -10px 40px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.28)
   }
+  .token .label{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    padding:0 16px; text-align:center; text-transform:uppercase;
+    letter-spacing:.08em; font-size:13px;
+  }
 
-  .projects{max-width:1100px; margin:40px auto; padding:0 20px}
-  .projects h2{text-align:center; font:800 40px Outfit; margin:0 0 16px}
-  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
-  .card{background:var(--card); border:1.5px solid var(--border); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px}
+  .projects{
+    max-width:1100px; margin:50px auto 0; padding:0 20px;
+  }
+  .projects h2{
+    text-align:center; font:800 40px Outfit;
+    margin:0 0 16px; letter-spacing:.06em;
+  }
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px;
+  }
+  .card{
+    background:var(--card); border:1.5px solid var(--border);
+    border-radius:22px; padding:18px 20px;
+    box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px;
+  }
+  .card h3{margin-bottom:4px; color:#fff;}
+  .card p{color:#d7dbff;}
+
   .cta-row{margin-top:auto; display:flex; gap:8px}
 
-  .sponsors{position:relative; max-width:1100px; margin:60px auto; padding:0 20px; text-align:center}
-  .placard{display:inline-block; min-width:360px; max-width:min(88vw,560px); padding:22px 18px; background:linear-gradient(180deg,#fef9e6,#fff7cf); color:#0b2b4a; border:6px solid #5ea6ff; border-radius:16px; box-shadow:0 12px 40px rgba(0,0,0,.45); font:800 18px Outfit; transition:transform .18s ease, box-shadow .18s ease}
+  .demo-row-wrapper{
+    display:grid; grid-template-columns:1fr; gap:12px;
+    place-items:center; margin-top:12px;
+  }
+  .demo-row{
+    width:min(88vw,720px);
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+
+  .sponsors{
+    position:relative; max-width:1100px; margin:60px auto 0;
+    padding:0 20px; text-align:center;
+  }
+  .sponsors h2{
+    font:800 40px Outfit; margin:0 0 10px; letter-spacing:.06em;
+  }
+  .placard{
+    display:inline-block; min-width:360px; max-width:min(88vw,560px);
+    padding:22px 18px; background:linear-gradient(180deg,#fef9e6,#fff7cf);
+    color:#0b2b4a; border:6px solid #5ea6ff; border-radius:16px;
+    box-shadow:0 12px 40px rgba(0,0,0,.45);
+    font:800 18px Outfit;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
   .placard:hover{transform:translateY(-2px); box-shadow:0 18px 44px rgba(0,0,0,.55)}
 
-  .faq{max-width:1200px; margin:60px auto 80px; padding:0 20px; display:grid; grid-template-columns:360px 1fr; gap:22px}
-  .faq-left{background:#003262; color:#fff; border-radius:20px; box-shadow:2px 2px 6px #0b1a33; padding:14px 10px}
+  .faq{
+    max-width:1200px; margin:60px auto 80px;
+    padding:0 20px; display:grid;
+    grid-template-columns:360px 1fr; gap:22px;
+  }
+  .faq-left{
+    background:#003262; color:#fff;
+    border-radius:20px; box-shadow:2px 2px 6px #0b1a33;
+    padding:14px 10px;
+  }
+  .faq-left h3{
+    margin:10px 12px 6px;
+    font:800 22px Outfit;
+  }
   .accordion{border-radius:16px; overflow:hidden}
   .item{border-bottom:1px solid rgba(255,255,255,.16)}
   .item:last-child{border-bottom:0}
-  .q{width:100%; background:transparent; border:0; color:#fff; text-align:left; padding:14px 12px; font:800 16px Outfit; display:flex; align-items:center; justify-content:space-between; cursor:pointer}
+  .q{
+    width:100%; background:transparent; border:0;
+    color:#fff; text-align:left; padding:14px 12px;
+    font:800 16px Outfit; display:flex;
+    align-items:center; justify-content:space-between; cursor:pointer;
+  }
   .a{display:grid; grid-template-rows:0fr; transition:grid-template-rows .2s ease}
   .a.open{grid-template-rows:1fr}
   .a > div{min-height:0; padding:0 12px 12px; color:#EAF0FF}
 
-  footer{max-width:1100px; margin:40px auto; padding:0 20px 24px; color:var(--muted); text-align:center}
+  footer{
+    max-width:1100px; margin:40px auto;
+    padding:0 20px 24px; color:var(--muted);
+    text-align:center; font-size:13px;
+  }
 
   html{scroll-behavior:smooth}
   @media (prefers-reduced-motion:reduce){
     .floatY{animation:none} .sign,.planet{animation:none}
+  }
+
+  @media (max-width:900px){
+    .about{
+      grid-template-columns:1fr;
+    }
+    .scene{height:480px;}
+    .sign{font-size:46px;}
+  }
+  @media (max-width:640px){
+    .nav{padding:0 12px;}
+    .tabs{gap:14px; font-size:12px;}
+    .sign{font-size:36px;}
+    .demo-row{flex-direction:column; align-items:flex-start;}
+    .placard{min-width:0;}
   }
 </style>
 </head>
@@ -181,7 +318,7 @@
       <div class="scene">
         <div class="sign" id="sign">
           <div class="board"></div>
-          <div class="title">YUHEE HACKS</div>
+          <div class="title">YUHEE LEFKOWITZ</div>
           <div class="date">UC BERKELEY • 2026</div>
           <div class="pin"></div>
         </div>
@@ -203,6 +340,32 @@
             </g>
           </svg>
           <div class="flame" id="flame"></div>
+        </div>
+
+        <!-- Berkeley Bear -->
+        <div class="bear" aria-hidden="true">
+          <svg viewBox="0 0 180 140">
+            <!-- shadow -->
+            <ellipse cx="95" cy="130" rx="58" ry="12" fill="rgba(0,0,0,.3)"/>
+            <!-- body -->
+            <ellipse cx="100" cy="86" rx="52" ry="38" fill="#FDB515" stroke="#c78d17" stroke-width="3"/>
+            <!-- head -->
+            <circle cx="54" cy="70" r="30" fill="#FDB515" stroke="#c78d17" stroke-width="3"/>
+            <!-- ears -->
+            <circle cx="34" cy="50" r="12" fill="#FDB515" stroke="#c78d17" stroke-width="3"/>
+            <circle cx="72" cy="50" r="12" fill="#FDB515" stroke="#c78d17" stroke-width="3"/>
+            <!-- snout -->
+            <ellipse cx="54" cy="76" rx="18" ry="14" fill="#ffe4a0"/>
+            <circle cx="50" cy="73" r="2.6" fill="#333"/>
+            <circle cx="58" cy="73" r="2.6" fill="#333"/>
+            <circle cx="54" cy="79" r="3.4" fill="#333"/>
+            <!-- eye dots -->
+            <circle cx="43" cy="66" r="3" fill="#1d1d1d"/>
+            <circle cx="65" cy="66" r="3" fill="#1d1d1d"/>
+            <!-- little Cal sweater -->
+            <rect x="82" y="72" width="56" height="34" rx="10" fill="#003262" stroke="#00152b" stroke-width="3"/>
+            <path d="M92 88 Q110 70 128 88" fill="none" stroke="#FDB515" stroke-width="4" stroke-linecap="round"/>
+          </svg>
         </div>
 
         <!-- decorative chips -->
@@ -238,8 +401,8 @@
     <!-- ABOUT -->
     <section class="about reveal" id="about">
       <div class="about-card">
-        <h2 style="margin:0 0 8px; font:800 32px Outfit">ABOUT</h2>
-        <p>Hey! I’m Yuhee — a strategist & builder studying Computer Science and Data Science (Business & Industrial Analytics emphasis) at UC Berkeley. From engineering scalable APIs in internships to leading social product launches, I love creating experiences that blend human insight with technical depth.</p>
+        <h2>ABOUT</h2>
+        <p>Hey! I’m Yuhee — a strategist &amp; builder studying Computer Science and Data Science (Business &amp; Industrial Analytics emphasis) at UC Berkeley. From engineering scalable APIs in internships to leading social product launches, I love creating experiences that blend human insight with technical depth.</p>
         <p>Outside of work, I’m usually playing tennis, running 5’s in basketball, or training for a nearby half-marathon. I also care a lot about content creation. I’m currently building things like Capybara Maps (SwiftUI + MapKit + PostGIS), StockSphere (Next.js + Flask + Redis + Twilio), and CurryStats (FastAPI + HuggingFace + NBA data).</p>
       </div>
       <div class="about-card">
@@ -247,9 +410,9 @@
           <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
         <div class="stats" style="margin-top:12px">
-          <div class="stat">APIs & Backends</div>
-          <div class="stat">Product & Growth</div>
-          <div class="stat">iOS & ML</div>
+          <div class="stat">APIs &amp; Backends</div>
+          <div class="stat">Product &amp; Growth</div>
+          <div class="stat">iOS &amp; ML</div>
         </div>
       </div>
     </section>
@@ -272,36 +435,36 @@
       <h2>PROJECTS</h2>
       <div class="grid">
         <article class="card">
-          <h3 style="margin:0">Capybara Maps</h3>
-          <p style="margin:0; color:#d7dbff">SwiftUI iOS app with MapKit overlays and a Dockerized Node + PostgreSQL (PostGIS) backend for geospatial nearest-neighbor queries. Caching + async fetch keep city-wide queries sub-second.</p>
+          <h3>Capybara Maps</h3>
+          <p>SwiftUI iOS app with MapKit overlays and a Dockerized Node + PostgreSQL (PostGIS) backend for geospatial nearest-neighbor queries. Caching + async fetch keep city-wide queries sub-second.</p>
           <div class="cta-row"><a class="pill" href="https://github.com/yuhee1234/capybaramaps" target="_blank" rel="noreferrer">GitHub</a></div>
         </article>
         <article class="card">
-          <h3 style="margin:0">StockSphere</h3>
-          <p style="margin:0; color:#d7dbff">Full-stack stock analytics with Next.js + Flask microservices. Redis-cached endpoints and Twilio SMS alerts sustain &lt;100ms responses; includes portfolio simulations and alert rules.</p>
+          <h3>StockSphere</h3>
+          <p>Full-stack stock analytics with Next.js + Flask microservices. Redis-cached endpoints and Twilio SMS alerts sustain &lt;100ms responses; includes portfolio simulations and alert rules.</p>
           <div class="cta-row"><a class="pill" href="https://github.com/yuhee1234/StockSphere" target="_blank" rel="noreferrer">GitHub</a></div>
         </article>
         <article class="card">
-          <h3 style="margin:0">CurryStats</h3>
-          <p style="margin:0; color:#d7dbff">FastAPI dashboard fusing NBA play data with HuggingFace sentiment. Interactive charts tie game events to fan mood with cohort comparisons and event annotations.</p>
+          <h3>CurryStats</h3>
+          <p>FastAPI dashboard fusing NBA play data with HuggingFace sentiment. Interactive charts tie game events to fan mood with cohort comparisons and event annotations.</p>
           <div class="cta-row"><a class="pill" href="https://github.com/yuhee1234/CurryStats" target="_blank" rel="noreferrer">GitHub</a></div>
         </article>
         <article class="card">
-          <h3 style="margin:0">Notify.careers Alerts</h3>
-          <p style="margin:0; color:#d7dbff">Scoped PRD and v1 launch checklist; defined success metrics and backlog triage. Implemented rules logic and QA gates for clean GA and measurable impact.</p>
+          <h3>Notify.careers Alerts</h3>
+          <p>Scoped PRD and v1 launch checklist; defined success metrics and backlog triage. Implemented rules logic and QA gates for clean GA and measurable impact.</p>
           <div class="cta-row"><a class="pill" href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">GitHub</a></div>
         </article>
       </div>
 
-      <h3 style="text-align:center; font:800 24px Outfit; margin:24px 0 12px">Live Demos</h3>
-      <div style="display:grid; grid-template-columns:1fr; gap:12px; place-items:center">
-        <div class="placard" style="width:min(88vw,720px); display:flex; align-items:center; justify-content:space-between; gap:12px">
+      <h3 style="text-align:center; font:800 24px Outfit; margin:28px 0 12px; letter-spacing:.06em;">Live Demos</h3>
+      <div class="demo-row-wrapper">
+        <div class="placard demo-row">
           <div><strong>First-Session Personalization Sprint</strong></div>
           <div style="display:flex; gap:10px">
             <a class="pill" href="dashboard_1sess.html" target="_blank" rel="noreferrer">Open Case Study</a>
           </div>
         </div>
-        <div class="placard" style="width:min(88vw,720px); display:flex; align-items:center; justify-content:space-between; gap:12px">
+        <div class="placard demo-row">
           <div><strong>ShopLens — Visual AI Shopping</strong></div>
           <div style="display:flex; gap:10px">
             <a class="pill" href="https://yuhee1234.github.io/shoplens/" target="_blank" rel="noreferrer">Open Live Demo</a>
@@ -313,14 +476,14 @@
 
     <!-- SPONSORS -->
     <section class="sponsors reveal" id="sponsors">
-      <h2 style="font:800 40px Outfit; margin:0 0 10px">SPONSORS</h2>
+      <h2>SPONSORS</h2>
       <div class="placard">Sponsors to be announced. Check back from Mission Control.</div>
     </section>
 
     <!-- FAQ -->
     <section class="faq reveal" id="faq">
       <div class="faq-left">
-        <h3 style="margin:10px 12px; font:800 22px Outfit">FAQs</h3>
+        <h3>FAQs</h3>
         <div class="accordion">
           <div class="item">
             <button class="q" aria-expanded="false">What is this site? <span>▾</span></button>
@@ -342,7 +505,7 @@
     </section>
   </main>
 
-  <footer>© <span id="year"></span> Yuhee Lefkowitz — Made with 💛 & Cal spirit.</footer>
+  <footer>© <span id="year"></span> Yuhee Lefkowitz — Made with 💛 &amp; Cal spirit.</footer>
 
 <script>
 /* ========== STARFIELD + METEORS ========== */
@@ -475,11 +638,10 @@
   const nav = document.getElementById('nav');
   if(!astro || !tetherPath || !sign || !nav) return;
 
-  // physics-ish params
-  let x = innerWidth*0.66, y = innerHeight*0.25; // position
-  let vx = 0, vy = 0;                             // velocity
-  let ax = 0, ay = 0;                             // accel (recomputed)
-  let ang = -8, av = 0.0;                         // angle + angular velocity
+  let x = innerWidth*0.66, y = innerHeight*0.25;
+  let vx = 0, vy = 0;
+  let ax = 0, ay = 0;
+  let ang = -8, av = 0.0;
   const cursor = {x:innerWidth/2, y:innerHeight/2};
 
   addEventListener('mousemove', e => { cursor.x=e.clientX; cursor.y=e.clientY; }, {passive:true});
@@ -495,18 +657,16 @@
       y: innerHeight*0.28 + (scrollY||0)*0.35 + Math.cos(t*0.00085)*18 + (cursor.y-innerHeight/2)*0.04
     };
 
-    // spring toward target
-    const k = 0.012;  // spring strength
-    const d = 0.88;   // damping factor
+    const k = 0.012;
+    const d = 0.88;
     ax = (target.x - x) * k;
-    ay = (target.y - y) * k + 0.02; // slight gravity-like drift
+    ay = (target.y - y) * k + 0.02;
 
-    // repel from "no-fly" zones (nav + sign) so it doesn't sit on top
     [rect(nav), rect(sign)].forEach(R => {
       const dx = x - Math.max(R.x, Math.min(x, R.x+R.w));
       const dy = y - Math.max(R.y, Math.min(y, R.y+R.h));
       const dist = Math.hypot(dx,dy) || 1;
-      const min = 120; // safe radius
+      const min = 120;
       if (dist < min){
         const push = (min - dist) * 0.0035;
         ax += (dx/dist) * push * 60;
@@ -514,31 +674,26 @@
       }
     });
 
-    // integrate
     vx = (vx + ax); vy = (vy + ay);
     vx *= d; vy *= d;
     x += vx; y += vy;
 
-    // keep inside viewport-ish (with margins)
     const margin = 40;
     x = Math.max(margin, Math.min(innerWidth-margin, x));
     y = Math.max(nav.offsetHeight+margin, Math.min(innerHeight*1.2, y));
 
-    // tumble: angular spring toward flight direction + small noise
     const dir = Math.atan2(vy, vx) * 180/Math.PI;
-    const targetAng = isFinite(dir) ? (dir+90) : ang; // face movement a bit
+    const targetAng = isFinite(dir) ? (dir+90) : ang;
     const ak = 0.05; const ad = 0.92;
-    const diff = ((targetAng - ang + 540) % 360) - 180; // shortest angle
+    const diff = ((targetAng - ang + 540) % 360) - 180;
     av = (av + diff*ak + Math.sin(t*0.003+ x*0.01)*0.15);
     av *= ad;
     ang += av;
 
-    // draw
     astro.style.left = (x - 74) + 'px';
     astro.style.top  = (y - 74) + 'px';
     astro.style.transform = `rotate(${ang}deg)`;
 
-    // tether from sign to astro
     const sr = sign.getBoundingClientRect();
     const sx = sr.right - 40, sy = sr.bottom - 14;
     const c1x = sx + 80, c1y = sy + 50;
