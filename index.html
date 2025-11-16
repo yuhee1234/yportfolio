@@ -42,7 +42,7 @@
 
     main {
       min-height: 100vh;
-      padding: 40px 56px 120px;
+      padding: 40px 56px 160px;
       display: flex;
       flex-direction: column;
     }
@@ -79,22 +79,13 @@
       max-width: 360px;
     }
 
-    .section-label {
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
     .works-header {
       display: flex;
       justify-content: space-between;
       margin-bottom: 8px;
-    }
-
-    .works-header span {
       font-weight: 600;
     }
 
-    /* Selected works list */
     .works-list {
       list-style: none;
       margin-top: 4px;
@@ -137,7 +128,7 @@
       opacity: 1;
     }
 
-    /* Preview area (centered under grid) */
+    /* Preview area */
     .preview {
       max-width: 1200px;
       width: 100%;
@@ -164,6 +155,58 @@
 
     .preview-meta {
       margin-top: 4px;
+    }
+
+    .preview-links {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .preview-link {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink);
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .preview-link:hover {
+      border-color: var(--ink);
+    }
+
+    /* Product / growth block */
+    .product-block {
+      max-width: 1200px;
+      width: 100%;
+      margin: 56px auto 0;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.7;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 2.1fr);
+      column-gap: 56px;
+      row-gap: 12px;
+    }
+
+    .product-label {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .product-line {
+      display: block;
+    }
+
+    .product-line strong {
+      color: var(--ink);
+      font-weight: 600;
     }
 
     /* Bottom fixed bar */
@@ -234,7 +277,7 @@
     /* Responsive */
     @media (max-width: 960px) {
       main {
-        padding: 28px 24px 120px;
+        padding: 28px 24px 160px;
       }
 
       .top-grid {
@@ -246,7 +289,8 @@
         grid-column: 1 / -1;
       }
 
-      .preview {
+      .preview,
+      .product-block {
         grid-template-columns: 1fr;
         row-gap: 10px;
         margin-top: 40px;
@@ -264,7 +308,8 @@
         row-gap: 18px;
       }
 
-      .preview {
+      .preview,
+      .product-block {
         margin-top: 32px;
       }
 
@@ -306,6 +351,7 @@
             data-title="CAPYBARA MAPS"
             data-meta="IOS APP · SWIFTUI · MAPKIT · POSTGIS"
             data-desc="City-scale geospatial search app. I built a SwiftUI front-end on top of a Dockerized Node & Postgres (PostGIS) backend, with nearest-neighbor queries and caching to keep multi-city lookups feeling instant."
+            data-github="https://github.com/yuhee1234/capybaramaps"
           >
             <span>1</span>
             <span class="work-item-title">CAPYBARA MAPS</span>
@@ -318,6 +364,7 @@
             data-title="STOCKSPHERE"
             data-meta="NEXT.JS · FLASK · REDIS · TWILIO"
             data-desc="Full-stack analytics for retail investors. Microservices handle pricing, news, and risk. Redis-backed caching and SMS alerts keep users in the loop without babysitting the dashboard."
+            data-github="https://github.com/yuhee1234/StockSphere"
           >
             <span>2</span>
             <span class="work-item-title">STOCKSPHERE</span>
@@ -330,6 +377,7 @@
             data-title="CURRYSTATS"
             data-meta="FASTAPI · NBA DATA · HUGGINGFACE"
             data-desc="A live stats layer over NBA games. I fuse play-by-play data with fan sentiment models, so you can see how every three, turnover, or run shifts the mood in real time."
+            data-github="https://github.com/yuhee1234/CurryStats"
           >
             <span>3</span>
             <span class="work-item-title">CURRYSTATS</span>
@@ -341,7 +389,8 @@
             tabindex="0"
             data-title="QUILLY"
             data-meta="NODE · EXPRESS · MONGO · PRODUCT"
-            data-desc="Social platform helping college girls build friendships. I’ve worked across backend infra, a house-sorting algorithm, and event flows that translate real-world energy into retained users."
+            data-desc="Social platform helping college girls build friendships. I work across backend infra, a house-sorting algorithm, and event flows that translate real-world energy into retained users."
+            data-github="https://github.com/yuhee1234"  <!-- change if you have a specific repo -->
           >
             <span>4</span>
             <span class="work-item-title">QUILLY</span>
@@ -354,6 +403,8 @@
             data-title="NOTIFY.CAREERS"
             data-meta="SCRAPERS · PIPELINES · ALERT DESIGN"
             data-desc="Job-alert engine that tracks roles across boards. I helped define the v1 experience and built the rules layer so alerts feel helpful, not spammy."
+            data-live="https://notify.careers"
+            data-github="https://github.com/yuhee1234"  <!-- or specific repo -->
           >
             <span>5</span>
             <span class="work-item-title">NOTIFY.CAREERS</span>
@@ -389,6 +440,14 @@
         <div class="preview-meta" id="preview-meta">
           IOS APP · SWIFTUI · MAPKIT · POSTGIS
         </div>
+        <div class="preview-links" id="preview-links">
+          <a
+            class="preview-link"
+            href="https://github.com/yuhee1234/capybaramaps"
+            target="_blank"
+            rel="noreferrer"
+          >GITHUB</a>
+        </div>
       </div>
       <div id="preview-desc">
         City-scale geospatial search app. I built a SwiftUI front-end on top
@@ -397,15 +456,44 @@
         feeling instant.
       </div>
     </section>
+
+    <!-- Product / growth / management section -->
+    <section class="product-block" aria-label="Product and growth experience">
+      <div>
+        <div class="product-label">PRODUCT / GROWTH / MANAGEMENT</div>
+      </div>
+      <div>
+        <span class="product-line">
+          <strong>QUILLY · PRODUCT / BACKEND</strong>
+          — Scoped and built the backend + house-sorting system powering social discovery for college women.
+        </span>
+        <span class="product-line">
+          <strong>DIPPER · GROWTH</strong>
+          — Designed campus launch experiments and events tying in-person funnels to in-app retention.
+        </span>
+        <span class="product-line">
+          <strong>MINDGRASP AI · MARKETING</strong>
+          — Ran content + social experiments to drive signups and refine onboarding flows.
+        </span>
+        <span class="product-line">
+          <strong>HOOGLEE · GROWTH</strong>
+          — Helped test channels, messaging, and landing tweaks for an early-stage consumer product.
+        </span>
+        <span class="product-line">
+          <strong>LEADERSHIP</strong>
+          — Co-led student orgs and project teams, aligning engineering work with clear metrics and deadlines.
+        </span>
+      </div>
+    </section>
   </main>
 
-  <!-- Bottom fixed bar (links + little square like Lisa's icon) -->
+  <!-- Bottom fixed bar -->
   <div class="bottom-bar">
     <div class="bottom-links">
-      <a class="bottom-link" href="mailto:yuhee@example.com">EMAIL</a>
+      <a class="bottom-link" href="mailto:yuhee123@berkeley.edu">EMAIL</a>
       <a class="bottom-link" href="resume.pdf" target="_blank" rel="noreferrer">CV</a>
       <a class="bottom-link" href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">GITHUB</a>
-      <a class="bottom-link" href="https://www.linkedin.com" target="_blank" rel="noreferrer">LINKEDIN</a>
+      <a class="bottom-link" href="https://www.linkedin.com/in/yuhee123" target="_blank" rel="noreferrer">LINKEDIN</a>
     </div>
 
     <button class="center-button" type="button" aria-label="Back to top">
@@ -419,7 +507,7 @@
   </div>
 
   <script>
-    // Hover + focus behavior for Selected Works
+    // Hover + focus behavior for Selected Works + link buttons
     (function () {
       const list = document.getElementById("works");
       if (!list) return;
@@ -428,6 +516,30 @@
       const titleEl = document.getElementById("preview-title");
       const metaEl = document.getElementById("preview-meta");
       const descEl = document.getElementById("preview-desc");
+      const linksEl = document.getElementById("preview-links");
+
+      function buildLinks(item) {
+        if (!linksEl) return;
+
+        const gh = item.getAttribute("data-github");
+        const live = item.getAttribute("data-live");
+
+        let html = "";
+        if (gh) {
+          html +=
+            '<a class="preview-link" href="' +
+            gh +
+            '" target="_blank" rel="noreferrer">GITHUB</a>';
+        }
+        if (live) {
+          html +=
+            '<a class="preview-link" href="' +
+            live +
+            '" target="_blank" rel="noreferrer">LIVE SITE</a>';
+        }
+
+        linksEl.innerHTML = html;
+      }
 
       function activate(item) {
         items.forEach((el) => el.classList.remove("is-active"));
@@ -441,14 +553,24 @@
         if (titleEl) titleEl.textContent = title;
         if (metaEl) metaEl.textContent = meta;
         if (descEl) descEl.textContent = desc;
+
+        buildLinks(item);
       }
 
       items.forEach((item) => {
         item.addEventListener("mouseenter", () => activate(item));
         item.addEventListener("focus", () => activate(item));
+
+        // optional: click opens primary link if there is exactly one
+        item.addEventListener("click", () => {
+          const live = item.getAttribute("data-live");
+          const gh = item.getAttribute("data-github");
+          const target = live || gh;
+          if (target) window.open(target, "_blank");
+        });
       });
 
-      // Scroll to top when clicking the square button in the middle
+      // Scroll to top when clicking the square button
       const btn = document.querySelector(".center-button");
       if (btn) {
         btn.addEventListener("click", () => {
