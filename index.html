@@ -53,7 +53,7 @@
       width: 100%;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1.1fr 1.5fr 2fr;
+      grid-template-columns: 1.1fr 1.5fr 2.2fr;
       column-gap: 56px;
       row-gap: 32px;
       font-size: 12px;
@@ -80,20 +80,30 @@
     }
 
     .works-header {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1.7fr) minmax(0, 1.4fr);
+      column-gap: 18px;
       margin-bottom: 8px;
       font-weight: 600;
     }
 
+    .works-header span:first-child {
+      text-align: right;
+    }
+
+    .works-header span:nth-child(2) {
+      padding-left: 2px;
+    }
+
     .works-list {
       list-style: none;
-      margin-top: 4px;
+      margin: 0;
+      padding: 0;
     }
 
     .work-item {
       display: grid;
-      grid-template-columns: 24px minmax(0, 1.6fr) minmax(0, 1.4fr);
+      grid-template-columns: 32px minmax(0, 1.7fr) minmax(0, 1.4fr);
       column-gap: 18px;
       padding: 3px 0;
       cursor: pointer;
@@ -103,6 +113,10 @@
 
     .work-item span {
       white-space: nowrap;
+    }
+
+    .work-item span:first-child {
+      text-align: right;
     }
 
     .work-item-title {
@@ -195,9 +209,46 @@
       row-gap: 12px;
     }
 
+    .product-label-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .product-label {
       font-weight: 600;
       color: var(--ink);
+    }
+
+    .product-toggle {
+      border: none;
+      background: none;
+      font: inherit;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: inherit;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 2px 0 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .product-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .product-body {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.25s ease, opacity 0.25s ease;
+    }
+
+    .product-block.is-open .product-body {
+      max-height: 400px; /* big enough for lines */
+      opacity: 1;
     }
 
     .product-line {
@@ -340,6 +391,7 @@
 
       <div>
         <div class="works-header">
+          <span>NO.</span>
           <span>SELECTED WORKS</span>
           <span>FIELD</span>
         </div>
@@ -390,7 +442,7 @@
             data-title="QUILLY"
             data-meta="NODE · EXPRESS · MONGO · PRODUCT"
             data-desc="Social platform helping college girls build friendships. I work across backend infra, a house-sorting algorithm, and event flows that translate real-world energy into retained users."
-            data-github="https://github.com/yuhee1234"  <!-- change if you have a specific repo -->
+            data-github="https://github.com/yuhee1234"
           >
             <span>4</span>
             <span class="work-item-title">QUILLY</span>
@@ -404,7 +456,7 @@
             data-meta="SCRAPERS · PIPELINES · ALERT DESIGN"
             data-desc="Job-alert engine that tracks roles across boards. I helped define the v1 experience and built the rules layer so alerts feel helpful, not spammy."
             data-live="https://notify.careers"
-            data-github="https://github.com/yuhee1234"  <!-- or specific repo -->
+            data-github="https://github.com/yuhee1234"
           >
             <span>5</span>
             <span class="work-item-title">NOTIFY.CAREERS</span>
@@ -458,11 +510,14 @@
     </section>
 
     <!-- Product / growth / management section -->
-    <section class="product-block" aria-label="Product and growth experience">
-      <div>
+    <section class="product-block" aria-label="Product and growth experience" id="product-block">
+      <div class="product-label-row">
         <div class="product-label">PRODUCT / GROWTH / MANAGEMENT</div>
+        <button class="product-toggle" type="button" id="product-toggle">
+          SHOW NOTES
+        </button>
       </div>
-      <div>
+      <div class="product-body" id="product-body">
         <span class="product-line">
           <strong>QUILLY · PRODUCT / BACKEND</strong>
           — Scoped and built the backend + house-sorting system powering social discovery for college women.
@@ -476,7 +531,7 @@
           — Ran content + social experiments to drive signups and refine onboarding flows.
         </span>
         <span class="product-line">
-          <strong>HOOGLEE · GROWTH</strong>
+          <strong>HOOGLEE (STEALTH STARTUP) · GROWTH</strong>
           — Helped test channels, messaging, and landing tweaks for an early-stage consumer product.
         </span>
         <span class="product-line">
@@ -561,7 +616,7 @@
         item.addEventListener("mouseenter", () => activate(item));
         item.addEventListener("focus", () => activate(item));
 
-        // optional: click opens primary link if there is exactly one
+        // click opens primary link if there is exactly one (live > github)
         item.addEventListener("click", () => {
           const live = item.getAttribute("data-live");
           const gh = item.getAttribute("data-github");
@@ -570,11 +625,23 @@
         });
       });
 
-      // Scroll to top when clicking the square button
+      // Scroll to top button
       const btn = document.querySelector(".center-button");
       if (btn) {
         btn.addEventListener("click", () => {
           window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+
+      // Product / growth toggle
+      const block = document.getElementById("product-block");
+      const toggle = document.getElementById("product-toggle");
+      const body = document.getElementById("product-body");
+
+      if (block && toggle && body) {
+        toggle.addEventListener("click", () => {
+          const open = block.classList.toggle("is-open");
+          toggle.textContent = open ? "HIDE NOTES" : "SHOW NOTES";
         });
       }
     })();
