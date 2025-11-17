@@ -27,7 +27,7 @@
 
     main {
       min-height: 100vh;
-      padding: 40px 56px 160px;
+      padding: 32px 48px 136px; /* slightly tighter than before */
       display: flex;
       flex-direction: column;
     }
@@ -38,23 +38,23 @@
       width: 100%;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1.1fr 1.5fr 2.6fr;
-      column-gap: 56px;
-      row-gap: 32px;
+      grid-template-columns: 1.1fr 1.5fr 2.4fr;
+      column-gap: 44px;  /* tighter */
+      row-gap: 24px;     /* tighter */
       font-size: 12px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
     .intro-name strong { font-weight: 600; }
-    .intro-body { max-width: 360px; }
+    .intro-body { max-width: 340px; }
 
     .works-header {
       display: grid;
       grid-template-columns: 32px minmax(0,1.7fr) minmax(0,1.4fr);
-      column-gap: 18px;
-      margin-bottom: 8px;
+      column-gap: 16px;
+      margin-bottom: 6px;
       font-weight: 600;
     }
     .works-header span:first-child { text-align: right; }
@@ -64,8 +64,8 @@
     .work-item {
       display: grid;
       grid-template-columns: 32px minmax(0,1.7fr) minmax(0,1.4fr);
-      column-gap: 18px;
-      padding: 3px 0;
+      column-gap: 16px;
+      padding: 2px 0;
       cursor: pointer;
       transition: color 0.18s ease, opacity 0.18s ease;
     }
@@ -80,19 +80,19 @@
     .preview {
       max-width: 1200px;
       width: 100%;
-      margin: 64px auto 0;
+      margin: 48px auto 0;  /* was 64 */
       display: grid;
-      grid-template-columns: minmax(0,1.2fr) minmax(0,2.1fr);
-      column-gap: 56px;
-      row-gap: 12px;
+      grid-template-columns: minmax(0,1.1fr) minmax(0,2fr);
+      column-gap: 44px;
+      row-gap: 10px;
       font-size: 11px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.55;
     }
     .preview-title { font-weight: 600; color: var(--ink); }
-    .preview-links { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .preview-links { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px; }
     .preview-link {
       font-size: 10px;
       letter-spacing: 0.18em;
@@ -100,7 +100,7 @@
       text-decoration: none;
       color: var(--ink);
       border-bottom: 1px solid transparent;
-      padding-bottom: 2px;
+      padding-bottom: 1px;
       transition: border-color 0.15s ease, color 0.15s ease;
     }
     .preview-link:hover { border-color: var(--ink); }
@@ -109,15 +109,16 @@
     .product-block {
       max-width: 1200px;
       width: 100%;
-      margin: 56px auto 0;
+      margin: 44px auto 0;   /* was 56 */
       display: grid;
-      grid-template-columns: minmax(0,1.1fr) minmax(0,2.1fr);
-      column-gap: 56px;
-      row-gap: 12px;
+      grid-template-columns: minmax(0,1.05fr) minmax(0,2.05fr);
+      column-gap: 44px;
+      row-gap: 10px;
       font-size: 11px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
+      line-height: 1.55;
     }
 
     .product-label { font-weight: 600; color: var(--ink); }
@@ -131,7 +132,7 @@
       text-transform: inherit;
       color: var(--muted);
       cursor: pointer;
-      padding: 2px 0 0;
+      padding: 1px 0 0;
       border-bottom: 1px solid transparent;
       transition: color 0.15s ease, border-color 0.15s ease;
     }
@@ -147,7 +148,7 @@
       transition: max-height 0.25s ease, opacity 0.25s ease;
     }
     .product-block.is-open .product-body {
-      max-height: 400px;
+      max-height: 360px;
       opacity: 1;
     }
     .product-line { display: block; }
@@ -156,8 +157,8 @@
     /* BOTTOM BAR */
     .bottom-bar {
       position: fixed;
-      inset-inline: 40px;
-      bottom: 28px;
+      inset-inline: 32px;
+      bottom: 20px;          /* slightly higher */
       display: flex;
       justify-content: space-between;
       font-size: 10px;
@@ -165,12 +166,12 @@
       text-transform: uppercase;
       color: var(--muted);
     }
-    .bottom-links, .bottom-note { display: flex; gap: 18px; }
+    .bottom-links, .bottom-note { display: flex; gap: 16px; }
     .bottom-link {
       text-decoration: none;
       color: inherit;
       border-bottom: 1px solid transparent;
-      padding-bottom: 2px;
+      padding-bottom: 1px;
       transition: border-color 0.15s ease, color 0.15s ease;
     }
     .bottom-link:hover { color: var(--ink); border-color: var(--ink); }
@@ -178,10 +179,10 @@
     /* FLOATING CAT */
     .cat {
       position: fixed;
-      top: 25%;
+      top: 26%;
       left: 10%;
-      width: 80px;
-      height: 40px;
+      width: 70px;
+      height: 36px;
       pointer-events: none;
       z-index: 2;
       transform-origin: 50% 50%;
@@ -189,26 +190,27 @@
     .cat svg { width: 100%; height: 100%; display: block; }
 
     @media (max-width: 960px) {
-      main { padding: 28px 24px 160px; }
+      main { padding: 24px 20px 128px; }
       .top-grid {
         grid-template-columns: 1fr 1fr;
-        row-gap: 24px;
+        row-gap: 20px;
+        column-gap: 28px;
       }
       .top-grid > div:nth-child(3) { grid-column: 1 / -1; }
       .preview, .product-block {
         grid-template-columns: 1fr;
-        margin-top: 40px;
+        margin-top: 32px;
       }
-      .bottom-bar { inset-inline: 24px; bottom: 20px; }
+      .bottom-bar { inset-inline: 20px; bottom: 18px; }
     }
 
     @media (max-width: 640px) {
-      .top-grid { grid-template-columns: 1fr; row-gap: 18px; }
-      .preview, .product-block { margin-top: 32px; }
+      .top-grid { grid-template-columns: 1fr; row-gap: 16px; }
+      .preview, .product-block { margin-top: 28px; }
       .bottom-bar {
         flex-direction: column;
         align-items: flex-start;
-        gap: 18px;
+        gap: 14px;
       }
     }
   </style>
@@ -222,10 +224,8 @@
       </div>
 
       <div class="intro-body">
-        <span>BUILDER & STRATEGIST</span>
-        <span>WORKING ACROSS BACKEND, PRODUCT,</span>
-        <span>AND SOCIAL SYSTEMS.</span>
-        <span>TRYING TO KEEP THINGS PLAYFUL :)</span>
+        <span>BUILDER & STRATEGIST WORKING ACROSS BACKEND, PRODUCT,</span>
+        <span>AND SOCIAL SYSTEMS. TRYING TO KEEP THINGS PLAYFUL :)</span>
       </div>
 
       <div>
@@ -310,7 +310,7 @@
           </li>
         </ol>
 
-        <div style="margin-top:18px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">
+        <div style="margin-top:14px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">
           * ARCHIVE OF SELECTED WORKS MADE SINCE 2021
         </div>
       </div>
@@ -364,22 +364,15 @@
   <!-- FLOATING DOODLE CAT -->
   <div class="cat" id="cat" aria-hidden="true">
     <svg viewBox="0 0 80 40">
-      <!-- shadow line -->
       <line x1="6" y1="32" x2="74" y2="32" stroke="#e1e1e1" stroke-width="2" stroke-linecap="round" />
-      <!-- tail -->
       <path d="M18 24 Q12 18 16 14" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
-      <!-- body -->
       <rect x="20" y="18" width="28" height="14" rx="7" fill="none" stroke="#111" stroke-width="1.6" />
-      <!-- head -->
       <rect x="40" y="14" width="14" height="12" rx="4" fill="none" stroke="#111" stroke-width="1.6" />
-      <!-- ears -->
       <path d="M42 14 L44 9 L46 14" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
       <path d="M48 14 L50 9 L52 14" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
-      <!-- face -->
       <circle cx="44" cy="18" r="1.2" fill="#111" />
       <circle cx="50" cy="18" r="1.2" fill="#111" />
       <path d="M45 20 Q47 21 49 20" fill="none" stroke="#111" stroke-width="1.1" stroke-linecap="round" />
-      <!-- legs -->
       <line x1="24" y1="32" x2="24" y2="28.5" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
       <line x1="30" y1="32" x2="30" y2="28.5" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
       <line x1="40" y1="32" x2="40" y2="28.5" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
@@ -443,13 +436,13 @@
         });
       }
 
-      /* FLOATING CAT (simple random drift, no rotation) */
+      /* FLOATING CAT (simple drift) */
       const cat = document.getElementById("cat");
       if (cat) {
-        let x = window.innerWidth * 0.2;
-        let y = window.innerHeight * 0.3;
-        let vx = 35; // px/s
-        let vy = 22; // px/s
+        let x = window.innerWidth * 0.18;
+        let y = window.innerHeight * 0.32;
+        let vx = 32; // px/s
+        let vy = 20; // px/s
         let last = performance.now();
 
         function frame(now) {
@@ -458,20 +451,20 @@
 
           const w = window.innerWidth || 800;
           const h = window.innerHeight || 600;
-          const margin = 60;
+          const margin = 56;
 
           x += vx * dt;
           y += vy * dt;
 
-          if (x < margin) { x = margin; vx = Math.abs(vx) * (0.8 + Math.random()*0.4); }
-          else if (x > w - margin) { x = w - margin; vx = -Math.abs(vx) * (0.8 + Math.random()*0.4); }
+          if (x < margin) { x = margin; vx = Math.abs(vx) * (0.85 + Math.random()*0.3); }
+          else if (x > w - margin) { x = w - margin; vx = -Math.abs(vx) * (0.85 + Math.random()*0.3); }
 
-          if (y < margin) { y = margin; vy = Math.abs(vy) * (0.8 + Math.random()*0.4); }
-          else if (y > h - margin) { y = h - margin; vy = -Math.abs(vy) * (0.8 + Math.random()*0.4); }
+          if (y < margin) { y = margin; vy = Math.abs(vy) * (0.85 + Math.random()*0.3); }
+          else if (y > h - margin) { y = h - margin; vy = -Math.abs(vy) * (0.85 + Math.random()*0.3); }
 
-          const bob = Math.sin(now / 500) * 2.5;
+          const bob = Math.sin(now / 520) * 2.3;
 
-          cat.style.transform = `translate(${x - 40}px, ${y - 20 + bob}px)`;
+          cat.style.transform = `translate(${x - 40}px, ${y - 22 + bob}px)`;
 
           requestAnimationFrame(frame);
         }
