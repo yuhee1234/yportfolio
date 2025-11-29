@@ -8,11 +8,11 @@
 
   <style>
     :root {
-      --bg: #f8f8f8;
-      --ink: #111111;
-      --muted: #9a9a9a;
-      --accent: #111111;
-      --hairline: rgba(0, 0, 0, 0.06);
+      --bg: #f7f7f7;
+      --ink: #101010;
+      --muted: #a0a0a0;
+      --accent: #101010;
+      --hairline: rgba(0, 0, 0, 0.05);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,47 +35,64 @@
 
     /* TOP GRID */
     .top-grid {
-      max-width: 1200px;
+      max-width: 1120px;
       width: 100%;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 1.3fr 2.3fr;
-      column-gap: 44px;
+      grid-template-columns: 0.9fr 1.3fr 2.2fr;
+      column-gap: 48px;
       row-gap: 24px;
-      font-size: 12px;
-      letter-spacing: 0.14em;
+      font-size: 11px;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     .intro-name strong { font-weight: 600; }
-    .intro-body { max-width: 360px; display: flex; flex-direction: column; gap: 3px; }
-
-    /* WORKS COLUMN SPLIT */
-    .works-column-heading {
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      color: var(--muted);
-      margin-bottom: 10px;
+    .intro-body {
+      max-width: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
+    /* WORKS COLUMN SPLIT */
     .works-columns {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: 32px;
-      row-gap: 24px;
+      position: relative;
+      padding-left: 20px;
     }
 
-    .works-group { border-left: 1px solid var(--hairline); padding-left: 16px; }
+    .works-columns::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 2px;
+      bottom: 6px;
+      width: 1px;
+      background: var(--hairline);
+    }
+
+    .works-group { display: flex; flex-direction: column; gap: 6px; }
+
+    .works-column-heading {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
 
     .works-header {
       display: grid;
       grid-template-columns: 32px minmax(0,1.7fr) minmax(0,1.4fr);
-      column-gap: 12px;
-      margin-bottom: 6px;
+      column-gap: 10px;
+      margin-bottom: 4px;
       font-weight: 600;
       font-size: 10px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.17em;
+      color: #767676;
     }
     .works-header span:first-child { text-align: right; }
 
@@ -84,25 +101,28 @@
     .work-item {
       display: grid;
       grid-template-columns: 32px minmax(0,1.7fr) minmax(0,1.4fr);
-      column-gap: 12px;
+      column-gap: 10px;
       padding: 2px 0;
       cursor: pointer;
       transition: color 0.18s ease, opacity 0.18s ease, transform 0.12s ease;
       font-size: 11px;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.13em;
+      color: #4b4b4b;
     }
     .work-item span:first-child { text-align: right; }
+
     .work-item:hover,
     .work-item.is-active {
       color: var(--accent);
       transform: translateX(1px);
     }
 
-    .works-list.dim .work-item { opacity: 0.34; }
+    .works-list.dim .work-item { opacity: 0.32; }
     .works-list.dim .work-item.is-active { opacity: 1; }
 
     .works-archive-note {
-      margin-top: 18px;
+      max-width: 1120px;
+      margin: 14px auto 0;
       font-size: 10px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
@@ -111,13 +131,13 @@
 
     /* PREVIEW */
     .preview {
-      max-width: 1200px;
+      max-width: 1120px;
       width: 100%;
       margin: 40px auto 0;
-      padding-top: 20px;
+      padding-top: 18px;
       border-top: 1px solid var(--hairline);
       display: grid;
-      grid-template-columns: minmax(0,1.1fr) minmax(0,2fr);
+      grid-template-columns: minmax(0,1.05fr) minmax(0,1.95fr);
       column-gap: 44px;
       row-gap: 10px;
       font-size: 11px;
@@ -126,10 +146,23 @@
       color: var(--muted);
       line-height: 1.55;
     }
-    .preview-label { font-size: 10px; letter-spacing: 0.2em; }
-    .preview-title { font-weight: 600; color: var(--ink); margin-top: 4px; }
+    .preview-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: #808080;
+    }
+    .preview-title {
+      font-weight: 600;
+      color: var(--ink);
+      margin-top: 4px;
+    }
     .preview-meta { margin-top: 2px; }
-    .preview-links { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .preview-links {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
     .preview-link {
       font-size: 10px;
       letter-spacing: 0.18em;
@@ -144,12 +177,15 @@
       border-color: var(--ink);
       opacity: 0.8;
     }
+    #preview-desc {
+      max-width: 640px;
+    }
 
     /* PRODUCT BLOCK */
     .product-block {
-      max-width: 1200px;
+      max-width: 1120px;
       width: 100%;
-      margin: 40px auto 0;
+      margin: 36px auto 0;
       padding-top: 18px;
       border-top: 1px solid var(--hairline);
       display: grid;
@@ -163,7 +199,11 @@
       line-height: 1.55;
     }
 
-    .product-label { font-weight: 600; color: var(--ink); font-size: 11px; }
+    .product-label {
+      font-weight: 600;
+      color: var(--ink);
+      font-size: 11px;
+    }
 
     .product-toggle {
       border: none;
@@ -174,7 +214,7 @@
       text-transform: inherit;
       color: var(--muted);
       cursor: pointer;
-      padding: 1px 0 0;
+      padding: 4px 0 0;
       border-bottom: 1px solid transparent;
       transition: color 0.15s ease, border-color 0.15s ease;
     }
@@ -245,17 +285,18 @@
       .works-columns {
         grid-template-columns: 1fr;
         row-gap: 18px;
+        padding-left: 16px;
       }
       .preview, .product-block {
         grid-template-columns: 1fr;
-        margin-top: 32px;
+        margin-top: 28px;
       }
       .bottom-bar { inset-inline: 20px; bottom: 18px; }
     }
 
     @media (max-width: 640px) {
       .top-grid { grid-template-columns: 1fr; row-gap: 16px; }
-      .preview, .product-block { margin-top: 28px; }
+      .preview, .product-block { margin-top: 24px; }
       .bottom-bar {
         flex-direction: column;
         align-items: flex-start;
@@ -374,12 +415,12 @@
             </ol>
           </div>
         </div>
-
-        <div class="works-archive-note">
-          * ARCHIVE OF SELECTED WORKS MADE SINCE 2021
-        </div>
       </div>
     </section>
+
+    <div class="works-archive-note">
+      * ARCHIVE OF SELECTED WORKS MADE SINCE 2021
+    </div>
 
     <!-- PREVIEW AREA -->
     <section class="preview" aria-live="polite">
