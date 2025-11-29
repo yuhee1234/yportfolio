@@ -2,507 +2,558 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <title>First-Session Personalization Sprint — Key Findings and Recommendations</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>First-Session Personalization Sprint — Case Study</title>
   <style>
-    :root{
-      --bg:#f5f7fb;
-      --page:#ffffff;
-      --fg:#111827;
-      --muted:#6b7280;
-      --accent:#2563eb;
-      --accent-soft:#e0ecff;
-      --accent-soft-2:#ecfdf3;
-      --border:#e5e7eb;
-      --border-strong:#cbd5f5;
-      --headline:#0f172a;
-      --radius:14px;
-      --radius-sm:10px;
-      --shadow:0 18px 45px rgba(15,23,42,0.08);
-    }
-
     *{box-sizing:border-box;margin:0;padding:0}
     body{
-      margin:0;
-      background:
-        radial-gradient(800px 600px at -10% -10%, rgba(37,99,235,0.12), transparent 65%),
-        radial-gradient(900px 700px at 110% 0%, rgba(16,185,129,0.12), transparent 70%),
-        var(--bg);
-      font-family: system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Inter,Arial,sans-serif;
-      color:var(--fg);
+      background:#e5ebf5;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color:#111827;
       -webkit-font-smoothing:antialiased;
     }
-
-    .page{
+    .deck{
       max-width:980px;
-      margin:40px auto 80px;
-      padding:32px 28px 40px;
-      background:var(--page);
-      border-radius:22px;
-      box-shadow:var(--shadow);
-      border:1px solid rgba(148,163,184,0.20);
+      margin:32px auto 80px;
+      padding:0 12px;
     }
-
-    .header{
+    .slide{
+      background:#ffffff;
+      border-radius:6px;
+      box-shadow:0 10px 30px rgba(15,23,42,0.18);
+      border:1px solid #cbd5f5;
+      padding:36px 40px 42px;
+      margin-bottom:30px;
+      position:relative;
+      min-height:540px;
       display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:24px;
-      border-bottom:1px solid var(--border);
-      padding-bottom:18px;
-      margin-bottom:24px;
+      flex-direction:column;
+      justify-content:flex-start;
+      page-break-after:always;
     }
-
-    .eyebrow{
-      font-size:12px;
-      font-weight:600;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color:var(--accent);
-      margin-bottom:6px;
+    .slide-title{
+      font-size:24px;
+      font-weight:700;
+      color:#0f172a;
+      margin-bottom:4px;
     }
-
-    h1{
-      font-size:28px;
-      line-height:1.15;
-      color:var(--headline);
-      margin-bottom:6px;
-      font-weight:800;
-    }
-
-    .subtitle{
+    .slide-subtitle{
       font-size:14px;
-      color:var(--muted);
+      color:#4b5563;
+      margin-bottom:14px;
+    }
+    .eyebrow{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-weight:700;
+      color:#1d4ed8;
+      margin-bottom:8px;
+    }
+    h1.cover-main{
+      font-size:30px;
+      font-weight:800;
+      color:#0f172a;
+      margin-bottom:8px;
+    }
+    .cover-sub{
+      font-size:16px;
+      color:#4b5563;
       max-width:520px;
+      margin-bottom:18px;
     }
-
-    .meta{
-      text-align:right;
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    .tag-row{
+    .cover-meta{
+      font-size:13px;
+      color:#6b7280;
       margin-top:8px;
     }
-
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      padding:3px 10px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      font-size:11px;
-      color:#374151;
-      background:#f9fafb;
-      margin-left:4px;
+    .two-col{
+      display:grid;
+      grid-template-columns:1.2fr 1fr;
+      gap:24px;
+      margin-top:16px;
     }
-
-    .tag:first-child{margin-left:0;}
-
-    .section{
-      margin-bottom:28px;
-      padding:18px 18px 16px;
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      background:#f9fafb;
+    .bullets{
+      margin-top:8px;
     }
-
-    .section.emphasis{
-      background:linear-gradient(135deg,#eef2ff 0%,#ecfeff 100%);
-      border-color:var(--border-strong);
+    ul{
+      margin-left:18px;
+      font-size:14px;
+      line-height:1.55;
     }
-
-    .section-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:10px;
-    }
-
-    .section-title{
-      font-size:13px;
-      letter-spacing:.15em;
-      text-transform:uppercase;
-      font-weight:700;
-      color:#4b5563;
-    }
-
-    .section-subtitle{
-      font-size:12px;
-      color:var(--muted);
-    }
-
+    li+li{margin-top:4px;}
     p{
       font-size:14px;
       line-height:1.55;
       margin-bottom:8px;
     }
-
-    strong{font-weight:600;}
-
-    ul,ol{
-      margin-left:18px;
-      font-size:14px;
-      line-height:1.52;
+    .small{
+      font-size:12px;
+      color:#6b7280;
     }
-    li+li{margin-top:4px;}
-
-    .cols-2{
-      display:grid;
-      grid-template-columns:1.1fr 1fr;
-      gap:20px;
+    .toc-list li{
+      margin-top:6px;
     }
-
-    .cols-3{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
+    .num{
+      font-weight:600;
+      margin-right:6px;
+    }
+    .callout-box{
+      border-radius:6px;
+      border:1px solid #bfdbfe;
+      background:#eff6ff;
+      padding:10px 11px;
+      font-size:13px;
+      color:#1e3a8a;
       margin-top:8px;
     }
-
-    .pill-metric{
-      background:var(--page);
-      border-radius:var(--radius-sm);
-      padding:10px 12px 10px;
-      border:1px solid var(--border-strong);
-    }
-
-    .pill-label{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      color:#6b7280;
-      margin-bottom:3px;
-    }
-
-    .pill-value{
-      font-size:18px;
-      font-weight:700;
-      color:var(--headline);
-      margin-bottom:2px;
-    }
-
-    .pill-caption{
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      padding:3px 8px;
-      border-radius:999px;
-      border:1px solid var(--border-strong);
-      background:var(--accent-soft);
-      color:#1d4ed8;
-      font-size:11px;
-      font-weight:600;
-    }
-
-    .kv{
+    .kpi-row{
       display:grid;
-      grid-template-columns:120px 1fr;
-      column-gap:10px;
-      row-gap:4px;
-      font-size:13px;
-      margin-top:4px;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-top:10px;
     }
-
-    .kv-label{
-      color:var(--muted);
-      font-weight:500;
-    }
-
-    .inline-code{
-      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-      font-size:12px;
-      background:#11182708;
-      padding:1px 5px;
+    .kpi-card{
       border-radius:6px;
-      border:1px solid #e5e7eb;
+      border:1px solid #d1d5db;
+      background:#f9fafb;
+      padding:9px 10px 10px;
     }
-
-    .table{
-      width:100%;
-      border-collapse:collapse;
-      margin-top:6px;
-      font-size:13px;
-    }
-
-    .table th,
-    .table td{
-      padding:7px 8px;
-      border-bottom:1px solid var(--border);
-      vertical-align:top;
-    }
-
-    .table th{
-      text-align:left;
+    .kpi-label{
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:.13em;
       color:#6b7280;
+      margin-bottom:2px;
+    }
+    .kpi-value{
+      font-size:18px;
+      font-weight:700;
+      color:#111827;
+      margin-bottom:2px;
+    }
+    .kpi-caption{
+      font-size:12px;
+      color:#4b5563;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+      margin-top:10px;
+    }
+    th,td{
+      padding:7px 8px;
+      border-bottom:1px solid #e5e7eb;
+      vertical-align:top;
+    }
+    th{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.13em;
+      color:#6b7280;
+      text-align:left;
       background:#f3f4f6;
     }
-
-    .callout{
-      border-radius:var(--radius-sm);
-      padding:10px 11px 9px;
-      font-size:13px;
-      background:var(--accent-soft-2);
-      border:1px solid #bbf7d0;
-      color:#166534;
-      margin-top:8px;
-    }
-
-    .sql-block{
-      margin-top:8px;
-      padding:10px 12px;
-      border-radius:var(--radius-sm);
-      background:#020617;
-      border:1px solid #1f2937;
-      color:#e5e7eb;
-      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    .inline-code{
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       font-size:12px;
+      background:#f3f4ff;
+      border-radius:4px;
+      border:1px solid #e5e7eb;
+      padding:1px 4px;
+    }
+    .footer{
+      position:absolute;
+      left:40px;
+      right:40px;
+      bottom:14px;
+      border-top:1px solid #e5e7eb;
+      padding-top:6px;
+      font-size:10px;
+      color:#9ca3af;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .footer span{white-space:nowrap;}
+    .section-marker{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:#6b7280;
+      margin-bottom:6px;
+      font-weight:600;
+    }
+    .slide-num{
+      font-weight:600;
+    }
+    .sql-block{
+      margin-top:10px;
+      padding:10px 11px;
+      background:#020617;
+      color:#e5e7eb;
+      border-radius:6px;
+      border:1px solid #1f2937;
+      font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size:12px;
+      white-space:pre;
       overflow-x:auto;
       line-height:1.45;
-      white-space:pre;
     }
-
-    .footnote{
-      margin-top:8px;
-      font-size:11px;
-      color:var(--muted);
-    }
-
-    @media (max-width:840px){
-      .header{flex-direction:column;align-items:flex-start;}
-      .meta{text-align:left;}
-      .cols-2{grid-template-columns:1fr;}
-      .cols-3{grid-template-columns:1fr;gap:10px;}
+    @media (max-width:900px){
+      .slide{min-height:auto;}
+      .two-col{grid-template-columns:1fr;}
+      .kpi-row{grid-template-columns:1fr;}
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <!-- Cover -->
-    <header class="header">
+  <div class="deck">
+
+    <!-- SLIDE 1: COVER -->
+    <section class="slide">
+      <div class="eyebrow">First-Session Personalization Sprint</div>
+      <h1 class="cover-main">Key Findings and Recommendations</h1>
+      <div class="cover-sub">
+        Micro-onboarding “Pick 3 interests” and personalized first feed experiment
+        for a social video app · September–October 2024.
+      </div>
       <div>
-        <div class="eyebrow">Case Study</div>
-        <h1>First-Session Personalization Sprint</h1>
-        <p class="subtitle">
-          Micro-onboarding “Pick 3 interests” flow plus personalized first feed for a social video app.
-          Ran as a 4-week experiment (Sept–Oct 2024) to lift first-session engagement and 7-day retention.
-        </p>
+        <p class="small"><strong>Client:</strong> Social video discussion app (early-stage)</p>
+        <p class="small"><strong>Prepared by:</strong> Yuhee Lefkowitz (Product Management, with Design · Backend · Data)</p>
+        <p class="small"><strong>Scope:</strong> First-session experience & onboarding (new users only)</p>
       </div>
-      <div class="meta">
-        <div><strong>Owner:</strong> Yuhee Lefkowitz (PM)</div>
-        <div>With Design · Backend · Data</div>
-        <div style="margin-top:6px;">Release train <span class="badge">2024.10.R2</span></div>
-        <div class="tag-row">
-          <span class="tag">Product</span>
-          <span class="tag">A/B Testing</span>
-          <span class="tag">SQL</span>
-          <span class="tag">Feature Flags</span>
-        </div>
+      <div class="cover-meta">
+        This document summarizes the sprint objectives, approach, key findings, impact, and recommended next steps.
       </div>
-    </header>
 
-    <!-- Executive summary -->
-    <section class="section emphasis">
-      <div class="section-header">
-        <div class="section-title">Executive Summary</div>
-        <div class="section-subtitle">What we did and why it matters</div>
+      <div class="footer">
+        <span>First-Session Personalization Sprint — Key Findings and Recommendations</span>
+        <span class="slide-num">1</span>
       </div>
-      <div class="cols-2">
+    </section>
+
+    <!-- SLIDE 2: TABLE OF CONTENTS -->
+    <section class="slide">
+      <div class="slide-title">Table of Contents</div>
+      <div class="slide-subtitle small">Structure mirrors a consulting engagement: context → approach → findings → value → implementation.</div>
+
+      <div class="bullets">
+        <ol class="toc-list">
+          <li><span class="num">1.</span> Project context, scope, and objectives</li>
+          <li><span class="num">2.</span> Approach to identify opportunities (experiment & analysis design)</li>
+          <li><span class="num">3.</span> Key findings and recommendations</li>
+          <li><span class="num">4.</span> Targeted impact and other benefits</li>
+          <li><span class="num">5.</span> Enabling implementation: rollout, risk, and roadmap</li>
+          <li><span class="num">6.</span> Appendix: funnel, segmentation, data quality, and SQL excerpts</li>
+        </ol>
+      </div>
+
+      <div class="footer">
+        <span>First-Session Personalization Sprint — Table of Contents</span>
+        <span class="slide-num">2</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: PROJECT CONTEXT -->
+    <section class="slide">
+      <div class="section-marker">1. Project Context, Scope, and Objectives</div>
+      <div class="slide-title">Context and problem statement</div>
+
+      <div class="two-col">
         <div>
-          <p><strong>Problem.</strong> New users were landing on a generic, unpersonalized feed, leading to weak
-            first-session engagement and low 7-day retention (R7 22%).</p>
-          <p><strong>Hypothesis.</strong> Asking users to pick ≥3 interests on first session, then seeding a personalized
-            feed from those interests, would make the initial experience feel more relevant and increase early-life
-            engagement and retention.</p>
-          <p><strong>Approach.</strong> We shipped a micro-onboarding “Pick 3 interests” step, wired it into a new feed
-            seeding algorithm, and ran a 50/50 A/B test on new users (user-level randomization, stratified by geo and platform).</p>
+          <p><strong>Context.</strong> The app is a social video discussion platform where users reply to each other
+            with short videos. New users were dropped directly into a generic, unpersonalized feed.</p>
+          <p><strong>Observed issues.</strong></p>
+          <ul>
+            <li>First-session engagement plateauing (~48% meaningful engagement in session 1).</li>
+            <li>7-day retention (R7) at ~22% for new users.</li>
+            <li>No lightweight way to capture user interests on the first session.</li>
+          </ul>
+          <p><strong>Strategic question.</strong> Can we use declared interests during onboarding to make the first
+            experience feel “instantly relevant” and improve early-life retention?</p>
         </div>
         <div>
-          <div class="cols-3">
-            <div class="pill-metric">
-              <div class="pill-label">First-Session Engagement</div>
-              <div class="pill-value">+9 pp</div>
-              <div class="pill-caption">48% → 57% vs. target +5 pp</div>
-            </div>
-            <div class="pill-metric">
-              <div class="pill-label">7-Day Retention</div>
-              <div class="pill-value">+6 pp</div>
-              <div class="pill-caption">22% → 28% · p = 0.004 · 95% CI [+3.4, +8.6]</div>
-            </div>
-            <div class="pill-metric">
-              <div class="pill-label">Onboarding Completion</div>
-              <div class="pill-value">82%</div>
-              <div class="pill-caption">Up 7 pp vs. 75% baseline · Guardrails all green</div>
-            </div>
+          <p><strong>Scope of this sprint.</strong></p>
+          <ul>
+            <li><strong>In scope:</strong> New-user onboarding flow, interest capture UI, first-session feed seeding,
+              experimentation & analysis.</li>
+            <li><strong>Out of scope:</strong> Pricing/monetization changes, long-term content supply strategy,
+              brand marketing, and creator incentives.</li>
+          </ul>
+          <p style="margin-top:8px;"><strong>Primary objectives.</strong></p>
+          <ul>
+            <li>Increase <strong>first-session engagement</strong> with minimal added friction.</li>
+            <li>Improve <strong>7-day retention</strong> for new users.</li>
+            <li>Protect key <strong>guardrails</strong> (latency, crash rate, support tickets, spend/DAU).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>Project context, scope, and objectives</span>
+        <span class="slide-num">3</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: HYPOTHESIS & GOAL -->
+    <section class="slide">
+      <div class="section-marker">1. Project Context, Scope, and Objectives</div>
+      <div class="slide-title">Hypothesis and success criteria</div>
+
+      <p><strong>Hypothesis.</strong> Asking new users to pick at least three interests and seeding their first feed
+        from those interests will:</p>
+      <ul>
+        <li>Increase perceived relevance of content in session 1.</li>
+        <li>Accelerate time to first meaningful action (e.g., like, reply).</li>
+        <li>Translate into higher 7-day retention without harming reliability or monetization.</li>
+      </ul>
+
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-label">Primary KPI (Target)</div>
+          <div class="kpi-value">+5 pp</div>
+          <div class="kpi-caption">Increase in first-session engagement vs. control.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Secondary KPI</div>
+          <div class="kpi-value">+3 pp</div>
+          <div class="kpi-caption">Increase in 7-day retention (R7) vs. control.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Guardrails</div>
+          <div class="kpi-caption">
+            • FE p95 latency change &lt; +20 ms<br/>
+            • Crash rate non-inferior<br/>
+            • Spend/DAU within ±1% band<br/>
+            • No increase in support tickets
           </div>
-          <div class="callout">
-            The experiment beat both engagement and retention targets with no negative impact on
-            reliability, latency or monetization guardrails. We recommended full rollout.
-          </div>
         </div>
+      </div>
+
+      <div class="footer">
+        <span>Project context, scope, and objectives</span>
+        <span class="slide-num">4</span>
       </div>
     </section>
 
-    <!-- Context & goals -->
-    <section class="section">
-      <div class="section-header">
-        <div class="section-title">Context & Objectives</div>
-        <div class="section-subtitle">Why this sprint existed</div>
-      </div>
-      <div class="kv">
-        <div class="kv-label">Product Area</div>
-        <div>Onboarding & first-session experience for a social video discussion app.</div>
-        <div class="kv-label">Primary Goal</div>
-        <div>Increase <strong>first-session engagement</strong> and <strong>7-day retention</strong> for new users by
-          making the first feed immediately relevant.</div>
-        <div class="kv-label">Secondary Goals</div>
-        <div>
-          <ul>
-            <li>Improve <strong>onboarding completion</strong> without adding friction.</li>
-            <li>Protect <strong>performance and reliability</strong> (latency, crash rate, support tickets).</li>
-          </ul>
-        </div>
-        <div class="kv-label">Timeline</div>
-        <div>4-week sprint · Sept → Oct 2024.</div>
-      </div>
-    </section>
+    <!-- SLIDE 5: APPROACH OVERVIEW -->
+    <section class="slide">
+      <div class="section-marker">2. Approach to Identify Opportunities</div>
+      <div class="slide-title">Experiment design and overall approach</div>
 
-    <!-- Solution design -->
-    <section class="section">
-      <div class="section-header">
-        <div class="section-title">Solution Design</div>
-        <div class="section-subtitle">What we built</div>
-      </div>
-      <div class="cols-2">
+      <div class="two-col">
         <div>
-          <p><strong>Micro-onboarding flow.</strong></p>
+          <p><strong>Design: controlled experiment.</strong></p>
           <ul>
-            <li>Inserted a “<strong>Pick 3 interests</strong>” screen into the onboarding funnel for new users.</li>
-            <li>Required at least 3 interests; offered a curated taxonomy (e.g., art, tech, travel).</li>
-            <li>Stored interests as non-PII IDs with a 180-day retention policy.</li>
+            <li>Randomized controlled test at the <span class="inline-code">user_id</span> level.</li>
+            <li>50/50 split between Control (A) and Test (B).</li>
+            <li>Stratified by platform (iOS/Android) and geo (US / non-US).</li>
+            <li>Fixed 14-day observation window from signup.</li>
           </ul>
-          <p style="margin-top:8px;"><strong>Feed seeding.</strong></p>
-          <ul>
-            <li>Generated a personalized first feed by pulling top-N content per selected interest.</li>
-            <li>Backfilled with trending items to mitigate long-tail content sparsity.</li>
-            <li>Prefetched content to avoid first-session latency spikes.</li>
-          </ul>
-        </div>
-        <div>
-          <p><strong>Technical implementation.</strong></p>
-          <ul>
-            <li>Feature flag: <span class="inline-code">onb.pick3.enabled</span> (user-level).</li>
-            <li>Experiment key: <span class="inline-code">exp_onb_pick3_v1</span> · assignment unit <span class="inline-code">user_id</span>.</li>
-            <li>50/50 split · stratified by geo and platform (iOS / Android).</li>
-            <li>Experiment artifacts:
-              <ul style="margin-top:4px;">
-                <li>Jira: <span class="inline-code">ONB-241</span> — micro-onboarding & feed seeding.</li>
-                <li>PRs: <span class="inline-code">PR#1284</span>, commits <span class="inline-code">6b91e3a</span> (server) and <span class="inline-code">c21ad7f</span> (client).</li>
-                <li>Dashboards: Metabase <span class="inline-code">R7 Cohorts v1</span>; Datadog <span class="inline-code">FE Latency p95</span>.</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="footnote">
-        Exclusions: returning users, employees, flagged bot traffic, and users under 13.
-      </div>
-    </section>
 
-    <!-- Experiment design & methodology -->
-    <section class="section">
-      <div class="section-header">
-        <div class="section-title">Experiment Design & Methodology</div>
-        <div class="section-subtitle">How we evaluated impact</div>
-      </div>
-      <div class="cols-2">
-        <div>
-          <p><strong>Design.</strong></p>
+          <p style="margin-top:8px;"><strong>Assignment and logging.</strong></p>
           <ul>
-            <li>Randomized controlled experiment with <strong>fixed 14-day horizon</strong>.</li>
-            <li>50/50 split at <span class="inline-code">user_id</span> level, stratified by platform & geo.</li>
-            <li>Assignment and exposure logged via <span class="inline-code">experiment_sessions</span> table.</li>
+            <li>Experiment key: <span class="inline-code">exp_onb_pick3_v1</span>.</li>
+            <li>Feature flag: <span class="inline-code">onb.pick3.enabled</span> (kill switch present).</li>
+            <li>Exclusions: returning users, employees, flagged bots, age &lt; 13.</li>
           </ul>
-          <p style="margin-top:8px;"><strong>Stats approach.</strong></p>
+        </div>
+        <div>
+          <p><strong>Analysis methodology.</strong></p>
           <ul>
+            <li>Primary metric: 7-day retention (R7); secondary: first-session engagement, onboarding completion.</li>
             <li>Difference-in-proportions with pooled standard error.</li>
             <li>CUPED adjustment using baseline activity to reduce variance.</li>
             <li>MDE for R7: <strong>3.0 pp</strong> at 95% power, α = 0.05.</li>
-            <li>Stopping rule: fixed horizon + sequential monitoring with alpha spending;
-              no early stop triggered.</li>
+            <li>Stopping rule: fixed horizon + sequential monitoring with alpha spending; no early stop.</li>
           </ul>
+
+          <div class="callout-box">
+            Pre-AA test (n ≈ 4,800) showed no metric drift (all p &gt; 0.3), and no sample ratio mismatch was detected
+            in the live test (χ² p = 0.41; split within ±0.8%).
+          </div>
         </div>
-        <div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Check</th>
-                <th>Outcome</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Sample Ratio Mismatch</strong></td>
-                <td>No SRM detected · χ² p = 0.41 · split within ±0.8%.</td>
-              </tr>
-              <tr>
-                <td><strong>Variant sizes</strong></td>
-                <td>Control (A): n = 5,015 · Test (B): n = 5,032.</td>
-              </tr>
-              <tr>
-                <td><strong>Primary metric</strong></td>
-                <td>R7 (7-day retention) · lift +5.9 pp · z = 2.88 · p = 0.004.</td>
-              </tr>
-              <tr>
-                <td><strong>Pre-AA test</strong></td>
-                <td>AA test (n ≈ 4,800) showed no metric drift (all p &gt; 0.3).</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="sql-block">Control (A): n=5,015 · R7=22.2% · SE=0.0059
-Test (B):    n=5,032 · R7=28.1% · SE=0.0063
-Lift: +5.9 pp · z=2.88 · p=0.004</div>
-        </div>
+      </div>
+
+      <div class="footer">
+        <span>Approach to identify opportunities</span>
+        <span class="slide-num">5</span>
       </div>
     </section>
 
-    <!-- Results & impact -->
-    <section class="section">
-      <div class="section-header">
-        <div class="section-title">Results & Impact</div>
-        <div class="section-subtitle">What changed for users</div>
-      </div>
+    <!-- SLIDE 6: SOLUTION DESIGN -->
+    <section class="slide">
+      <div class="section-marker">2. Approach to Identify Opportunities</div>
+      <div class="slide-title">Solution design: interest picker and feed seeding</div>
 
-      <div class="cols-2">
+      <div class="two-col">
         <div>
-          <p><strong>Topline metrics.</strong></p>
+          <p><strong>Micro-onboarding “Pick 3 interests”.</strong></p>
           <ul>
-            <li><strong>First-session engagement:</strong> +9 percentage points (48% → 57%), beating the +5 pp target.</li>
-            <li><strong>7-day retention (R7):</strong> +6 percentage points (22% → 28%), statistically significant.</li>
-            <li><strong>Onboarding completion:</strong> increased from 75% to 82% (+7 pp) despite the added step.</li>
-            <li><strong>Time-to-first-like (median):</strong> improved from 2.8 to 2.4 minutes (−0.4).</li>
+            <li>Inserted an interest selection step into the onboarding funnel for new users.</li>
+            <li>Required users to pick ≥3 interests from a curated taxonomy (e.g., art, tech, travel).</li>
+            <li>Interests stored as non-PII IDs with a 180-day retention policy.</li>
           </ul>
 
-          <p style="margin-top:8px;"><strong>Guardrails.</strong></p>
+          <p style="margin-top:8px;"><strong>User experience principles.</strong></p>
           <ul>
-            <li><strong>Crash rate:</strong> 0.44% (A) vs 0.42% (B) — no meaningful difference.</li>
-            <li><strong>FE p95 latency:</strong> +8 ms vs baseline (alert threshold +20 ms).</li>
-            <li><strong>Spend / DAU:</strong> remained within ±1% band.</li>
-            <li><strong>Support tickets:</strong> 12 → 11 per week (no increase).</li>
-            <li><strong>Data freshness:</strong> 95th percentile ETL lag 11 minutes (SLO &lt; 15 minutes).</li>
+            <li>Fast, tappable grid UI optimized for thumb reach.</li>
+            <li>Clear progress affordance (“Pick at least 3 to continue”).</li>
+            <li>Copy emphasizing personalization (“We’ll tailor your first feed to what you care about”).</li>
           </ul>
         </div>
         <div>
-          <p><strong>Onboarding funnel impact.</strong></p>
-          <table class="table">
+          <p><strong>Personalized first feed.</strong></p>
+          <ul>
+            <li>For each selected interest, pulled top-N content items from a relevance-ranked index.</li>
+            <li>Backfilled with trending content to mitigate long-tail sparsity.</li>
+            <li>Prefetched content for selected interests to avoid first-session latency spikes.</li>
+            <li>All logic guarded by the <span class="inline-code">onb.pick3.enabled</span> feature flag.</li>
+          </ul>
+
+          <p style="margin-top:8px;"><strong>Key artifacts.</strong></p>
+          <ul>
+            <li>Jira ticket: <span class="inline-code">ONB-241</span> (micro-onboarding & feed seeding).</li>
+            <li>Server commit: <span class="inline-code">6b91e3a</span>; client commit: <span class="inline-code">c21ad7f</span>.</li>
+            <li>Dashboards: Metabase <span class="inline-code">R7 Cohorts v1</span>,
+              Datadog <span class="inline-code">FE Latency p95</span>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>Approach to identify opportunities</span>
+        <span class="slide-num">6</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: EXEC SUMMARY RESULTS -->
+    <section class="slide">
+      <div class="section-marker">3. Key Findings and Recommendations</div>
+      <div class="slide-title">Executive summary – key findings</div>
+
+      <p><strong>Overall conclusion.</strong> The “Pick 3 interests” + personalized first feed experience
+        <strong>outperformed control</strong> on both engagement and 7-day retention, with guardrails green.
+      </p>
+
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-label">First-Session Engagement</div>
+          <div class="kpi-value">+9 pp</div>
+          <div class="kpi-caption">Baseline 48% → 57% in test (B–A).</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">7-Day Retention (R7)</div>
+          <div class="kpi-value">+6 pp</div>
+          <div class="kpi-caption">22% → 28%; 95% CI [+3.4, +8.6]; p = 0.004.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Onboarding Completion</div>
+          <div class="kpi-value">82%</div>
+          <div class="kpi-caption">Up from 75% baseline (+7 pp) despite added step.</div>
+        </div>
+      </div>
+
+      <div class="bullets" style="margin-top:16px;">
+        <ul>
+          <li>Time-to-first-like (median) improved from 2.8 to 2.4 minutes (−0.4).</li>
+          <li>Crash rate and latency were effectively unchanged; monetization metrics (spend/DAU) remained within ±1% band.</li>
+          <li>Impact was strongest for organic US users but positive across all major segments.</li>
+        </ul>
+      </div>
+
+      <div class="callout-box">
+        <strong>Recommendation:</strong> Promote the interest picker and personalized feed to the default experience
+        for all new users, and iterate further using segments where lift was highest.
+      </div>
+
+      <div class="footer">
+        <span>Key findings and recommendations</span>
+        <span class="slide-num">7</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: SEGMENTS -->
+    <section class="slide">
+      <div class="section-marker">3. Key Findings and Recommendations</div>
+      <div class="slide-title">Segment performance – lift was consistent and strongest for organic US users</div>
+
+      <p>Across platform, acquisition, and region, the test variant showed positive lift in R7, with particularly
+        strong results for organic US traffic.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Segment</th>
+            <th>Control (A)</th>
+            <th>Test (B)</th>
+            <th>Lift (pp)</th>
+            <th>Insight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>iOS</td>
+            <td>R7 23.1%</td>
+            <td>30.3%</td>
+            <td><strong>+7.2</strong></td>
+            <td>Higher push opt-in; strong mapping from interests → content graph.</td>
+          </tr>
+          <tr>
+            <td>Android</td>
+            <td>R7 21.5%</td>
+            <td>26.6%</td>
+            <td><strong>+5.1</strong></td>
+            <td>Slightly higher feed latency, still within SLO; positive but smaller lift.</td>
+          </tr>
+          <tr>
+            <td>Organic</td>
+            <td>R7 24.0%</td>
+            <td>33.8%</td>
+            <td><strong>+9.8</strong></td>
+            <td>Best fit between declared interests and available content.</td>
+          </tr>
+          <tr>
+            <td>Paid UA</td>
+            <td>R7 18.2%</td>
+            <td>22.4%</td>
+            <td><strong>+4.2</strong></td>
+            <td>Lower initial intent but still meaningful and positive uplift.</td>
+          </tr>
+          <tr>
+            <td>US</td>
+            <td>R7 22.6%</td>
+            <td>29.5%</td>
+            <td><strong>+6.9</strong></td>
+            <td>Strongest performance where data coverage and category catalog are richest.</td>
+          </tr>
+          <tr>
+            <td>Non-US</td>
+            <td>R7 21.7%</td>
+            <td>27.0%</td>
+            <td><strong>+5.3</strong></td>
+            <td>Positive lift despite smaller catalog; opportunity to deepen taxonomy.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="footer">
+        <span>Key findings and recommendations</span>
+        <span class="slide-num">8</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: FUNNEL / IMPACT -->
+    <section class="slide">
+      <div class="section-marker">4. Targeted Impact and Other Benefits</div>
+      <div class="slide-title">Onboarding funnel and behavioral impact</div>
+
+      <div class="two-col">
+        <div>
+          <p><strong>Onboarding funnel.</strong></p>
+          <table>
             <thead>
               <tr>
                 <th>Step</th>
@@ -550,105 +601,162 @@ Lift: +5.9 pp · z=2.88 · p=0.004</div>
               </tr>
             </tbody>
           </table>
-          <div class="callout">
-            The added interest-selection step did not introduce drop-off; instead it
-            improved completion and downstream engagement.
+        </div>
+        <div>
+          <p><strong>Behavioral takeaways.</strong></p>
+          <ul>
+            <li>The added step did <strong>not</strong> introduce significant drop-off; instead, completion improved.</li>
+            <li>Declaring interests increased the likelihood that users saw content they wanted to interact with
+              quickly, shortening time to first like.</li>
+            <li>Improved early engagement behavior carried through to second session and 7-day retention.</li>
+          </ul>
+
+          <div class="callout-box">
+            The micro-onboarding step is accretive along the funnel, not just at the initial click.
           </div>
         </div>
       </div>
+
+      <div class="footer">
+        <span>Targeted impact and other benefits</span>
+        <span class="slide-num">9</span>
+      </div>
     </section>
 
-    <!-- Segment deep dive -->
-    <section class="section">
-      <div class="section-header">
-        <div class="section-title">Segment Deep Dive</div>
-        <div class="section-subtitle">Where the lift came from</div>
-      </div>
-      <p style="margin-bottom:6px;">
-        We saw consistent positive lift across platforms, acquisition channels, and regions, with particularly strong
-        impact for organic users in the US where data coverage is strongest.
-      </p>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Segment</th>
-            <th>Control</th>
-            <th>Test</th>
-            <th>Lift (pp)</th>
-            <th>Insight</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>iOS</td>
-            <td>R7 23.1%</td>
-            <td>30.3%</td>
-            <td><strong>+7.2</strong></td>
-            <td>Higher push opt-in rate; interests map well to content supply.</td>
-          </tr>
-          <tr>
-            <td>Android</td>
-            <td>R7 21.5%</td>
-            <td>26.6%</td>
-            <td><strong>+5.1</strong></td>
-            <td>Slightly higher personalized feed latency but still within SLOs.</td>
-          </tr>
-          <tr>
-            <td>Organic</td>
-            <td>R7 24.0%</td>
-            <td>33.8%</td>
-            <td><strong>+9.8</strong></td>
-            <td>Strongest fit between declared interests and content graph.</td>
-          </tr>
-          <tr>
-            <td>Paid UA</td>
-            <td>R7 18.2%</td>
-            <td>22.4%</td>
-            <td><strong>+4.2</strong></td>
-            <td>Lower starting intent but still meaningful uplift.</td>
-          </tr>
-          <tr>
-            <td>US</td>
-            <td>R7 22.6%</td>
-            <td>29.5%</td>
-            <td><strong>+6.9</strong></td>
-            <td>Best performance where category catalog and supply are richest.</td>
-          </tr>
-          <tr>
-            <td>Non-US</td>
-            <td>R7 21.7%</td>
-            <td>27.0%</td>
-            <td><strong>+5.3</strong></td>
-            <td>Smaller category catalog but still positive across regions.</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    <!-- SLIDE 10: GUARDRAILS & RELIABILITY -->
+    <section class="slide">
+      <div class="section-marker">4. Targeted Impact and Other Benefits</div>
+      <div class="slide-title">Guardrails and reliability remained within SLOs</div>
 
-    <!-- Data quality & instrumentation -->
-    <section class="section">
-      <div class="section-header">
-        <div class="section-title">Data Quality & Instrumentation</div>
-        <div class="section-subtitle">Ensuring we could trust the read</div>
-      </div>
-      <div class="cols-2">
+      <div class="two-col">
         <div>
+          <p><strong>Technical guardrails.</strong></p>
           <ul>
-            <li>Event coverage ≥ 99.2% for core events:
+            <li><strong>Crash rate:</strong> 0.44% (A) vs 0.42% (B) — Δ −0.02 pp (no concern).</li>
+            <li><strong>FE p95 latency:</strong> +8 ms vs baseline; alert threshold +20 ms.</li>
+            <li><strong>Data freshness SLO:</strong> 95th percentile ETL lag 11 minutes (SLO &lt; 15m).</li>
+          </ul>
+
+          <p style="margin-top:8px;"><strong>Business guardrails.</strong></p>
+          <ul>
+            <li><strong>Spend/DAU:</strong> no impact outside ±1% band.</li>
+            <li><strong>Support tickets:</strong> 12 → 11 per week (no increase; slight improvement).</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Data quality checks.</strong></p>
+          <ul>
+            <li>Event coverage ≥ 99.2% for:
               <span class="inline-code">onboarding_started</span>,
               <span class="inline-code">interests_selected</span>,
               <span class="inline-code">feed_viewed</span>,
               <span class="inline-code">first_like</span>,
               <span class="inline-code">retained_7d</span>.
             </li>
-            <li>Late-arriving events &lt; 1.2%, handled using a 24-hour watermark.</li>
-            <li>Timezone normalization to UTC; device clock skew mitigated via server timestamps.</li>
-            <li>Bot and fraud traffic filtered via rules engine v3.</li>
+            <li>Late-arriving events &lt; 1.2%, handled via 24-hour watermark.</li>
+            <li>Timezone normalized to UTC; device clock skew mitigated via server timestamps.</li>
+            <li>Bot/fraud filtered using rules engine v3.</li>
+          </ul>
+
+          <div class="callout-box">
+            With guardrails and data quality checks in place, we can attribute observed lifts to the
+            new onboarding + feed experience with high confidence.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>Targeted impact and other benefits</span>
+        <span class="slide-num">10</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: IMPLEMENTATION & RISK -->
+    <section class="slide">
+      <div class="section-marker">5. Enabling Implementation</div>
+      <div class="slide-title">Rollout approach and risk mitigation</div>
+
+      <div class="two-col">
+        <div>
+          <p><strong>Rollout plan.</strong></p>
+          <ul>
+            <li>Staged feature-flag rollout:
+              <strong>1% → 10% → 25% → 50% → 100%</strong> with health checks at each step.</li>
+            <li>Monitors in Datadog for:
+              <ul>
+                <li>FE p95 latency, error rate, crash rate.</li>
+                <li>Experiment assignment consistency.</li>
+              </ul>
+            </li>
+            <li>Runbook / rollback:
+              <span class="inline-code">onb.pick3.enabled=false</span> + revert <span class="inline-code">PR#1284</span>
+              if any guardrail breached.</li>
+          </ul>
+
+          <p style="margin-top:8px;"><strong>Stakeholder communication.</strong></p>
+          <ul>
+            <li>Release notes and FAQs for CX/support teams.</li>
+            <li>GTM playbook to update UA creatives with “tailored first feed” messaging.</li>
           </ul>
         </div>
         <div>
-          <div class="section-subtitle" style="margin-bottom:4px;">Event schema (excerpt)</div>
-          <div class="sql-block">TABLE user_events (
+          <p><strong>Key risks and mitigations.</strong></p>
+          <ul>
+            <li><strong>Cold-start misclassification.</strong>
+              <br/>Mitigation: default safe categories + trending backfill if interests sparse.</li>
+            <li><strong>Long-tail content sparsity.</strong>
+              <br/>Mitigation: cap percentage of long-tail items; blend with popular adjacent topics.</li>
+            <li><strong>Latency spike on first session.</strong>
+              <br/>Mitigation: prefetch top-N content per interest prior to first feed render.</li>
+          </ul>
+
+          <div class="callout-box">
+            Given strong results and low residual risk, the recommendation is to fully adopt the
+            “Pick 3 interests” onboarding as the default for all new users.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>Enabling implementation: execution support and risk mitigation</span>
+        <span class="slide-num">11</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: NEXT STEPS / ROADMAP -->
+    <section class="slide">
+      <div class="section-marker">5. Enabling Implementation</div>
+      <div class="slide-title">Next steps and roadmap (Q4 2024)</div>
+
+      <p><strong>We recommend three follow-on initiatives to build on the success of this sprint.</strong></p>
+
+      <ol style="margin-left:18px;margin-top:8px;font-size:14px;line-height:1.55;">
+        <li><strong>Smart Interest Expansion (ONB-274).</strong>
+          <br/>Use behavior in days 1–3 to suggest adjacent topics and help users refine their interest graph.</li>
+        <li style="margin-top:6px;"><strong>Feed Rebalance v2 (FEED-198).</strong>
+          <br/>Tune weights for implicit signals (watch time, replies, skips) and decay older interests over time.</li>
+        <li style="margin-top:6px;"><strong>Live Retention Cohorts (DATA-311).</strong>
+          <br/>Build real-time R7 / R30 dashboards with anomaly alerts to monitor downstream impact of future changes.</li>
+      </ol>
+
+      <div class="callout-box" style="margin-top:12px;">
+        Together, these initiatives create a roadmap from “static declared preferences” to a dynamic,
+        behavior-informed understanding of user interests over time.
+      </div>
+
+      <div class="footer">
+        <span>Enabling implementation: roadmap and next steps</span>
+        <span class="slide-num">12</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: APPENDIX – DATA & SQL -->
+    <section class="slide">
+      <div class="section-marker">6. Appendix</div>
+      <div class="slide-title">Appendix – Data model and analysis SQL (excerpt)</div>
+
+      <p><strong>Event schema (simplified).</strong></p>
+      <div class="sql-block">TABLE user_events (
   event_time_utc TIMESTAMP,
   user_id        STRING,
   event_name     STRING,   -- e.g. 'interests_selected'
@@ -658,12 +766,9 @@ Lift: +5.9 pp · z=2.88 · p=0.004</div>
   experiment_key STRING,   -- 'exp_onb_pick3_v1'
   variant        STRING    -- 'A' | 'B'
 );</div>
-        </div>
-      </div>
 
-      <div class="section-subtitle" style="margin-top:10px;">Analysis SQL (simplified)</div>
-      <div class="sql-block">-- Variant-level R7 summary (CUPED-adjusted)
-WITH agg AS (
+      <p style="margin-top:14px;"><strong>Variant-level R7 summary (CUPED-adjusted).</strong></p>
+      <div class="sql-block">WITH agg AS (
   SELECT variant,
          COUNT(DISTINCT user_id) AS users,
          AVG(CASE WHEN retained_7d THEN 1 ELSE 0 END) AS r7
@@ -674,59 +779,23 @@ WITH agg AS (
 )
 SELECT *,
        (MAX(r7) - MIN(r7)) * 100 AS lift_pp
-FROM agg;
+FROM agg;</div>
 
--- Segment lift by platform x acquisition
-SELECT platform, acquisition,
+      <p style="margin-top:14px;"><strong>Segment lift by platform × acquisition.</strong></p>
+      <div class="sql-block">SELECT platform,
+       acquisition,
        AVG(retained_7d) FILTER (WHERE variant='B') -
        AVG(retained_7d) FILTER (WHERE variant='A') AS lift
 FROM experiment_sessions
 GROUP BY 1,2
 ORDER BY 3 DESC;</div>
-    </section>
 
-    <!-- Rollout, risk & next steps -->
-    <section class="section">
-      <div class="section-header">
-        <div class="section-title">Rollout, Risk & Next Steps</div>
-        <div class="section-subtitle">How we operationalized and what’s next</div>
-      </div>
-      <div class="cols-2">
-        <div>
-          <p><strong>Rollout plan.</strong></p>
-          <ul>
-            <li>Gradual feature-flag rollout: 1% → 10% → 25% → 50% → 100% with live health checks.</li>
-            <li>Monitoring via Datadog: FE p95 latency, error rate, crash rate.</li>
-            <li>Runbook and rollback: set <span class="inline-code">onb.pick3.enabled=false</span> and revert <span class="inline-code">PR#1284</span> if guardrails breached.</li>
-            <li>Comms: release notes to CX, GTM playbook for UA creatives emphasizing “tailored first feed.”</li>
-          </ul>
-
-          <p style="margin-top:10px;"><strong>Risks & mitigations.</strong></p>
-          <ul>
-            <li><strong>Cold-start misclassification</strong> → default safe categories and trending backfill.</li>
-            <li><strong>Long-tail content sparsity</strong> → dynamic backfill with popular but adjacent topics.</li>
-            <li><strong>Latency on first session</strong> → prefetch top-N per interest prior to first feed paint.</li>
-          </ul>
-        </div>
-        <div>
-          <p><strong>Q4 2024 roadmap follow-ups.</strong></p>
-          <ol>
-            <li><strong>Smart Interest Expansion (ONB-274)</strong> — suggest adjacent topics after day 3 based on behavior.</li>
-            <li><strong>Feed Rebalance v2 (FEED-198)</strong> — tune weights for implicit signals and decay older interests.</li>
-            <li><strong>Live retention cohorts (DATA-311)</strong> — real-time R7 / R30 dashboards with anomaly alerts.</li>
-          </ol>
-          <div class="callout" style="margin-top:10px;">
-            Outcome: We recommended and executed full rollout of the “Pick 3 interests” onboarding flow as the new
-            default for all new users.
-          </div>
-        </div>
+      <div class="footer">
+        <span>Appendix</span>
+        <span class="slide-num">13</span>
       </div>
     </section>
 
-    <p class="footnote">
-      This page is designed to read like a consulting-style case study: clear problem framing, structured solution,
-      experiment design, results, and next steps — using realistic artifacts, numbers, and implementation details.
-    </p>
   </div>
 </body>
 </html>
