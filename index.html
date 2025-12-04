@@ -8,91 +8,169 @@
 
   <style>
     :root {
-      --bg: #f7f7f7;
-      --ink: #101010;
-      --muted: #a0a0a0;
-      --accent: #101010;
-      --hairline: rgba(0, 0, 0, 0.05);
+      --bg: #050508;
+      --ink: #f7f7f7;
+      --muted: #7b7b7b;
+      --accent: #8fb4ff;
+      --hairline: rgba(255, 255, 255, 0.08);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
 
     body {
-      background: var(--bg);
+      background: radial-gradient(circle at top, #151522 0, #050508 55%);
       color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, system-ui, "SF Pro Text", Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       text-rendering: geometricPrecision;
     }
 
+    a { color: inherit; }
+
     main {
       min-height: 100vh;
-      padding: 32px 48px 136px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* TOP GRID */
-    .top-grid {
-      max-width: 1120px;
-      width: 100%;
+      padding: 32px 40px 140px;
+      max-width: 1040px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 0.9fr 1.3fr 2.2fr;
-      column-gap: 48px;
-      row-gap: 24px;
-      font-size: 11px;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      line-height: 1.45;
     }
 
-    .intro-name strong { font-weight: 600; }
-    .intro-body {
-      max-width: 360px;
+    /* ------------------ HEADER (JOY-STYLE) ------------------ */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 18px 40px 10px;
       display: flex;
-      flex-direction: column;
-      gap: 4px;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1040px;
+      margin: 0 auto;
+      background: linear-gradient(to bottom, rgba(5,5,8,0.96), rgba(5,5,8,0.86), transparent);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: lowercase;
     }
 
-    /* WORKS COLUMN SPLIT */
+    .site-logo {
+      font-weight: 600;
+    }
+
+    .site-nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    .site-nav a {
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+      transition: border-color 0.15s ease, opacity 0.15s ease;
+    }
+
+    .site-nav a:hover {
+      border-color: var(--ink);
+      opacity: 0.85;
+    }
+
+    /* ------------------ HERO (JOY-INSPIRED) ------------------ */
+    .hero {
+      padding-top: 80px;
+      padding-bottom: 72px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.6fr);
+      column-gap: 40px;
+      row-gap: 24px;
+      align-items: flex-end;
+    }
+
+    .hero-left {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      text-transform: lowercase;
+    }
+
+    .hero-hi {
+      font-size: clamp(54px, 11vw, 88px);
+      line-height: 0.9;
+      margin-bottom: 22px;
+    }
+
+    .hero-left p {
+      font-size: 16px;
+      line-height: 1.7;
+      letter-spacing: 0.03em;
+    }
+
+    .hero-em {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .hero-tagline {
+      margin-top: 14px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero-right {
+      font-size: 13px;
+      line-height: 1.9;
+      max-width: 440px;
+      color: rgba(247,247,247,0.88);
+    }
+
+    .hero-right span {
+      display: block;
+    }
+
+    /* ------------------ SECTION LABEL ------------------ */
+    .section-label {
+      margin-top: 10px;
+      margin-bottom: 14px;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    /* ------------------ SELECTED WORK (YOUR GRID, DARK) ------------------ */
+    .works-shell {
+      padding-top: 8px;
+      padding-bottom: 10px;
+      border-top: 1px solid var(--hairline);
+    }
+
     .works-columns {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 32px;
-      position: relative;
-      padding-left: 20px;
+      column-gap: 26px;
+      row-gap: 32px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      line-height: 1.5;
     }
 
-    .works-columns::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 2px;
-      bottom: 6px;
-      width: 1px;
-      background: var(--hairline);
-    }
-
-    .works-group { display: flex; flex-direction: column; gap: 6px; }
+    .works-group { display: flex; flex-direction: column; gap: 8px; }
 
     .works-column-heading {
       font-size: 10px;
       letter-spacing: 0.18em;
       color: var(--muted);
-      margin-bottom: 4px;
     }
 
     .works-header {
       display: grid;
-      grid-template-columns: 32px minmax(0,1.7fr) minmax(0,1.4fr);
+      grid-template-columns: 32px minmax(0, 1.7fr) minmax(0, 1.4fr);
       column-gap: 10px;
       margin-bottom: 4px;
-      font-weight: 600;
+      font-weight: 500;
       font-size: 10px;
-      letter-spacing: 0.17em;
-      color: #767676;
+      letter-spacing: 0.18em;
+      color: #a0a0a0;
     }
     .works-header span:first-child { text-align: right; }
 
@@ -100,65 +178,66 @@
 
     .work-item {
       display: grid;
-      grid-template-columns: 32px minmax(0,1.7fr) minmax(0,1.4fr);
+      grid-template-columns: 32px minmax(0, 1.7fr) minmax(0, 1.4fr);
       column-gap: 10px;
-      padding: 2px 0;
+      padding: 3px 0;
       cursor: pointer;
       transition: color 0.18s ease, opacity 0.18s ease, transform 0.12s ease;
       font-size: 11px;
       letter-spacing: 0.13em;
-      color: #4b4b4b;
+      color: #b0b0b0;
     }
     .work-item span:first-child { text-align: right; }
 
     .work-item:hover,
     .work-item.is-active {
-      color: var(--accent);
+      color: var(--ink);
       transform: translateX(1px);
     }
 
-    .works-list.dim .work-item { opacity: 0.32; }
+    .works-list.dim .work-item { opacity: 0.3; }
     .works-list.dim .work-item.is-active { opacity: 1; }
 
     .works-archive-note {
-      max-width: 1120px;
-      margin: 14px auto 0;
+      margin-top: 14px;
       font-size: 10px;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--muted);
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     }
 
-    /* PREVIEW */
+    /* ------------------ PREVIEW ------------------ */
     .preview {
-      max-width: 1120px;
-      width: 100%;
-      margin: 40px auto 0;
-      padding-top: 18px;
+      margin-top: 34px;
+      padding-top: 16px;
       border-top: 1px solid var(--hairline);
       display: grid;
-      grid-template-columns: minmax(0,1.05fr) minmax(0,1.95fr);
-      column-gap: 44px;
-      row-gap: 10px;
+      grid-template-columns: minmax(0,1.1fr) minmax(0,1.9fr);
+      column-gap: 40px;
+      row-gap: 16px;
       font-size: 11px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
-      line-height: 1.55;
+      line-height: 1.6;
     }
+
     .preview-label {
       font-size: 10px;
-      letter-spacing: 0.18em;
-      color: #808080;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-bottom: 4px;
     }
     .preview-title {
       font-weight: 600;
       color: var(--ink);
-      margin-top: 4px;
+      margin-top: 2px;
+      text-transform: uppercase;
     }
-    .preview-meta { margin-top: 2px; }
+    .preview-meta { margin-top: 4px; }
     .preview-links {
-      margin-top: 10px;
+      margin-top: 12px;
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
@@ -171,32 +250,35 @@
       color: var(--ink);
       border-bottom: 1px solid transparent;
       padding-bottom: 1px;
-      transition: border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+      transition: border-color 0.15s ease, opacity 0.15s ease;
     }
     .preview-link:hover {
       border-color: var(--ink);
-      opacity: 0.8;
+      opacity: 0.85;
     }
     #preview-desc {
       max-width: 640px;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      text-transform: none;
+      color: rgba(247,247,247,0.9);
+      line-height: 1.7;
     }
 
-    /* PRODUCT BLOCK */
+    /* ------------------ PRODUCT / GROWTH NOTES ------------------ */
     .product-block {
-      max-width: 1120px;
-      width: 100%;
-      margin: 36px auto 0;
-      padding-top: 18px;
+      margin-top: 34px;
+      padding-top: 16px;
       border-top: 1px solid var(--hairline);
       display: grid;
-      grid-template-columns: minmax(0,1.05fr) minmax(0,2.05fr);
-      column-gap: 44px;
-      row-gap: 10px;
+      grid-template-columns: minmax(0,1.1fr) minmax(0,2.1fr);
+      column-gap: 40px;
+      row-gap: 12px;
       font-size: 11px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
     .product-label {
@@ -230,38 +312,37 @@
       transition: max-height 0.25s ease, opacity 0.25s ease;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
+      text-transform: none;
+      font-size: 12px;
+      letter-spacing: 0.01em;
+      color: rgba(247,247,247,0.88);
     }
     .product-block.is-open .product-body {
       max-height: 360px;
       opacity: 1;
     }
-    .product-line { display: block; }
-    .product-line strong { color: var(--ink); }
+    .product-line strong { color: var(--accent); font-weight: 600; }
 
-    /* BOTTOM BAR */
+    /* ------------------ BOTTOM NOTE ------------------ */
     .bottom-bar {
       position: fixed;
-      inset-inline: 32px;
-      bottom: 20px;
+      inset-inline: 40px;
+      bottom: 22px;
       display: flex;
       justify-content: space-between;
       font-size: 10px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--muted);
+      pointer-events: none;
     }
-    .bottom-links, .bottom-note { display: flex; gap: 16px; }
-    .bottom-link {
-      text-decoration: none;
-      color: inherit;
-      border-bottom: 1px solid transparent;
-      padding-bottom: 1px;
-      transition: border-color 0.15s ease, color 0.15s ease;
+    .bottom-note { display: flex; gap: 18px; }
+    .bottom-links {
+      display: none; /* nav links now in header; info still present there */
     }
-    .bottom-link:hover { color: var(--ink); border-color: var(--ink); }
 
-    /* FLOATING CAT */
+    /* ------------------ FLOATING CAT ------------------ */
     .cat {
       position: fixed;
       top: 26%;
@@ -271,165 +352,207 @@
       pointer-events: none;
       z-index: 2;
       transform-origin: 50% 50%;
+      opacity: 0.9;
     }
-    .cat svg { width: 100%; height: 100%; display: block; }
+    .cat svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
 
+    .cat line,
+    .cat rect,
+    .cat path,
+    .cat circle {
+      stroke: var(--ink);
+      stroke-width: 1.6;
+    }
+    .cat line[stroke="#e1e1e1"] { stroke: rgba(255,255,255,0.25); }
+    .cat circle { fill: var(--ink); }
+
+    /* ------------------ RESPONSIVE ------------------ */
     @media (max-width: 960px) {
-      main { padding: 24px 20px 128px; }
-      .top-grid {
-        grid-template-columns: 1fr 1fr;
-        row-gap: 20px;
-        column-gap: 28px;
+      main { padding: 24px 20px 130px; }
+      .site-header { padding-inline: 20px; }
+
+      .hero {
+        padding-top: 64px;
+        padding-bottom: 56px;
+        grid-template-columns: 1fr;
       }
-      .top-grid > div:nth-child(3) { grid-column: 1 / -1; }
+      .hero-right { max-width: none; }
+
       .works-columns {
         grid-template-columns: 1fr;
-        row-gap: 18px;
-        padding-left: 16px;
+        row-gap: 22px;
       }
-      .preview, .product-block {
+
+      .preview,
+      .product-block {
         grid-template-columns: 1fr;
-        margin-top: 28px;
+        margin-top: 26px;
       }
+
       .bottom-bar { inset-inline: 20px; bottom: 18px; }
     }
 
     @media (max-width: 640px) {
-      .top-grid { grid-template-columns: 1fr; row-gap: 16px; }
-      .preview, .product-block { margin-top: 24px; }
+      .site-header {
+        font-size: 10px;
+        letter-spacing: 0.16em;
+      }
+      .hero-hi { font-size: clamp(46px, 15vw, 70px); }
       .bottom-bar {
         flex-direction: column;
+        gap: 8px;
         align-items: flex-start;
-        gap: 14px;
       }
     }
   </style>
 </head>
 <body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="site-logo">yuhee.xyz</div>
+    <nav class="site-nav">
+      <a href="mailto:yuhee123@berkeley.edu">email</a>
+      <a href="resume.pdf" target="_blank" rel="noreferrer">cv</a>
+      <a href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">github</a>
+      <a href="https://www.linkedin.com/in/yuhee123" target="_blank" rel="noreferrer">linkedin</a>
+    </nav>
+  </header>
+
   <main>
-    <!-- INTRO + SELECTED WORK -->
-    <section class="top-grid" aria-label="Intro and selected works">
-      <div>
-        <span class="intro-name">I AM <strong>YUHEE</strong>!</span>
+    <!-- HERO -->
+    <section class="hero" aria-label="Intro">
+      <div class="hero-left">
+        <div class="hero-hi">hi</div>
+        <p>my name is yuhee lefkowitz</p>
+        <p>i’m a <span class="hero-em">builder &amp; strategist</span> working across backend, product, and social systems.</p>
+        <p class="hero-tagline">trying to keep things playful :)</p>
       </div>
 
-      <div class="intro-body">
-        <span>BUILDER &amp; STRATEGIST WORKING ACROSS BACKEND, PRODUCT,</span>
-        <span>AND SOCIAL SYSTEMS. TRYING TO KEEP THINGS PLAYFUL :)</span>
-      </div>
-
-      <div>
-        <div class="works-columns">
-          <!-- SWE & SYSTEMS -->
-          <div class="works-group">
-            <div class="works-column-heading">SWE &amp; SYSTEMS</div>
-            <div class="works-header">
-              <span>NO.</span>
-              <span>WORK</span>
-              <span>FIELD</span>
-            </div>
-            <ol class="works-list">
-              <li class="work-item is-active"
-                  tabindex="0"
-                  data-title="CAPYBARA MAPS"
-                  data-meta="IOS APP · SWIFTUI · MAPKIT · POSTGIS"
-                  data-desc="City-scale geospatial search app. I built a SwiftUI front-end on top of a Dockerized Node &amp; Postgres (PostGIS) backend, with nearest-neighbor queries and caching to keep multi-city lookups feeling instant."
-                  data-github="https://github.com/yuhee1234/capybaramaps">
-                <span>1</span><span>CAPYBARA MAPS</span><span>IOS · GEO</span>
-              </li>
-
-              <li class="work-item"
-                  tabindex="0"
-                  data-title="STOCKSPHERE"
-                  data-meta="NEXT.JS · FLASK · REDIS · TWILIO"
-                  data-desc="Full-stack analytics for retail investors. Microservices handle pricing, news, and risk. Redis-backed caching and SMS alerts keep users updated without babysitting charts."
-                  data-github="https://github.com/yuhee1234/StockSphere">
-                <span>2</span><span>STOCKSPHERE</span><span>DATA · BACKEND</span>
-              </li>
-
-              <li class="work-item"
-                  tabindex="0"
-                  data-title="CURRYSTATS"
-                  data-meta="FASTAPI · NBA DATA · HUGGINGFACE"
-                  data-desc="Live stats layer over NBA games. Fuses play-by-play data with sentiment models to show how every three, turnover, or run shifts fan mood."
-                  data-github="https://github.com/yuhee1234/CurryStats">
-                <span>3</span><span>CURRYSTATS</span><span>ML · SPORTS</span>
-              </li>
-
-              <li class="work-item"
-                  tabindex="0"
-                  data-title="NOTIFY.CAREERS"
-                  data-meta="SCRAPERS · PIPELINES · ALERT DESIGN"
-                  data-desc="Job-alert engine that tracks roles across boards. Helped define v1 UX and built rules so alerts feel helpful, not spammy."
-                  data-live="https://notify.careers"
-                  data-github="https://github.com/yuhee1234">
-                <span>4</span><span>NOTIFY.CAREERS</span><span>SYSTEMS</span>
-              </li>
-
-              <li class="work-item"
-                  tabindex="0"
-                  data-title="SHOPLENS — VISUAL AI SHOPPING"
-                  data-meta="COMPUTER VISION · PRODUCT"
-                  data-desc="Built and shipped a visual shopping demo where users snap a photo and get styled product recommendations. Scoped flows, wired the model, and launched as a live web demo."
-                  data-live="https://yuhee1234.github.io/shoplens/"
-                  data-github="https://github.com/yuhee1234/shoplens">
-                <span>5</span><span>SHOPLENS</span><span>AI · PRODUCT</span>
-              </li>
-            </ol>
-          </div>
-
-          <!-- PRODUCT & GROWTH -->
-          <div class="works-group">
-            <div class="works-column-heading">PRODUCT &amp; GROWTH</div>
-            <div class="works-header">
-              <span>NO.</span>
-              <span>WORK</span>
-              <span>FIELD</span>
-            </div>
-            <ol class="works-list">
-              <li class="work-item"
-                  tabindex="0"
-                  data-title="QUILLY"
-                  data-meta="NODE · EXPRESS · MONGO · PRODUCT"
-                  data-desc="Social platform helping college women build friendships. I work across backend infra, a house-sorting algorithm, and event flows that translate in-person energy into retained users."
-                  data-github="https://github.com/yuhee1234">
-                <span>1</span><span>QUILLY</span><span>SOCIAL · PRODUCT</span>
-              </li>
-
-              <li class="work-item"
-                  tabindex="0"
-                  data-title="EVENT LAUNCHES"
-                  data-meta="GROWTH · FUNNELS · OPS"
-                  data-desc="Playful launch systems — from anti-performative vs performative male events to campus parties — tying IRL funnels to activation, retention, and content loops.">
-                <span>2</span><span>EVENT LAUNCHES</span><span>GROWTH</span>
-              </li>
-
-              <li class="work-item"
-                  tabindex="0"
-                  data-title="FIRST-SESSION PERSONALIZATION SPRINT"
-                  data-meta="PM · EXPERIMENT DESIGN"
-                  data-desc="Sprint-style project scoping and dashboarding around first-session personalization: mapped funnel, defined success metrics, and shipped a case-study dashboard to make tradeoffs legible."
-                  data-live="dashboard_1sess.html">
-                <span>3</span><span>1ST-SESSION PERSONALIZATION</span><span>PRODUCT</span>
-              </li>
-            </ol>
-          </div>
-        </div>
+      <div class="hero-right">
+        <!-- this paragraph keeps the original intro text content -->
+        <span>I AM YUHEE — a builder &amp; strategist working across backend, product, and social systems.</span>
+        <span>Right now that looks like infrastructure for social apps, experiments around growth &amp; events, and tools that make messy real-world behavior a little more legible.</span>
       </div>
     </section>
 
-    <div class="works-archive-note">
-      * ARCHIVE OF SELECTED WORKS MADE SINCE 2021
-    </div>
+    <div class="section-label">selected work · since 2021</div>
+
+    <!-- SELECTED WORK -->
+    <section class="works-shell" aria-label="Selected work grid">
+      <div class="works-columns">
+        <!-- SWE & SYSTEMS -->
+        <div class="works-group">
+          <div class="works-column-heading">swe &amp; systems</div>
+          <div class="works-header">
+            <span>no.</span>
+            <span>work</span>
+            <span>field</span>
+          </div>
+          <ol class="works-list">
+            <li class="work-item is-active"
+                tabindex="0"
+                data-title="CAPYBARA MAPS"
+                data-meta="IOS APP · SWIFTUI · MAPKIT · POSTGIS"
+                data-desc="City-scale geospatial search app. I built a SwiftUI front-end on top of a Dockerized Node &amp; Postgres (PostGIS) backend, with nearest-neighbor queries and caching to keep multi-city lookups feeling instant."
+                data-github="https://github.com/yuhee1234/capybaramaps">
+              <span>1</span><span>CAPYBARA MAPS</span><span>IOS · GEO</span>
+            </li>
+
+            <li class="work-item"
+                tabindex="0"
+                data-title="STOCKSPHERE"
+                data-meta="NEXT.JS · FLASK · REDIS · TWILIO"
+                data-desc="Full-stack analytics for retail investors. Microservices handle pricing, news, and risk. Redis-backed caching and SMS alerts keep users updated without babysitting charts."
+                data-github="https://github.com/yuhee1234/StockSphere">
+              <span>2</span><span>STOCKSPHERE</span><span>DATA · BACKEND</span>
+            </li>
+
+            <li class="work-item"
+                tabindex="0"
+                data-title="CURRYSTATS"
+                data-meta="FASTAPI · NBA DATA · HUGGINGFACE"
+                data-desc="Live stats layer over NBA games. Fuses play-by-play data with sentiment models to show how every three, turnover, or run shifts fan mood."
+                data-github="https://github.com/yuhee1234/CurryStats">
+              <span>3</span><span>CURRYSTATS</span><span>ML · SPORTS</span>
+            </li>
+
+            <li class="work-item"
+                tabindex="0"
+                data-title="NOTIFY.CAREERS"
+                data-meta="SCRAPERS · PIPELINES · ALERT DESIGN"
+                data-desc="Job-alert engine that tracks roles across boards. Helped define v1 UX and built rules so alerts feel helpful, not spammy."
+                data-live="https://notify.careers"
+                data-github="https://github.com/yuhee1234">
+              <span>4</span><span>NOTIFY.CAREERS</span><span>SYSTEMS</span>
+            </li>
+
+            <li class="work-item"
+                tabindex="0"
+                data-title="SHOPLENS — VISUAL AI SHOPPING"
+                data-meta="COMPUTER VISION · PRODUCT"
+                data-desc="Built and shipped a visual shopping demo where users snap a photo and get styled product recommendations. Scoped flows, wired the model, and launched as a live web demo."
+                data-live="https://yuhee1234.github.io/shoplens/"
+                data-github="https://github.com/yuhee1234/shoplens">
+              <span>5</span><span>SHOPLENS</span><span>AI · PRODUCT</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- PRODUCT & GROWTH -->
+        <div class="works-group">
+          <div class="works-column-heading">product &amp; growth</div>
+          <div class="works-header">
+            <span>no.</span>
+            <span>work</span>
+            <span>field</span>
+          </div>
+          <ol class="works-list">
+            <li class="work-item"
+                tabindex="0"
+                data-title="QUILLY"
+                data-meta="NODE · EXPRESS · MONGO · PRODUCT"
+                data-desc="Social platform helping college women build friendships. I work across backend infra, a house-sorting algorithm, and event flows that translate in-person energy into retained users."
+                data-github="https://github.com/yuhee1234">
+              <span>1</span><span>QUILLY</span><span>SOCIAL · PRODUCT</span>
+            </li>
+
+            <li class="work-item"
+                tabindex="0"
+                data-title="EVENT LAUNCHES"
+                data-meta="GROWTH · FUNNELS · OPS"
+                data-desc="Playful launch systems — from anti-performative vs performative male events to campus parties — tying IRL funnels to activation, retention, and content loops.">
+              <span>2</span><span>EVENT LAUNCHES</span><span>GROWTH</span>
+            </li>
+
+            <li class="work-item"
+                tabindex="0"
+                data-title="FIRST-SESSION PERSONALIZATION SPRINT"
+                data-meta="PM · EXPERIMENT DESIGN"
+                data-desc="Sprint-style project scoping and dashboarding around first-session personalization: mapped funnel, defined success metrics, and shipped a case-study dashboard to make tradeoffs legible."
+                data-live="dashboard_1sess.html">
+              <span>3</span><span>1ST-SESSION PERSONALIZATION</span><span>PRODUCT</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="works-archive-note">
+        * archive of selected works made since 2021
+      </div>
+    </section>
 
     <!-- PREVIEW AREA -->
     <section class="preview" aria-live="polite">
       <div>
-        <div class="preview-label">PROJECT</div>
+        <div class="preview-label">project</div>
         <div class="preview-title" id="preview-title">CAPYBARA MAPS</div>
         <div class="preview-meta" id="preview-meta">IOS APP · SWIFTUI · MAPKIT · POSTGIS</div>
         <div class="preview-links" id="preview-links">
-          <a class="preview-link" href="https://github.com/yuhee1234/capybaramaps" target="_blank" rel="noreferrer">GITHUB</a>
+          <a class="preview-link" href="https://github.com/yuhee1234/capybaramaps" target="_blank" rel="noreferrer">github</a>
         </div>
       </div>
       <div id="preview-desc">
@@ -440,8 +563,8 @@
     <!-- PRODUCT / GROWTH SECTION -->
     <section class="product-block" aria-label="Product and growth experience" id="product-block">
       <div>
-        <div class="product-label">PRODUCT / GROWTH / MANAGEMENT</div>
-        <button class="product-toggle" type="button" id="product-toggle">SHOW NOTES</button>
+        <div class="product-label">product / growth / management</div>
+        <button class="product-toggle" type="button" id="product-toggle">show notes</button>
       </div>
       <div class="product-body" id="product-body">
         <span class="product-line"><strong>QUILLY · PRODUCT / BACKEND</strong> — Scoped and built the backend + house-sorting system powering social discovery for college women.</span>
@@ -453,17 +576,15 @@
     </section>
   </main>
 
-  <!-- BOTTOM BAR -->
+  <!-- BOTTOM NOTE (keeps UC Berkeley info) -->
   <div class="bottom-bar">
-    <div class="bottom-links">
-      <a class="bottom-link" href="mailto:yuhee123@berkeley.edu">EMAIL</a>
-      <a class="bottom-link" href="resume.pdf" target="_blank" rel="noreferrer">CV</a>
-      <a class="bottom-link" href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">GITHUB</a>
-      <a class="bottom-link" href="https://www.linkedin.com/in/yuhee123" target="_blank" rel="noreferrer">LINKEDIN</a>
-    </div>
     <div class="bottom-note">
-      <span>UC BERKELEY</span>
-      <span>CS · DATA SCIENCE</span>
+      <span>uc berkeley</span>
+      <span>cs · data science</span>
+    </div>
+    <div class="bottom-links">
+      <!-- info duplicated in header nav but preserved here logically -->
+      <span>email · cv · github · linkedin</span>
     </div>
   </div>
 
@@ -488,7 +609,7 @@
 
   <script>
     (function () {
-      /* SELECTED WORKS PREVIEW */
+      /* SELECTED WORKS PREVIEW (unchanged behavior) */
       const lists = Array.from(document.querySelectorAll(".works-list"));
       const items = lists.flatMap(list => Array.from(list.querySelectorAll(".work-item")));
       const titleEl = document.getElementById("preview-title");
@@ -501,8 +622,8 @@
         const gh = item.getAttribute("data-github");
         const live = item.getAttribute("data-live");
         let html = "";
-        if (gh) html += `<a class="preview-link" href="${gh}" target="_blank" rel="noreferrer">GITHUB</a>`;
-        if (live) html += `<a class="preview-link" href="${live}" target="_blank" rel="noreferrer">LIVE SITE</a>`;
+        if (gh) html += `<a class="preview-link" href="${gh}" target="_blank" rel="noreferrer">github</a>`;
+        if (live) html += `<a class="preview-link" href="${live}" target="_blank" rel="noreferrer">live site</a>`;
         linksEl.innerHTML = html;
       }
 
@@ -538,7 +659,7 @@
       if (block && toggle) {
         toggle.addEventListener("click", () => {
           const open = block.classList.toggle("is-open");
-          toggle.textContent = open ? "HIDE NOTES" : "SHOW NOTES";
+          toggle.textContent = open ? "hide notes" : "show notes";
         });
       }
 
@@ -562,11 +683,11 @@
           x += vx * dt;
           y += vy * dt;
 
-          if (x < margin) { x = margin; vx = Math.abs(vx) * (0.85 + Math.random()*0.3); }
-          else if (x > w - margin) { x = w - margin; vx = -Math.abs(vx) * (0.85 + Math.random()*0.3); }
+          if (x < margin) { x = margin; vx = Math.abs(vx) * (0.85 + Math.random() * 0.3); }
+          else if (x > w - margin) { x = w - margin; vx = -Math.abs(vx) * (0.85 + Math.random() * 0.3); }
 
-          if (y < margin) { y = margin; vy = Math.abs(vy) * (0.85 + Math.random()*0.3); }
-          else if (y > h - margin) { y = h - margin; vy = -Math.abs(vy) * (0.85 + Math.random()*0.3); }
+          if (y < margin) { y = margin; vy = Math.abs(vy) * (0.85 + Math.random() * 0.3); }
+          else if (y > h - margin) { y = h - margin; vy = -Math.abs(vy) * (0.85 + Math.random() * 0.3); }
 
           const bob = Math.sin(now / 520) * 2.3;
 
