@@ -8,6 +8,25 @@
 
   <style>
     /* ------------------ THEME ------------------ */
+    /* MAKE ALL TEXT THE SAME FONT AS SELECTED WORK */
+* {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+               "SF Pro Display", system-ui, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Optional but keeps hierarchy clean */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+p, li, a, span, div {
+  font-weight: 300;
+  letter-spacing: 0.2px;
+}
+
     :root {
       --font-main: -apple-system, BlinkMacSystemFont, system-ui, "SF Pro Text", Arial, sans-serif;
 
