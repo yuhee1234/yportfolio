@@ -7,139 +7,223 @@
   <meta name="description" content="Selected work of Yuhee Lefkowitz — backend, product, and social systems." />
 
   <style>
+    /* ------------------ THEME ------------------ */
     :root {
-      --bg: #050508;
-      --ink: #f7f7f7;
-      --muted: #7b7b7b;
-      --accent: #8fb4ff;
-      --hairline: rgba(255, 255, 255, 0.08);
+      --bg-page: #dcdcdc;
+      --bg-frame: #f4f4f4;
+      --ink: #151515;
+      --muted: #787878;
+      --hairline: #d1d1d1;
+      --accent: #151515;
+    }
+
+    body.theme-dark {
+      --bg-page: #111111;
+      --bg-frame: #1b1b1b;
+      --ink: #f4f4f4;
+      --muted: #9b9b9b;
+      --hairline: #404040;
+      --accent: #f4f4f4;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
 
     body {
-      background: radial-gradient(circle at top, #151522 0, #050508 55%);
-      color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, system-ui, "SF Pro Text", Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       text-rendering: geometricPrecision;
-    }
-
-    a { color: inherit; }
-
-    main {
-      min-height: 100vh;
-      padding: 32px 40px 140px;
-      max-width: 1040px;
-      margin: 0 auto;
-    }
-
-    /* ------------------ HEADER (JOY-STYLE) ------------------ */
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      padding: 18px 40px 10px;
+      background: var(--bg-page);
+      color: var(--ink);
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      max-width: 1040px;
-      margin: 0 auto;
-      background: linear-gradient(to bottom, rgba(5,5,8,0.96), rgba(5,5,8,0.86), transparent);
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: lowercase;
+      justify-content: center;
+      padding: 24px;
     }
 
-    .site-logo {
-      font-weight: 600;
+    a { color: inherit; text-decoration: none; }
+
+    /* ------------------ FRAME ------------------ */
+    .page {
+      width: 100%;
+      max-width: 1400px;
+      max-height: 820px;
     }
 
-    .site-nav {
+    .page-frame {
+      position: relative;
+      background: var(--bg-frame);
+      border: 1px solid var(--hairline);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.18);
+      padding: 32px 40px;
+      overflow: hidden;
+      min-height: min(80vh, 760px);
+    }
+
+    /* grainy vertical band */
+    .page-frame::before {
+      content: "";
+      position: absolute;
+      top: 32px;
+      bottom: 32px;
+      left: 32%;
+      right: 20%;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(0,0,0,0.14), transparent 60%),
+        radial-gradient(circle at 50% 100%, rgba(0,0,0,0.14), transparent 60%),
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,0.16), transparent 65%);
+      mix-blend-mode: multiply;
+      opacity: 0.16;
+    }
+
+    .page-frame::after {
+      content: "";
+      position: absolute;
+      inset: 32px 40px;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+      opacity: 0.2;
+    }
+
+    /* ------------------ HEADER ------------------ */
+    .page-header {
+      position: relative;
+      z-index: 1;
       display: flex;
-      gap: 20px;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 40px;
     }
 
-    .site-nav a {
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      padding-bottom: 2px;
-      transition: border-color 0.15s ease, opacity 0.15s ease;
+    .identity {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    .site-nav a:hover {
-      border-color: var(--ink);
-      opacity: 0.85;
+    .identity-name {
+      font-size: 36px;
+      letter-spacing: 0.02em;
     }
 
-    /* ------------------ HERO (JOY-INSPIRED) ------------------ */
-    .hero {
-      padding-top: 80px;
-      padding-bottom: 72px;
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.6fr);
-      column-gap: 40px;
-      row-gap: 24px;
-      align-items: flex-end;
-    }
-
-    .hero-left {
-      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      text-transform: lowercase;
-    }
-
-    .hero-hi {
-      font-size: clamp(54px, 11vw, 88px);
-      line-height: 0.9;
-      margin-bottom: 22px;
-    }
-
-    .hero-left p {
-      font-size: 16px;
-      line-height: 1.7;
-      letter-spacing: 0.03em;
-    }
-
-    .hero-em {
-      font-weight: 600;
-      color: var(--accent);
-    }
-
-    .hero-tagline {
-      margin-top: 14px;
+    .identity-role {
       font-size: 12px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
       color: var(--muted);
     }
 
-    .hero-right {
+    .header-links {
+      display: flex;
+      gap: 18px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .header-links a {
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+      text-transform: lowercase;
+      letter-spacing: 0.12em;
+    }
+
+    .header-links a:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+
+    /* ------------------ BODY LAYOUT ------------------ */
+    .page-body {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr) 280px;
+      column-gap: 36px;
+      align-items: flex-start;
+    }
+
+    /* left nav */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      height: 100%;
+    }
+
+    .sidebar-nav {
+      list-style: none;
       font-size: 13px;
       line-height: 1.9;
-      max-width: 440px;
-      color: rgba(247,247,247,0.88);
     }
 
-    .hero-right span {
-      display: block;
+    .sidebar-nav li:first-child {
+      font-size: 20px;
+      margin-bottom: 6px;
     }
 
-    /* ------------------ SECTION LABEL ------------------ */
-    .section-label {
-      margin-top: 10px;
-      margin-bottom: 14px;
+    .sidebar-nav a {
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+    }
+
+    .sidebar-nav a:hover {
+      border-color: var(--ink);
+    }
+
+    .mode-toggle {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      cursor: default;
+      margin-top: 40px;
+    }
+
+    .mode-toggle button {
+      border: none;
+      background: none;
+      padding: 0;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .mode-toggle button span.square {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-inline: 2px 4px;
+      border: 1px solid var(--muted);
+      background: transparent;
+    }
+
+    .mode-toggle button.is-active span.square {
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    /* middle column (projects) */
+    .page-main {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
       font-size: 11px;
-      letter-spacing: 0.22em;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--muted);
-      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     }
 
-    /* ------------------ SELECTED WORK (YOUR GRID, DARK) ------------------ */
     .works-shell {
       padding-top: 8px;
-      padding-bottom: 10px;
       border-top: 1px solid var(--hairline);
     }
 
@@ -147,14 +231,18 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: 26px;
-      row-gap: 32px;
+      row-gap: 24px;
       font-size: 11px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       line-height: 1.5;
     }
 
-    .works-group { display: flex; flex-direction: column; gap: 8px; }
+    .works-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
     .works-column-heading {
       font-size: 10px;
@@ -174,7 +262,9 @@
     }
     .works-header span:first-child { text-align: right; }
 
-    .works-list { list-style: none; }
+    .works-list {
+      list-style: none;
+    }
 
     .work-item {
       display: grid;
@@ -185,8 +275,9 @@
       transition: color 0.18s ease, opacity 0.18s ease, transform 0.12s ease;
       font-size: 11px;
       letter-spacing: 0.13em;
-      color: #b0b0b0;
+      color: #9b9b9b;
     }
+
     .work-item span:first-child { text-align: right; }
 
     .work-item:hover,
@@ -199,23 +290,21 @@
     .works-list.dim .work-item.is-active { opacity: 1; }
 
     .works-archive-note {
-      margin-top: 14px;
+      margin-top: 10px;
       font-size: 10px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--muted);
-      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     }
 
-    /* ------------------ PREVIEW ------------------ */
     .preview {
-      margin-top: 34px;
-      padding-top: 16px;
+      margin-top: 18px;
+      padding-top: 10px;
       border-top: 1px solid var(--hairline);
       display: grid;
-      grid-template-columns: minmax(0,1.1fr) minmax(0,1.9fr);
-      column-gap: 40px;
-      row-gap: 16px;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.9fr);
+      column-gap: 28px;
+      row-gap: 12px;
       font-size: 11px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -226,54 +315,48 @@
     .preview-label {
       font-size: 10px;
       letter-spacing: 0.2em;
-      color: var(--muted);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
     .preview-title {
       font-weight: 600;
       color: var(--ink);
       margin-top: 2px;
-      text-transform: uppercase;
     }
     .preview-meta { margin-top: 4px; }
     .preview-links {
-      margin-top: 12px;
+      margin-top: 10px;
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
     .preview-link {
       font-size: 10px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      text-decoration: none;
-      color: var(--ink);
       border-bottom: 1px solid transparent;
       padding-bottom: 1px;
-      transition: border-color 0.15s ease, opacity 0.15s ease;
     }
     .preview-link:hover {
       border-color: var(--ink);
-      opacity: 0.85;
     }
     #preview-desc {
       max-width: 640px;
       font-size: 12px;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
       text-transform: none;
-      color: rgba(247,247,247,0.9);
+      color: #444;
       line-height: 1.7;
     }
 
-    /* ------------------ PRODUCT / GROWTH NOTES ------------------ */
+    /* product / growth notes under preview */
     .product-block {
-      margin-top: 34px;
-      padding-top: 16px;
+      margin-top: 20px;
+      padding-top: 12px;
       border-top: 1px solid var(--hairline);
       display: grid;
       grid-template-columns: minmax(0,1.1fr) minmax(0,2.1fr);
-      column-gap: 40px;
-      row-gap: 12px;
+      column-gap: 28px;
+      row-gap: 10px;
       font-size: 11px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -296,9 +379,9 @@
       text-transform: inherit;
       color: var(--muted);
       cursor: pointer;
-      padding: 4px 0 0;
+      padding: 2px 0 0;
       border-bottom: 1px solid transparent;
-      transition: color 0.15s ease, border-color 0.15s ease;
+      text-align: left;
     }
     .product-toggle:hover {
       color: var(--ink);
@@ -316,300 +399,340 @@
       text-transform: none;
       font-size: 12px;
       letter-spacing: 0.01em;
-      color: rgba(247,247,247,0.88);
+      color: #444;
     }
     .product-block.is-open .product-body {
       max-height: 360px;
       opacity: 1;
     }
-    .product-line strong { color: var(--accent); font-weight: 600; }
+    .product-line strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
 
-    /* ------------------ BOTTOM NOTE ------------------ */
-    .bottom-bar {
-      position: fixed;
-      inset-inline: 40px;
-      bottom: 22px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
+    /* right column bio */
+    .intro {
+      font-size: 13px;
+      line-height: 1.9;
+      max-width: 260px;
+    }
+
+    .intro p {
+      margin-bottom: 4px;
+    }
+
+    .intro p:last-child {
+      margin-top: 10px;
       color: var(--muted);
-      pointer-events: none;
-    }
-    .bottom-note { display: flex; gap: 18px; }
-    .bottom-links {
-      display: none; /* nav links now in header; info still present there */
+      font-size: 11px;
     }
 
-    /* ------------------ FLOATING CAT ------------------ */
-    .cat {
-      position: fixed;
-      top: 26%;
-      left: 10%;
-      width: 70px;
-      height: 36px;
-      pointer-events: none;
-      z-index: 2;
-      transform-origin: 50% 50%;
-      opacity: 0.9;
-    }
-    .cat svg {
-      width: 100%;
-      height: 100%;
-      display: block;
+    .intro-tagline {
+      margin-top: 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
     }
 
-    .cat line,
-    .cat rect,
-    .cat path,
-    .cat circle {
-      stroke: var(--ink);
-      stroke-width: 1.6;
+    .school-note {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.6;
     }
-    .cat line[stroke="#e1e1e1"] { stroke: rgba(255,255,255,0.25); }
-    .cat circle { fill: var(--ink); }
+
+    .contact-block {
+      margin-top: 26px;
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    .contact-block a {
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+    }
+
+    .contact-block a:hover {
+      border-color: var(--ink);
+    }
 
     /* ------------------ RESPONSIVE ------------------ */
-    @media (max-width: 960px) {
-      main { padding: 24px 20px 130px; }
-      .site-header { padding-inline: 20px; }
-
-      .hero {
-        padding-top: 64px;
-        padding-bottom: 56px;
-        grid-template-columns: 1fr;
+    @media (max-width: 1100px) {
+      body {
+        align-items: stretch;
       }
-      .hero-right { max-width: none; }
+      .page-frame {
+        max-height: none;
+        min-height: 100vh;
+      }
+      .page-frame::before,
+      .page-frame::after {
+        inset: 24px 24px;
+      }
+      .page-body {
+        grid-template-columns: 150px minmax(0,1.2fr) 260px;
+        column-gap: 26px;
+      }
+    }
 
-      .works-columns {
-        grid-template-columns: 1fr;
-        row-gap: 22px;
+    @media (max-width: 880px) {
+      body { padding: 16px; }
+
+      .page-frame {
+        padding: 24px 20px;
       }
 
-      .preview,
-      .product-block {
-        grid-template-columns: 1fr;
-        margin-top: 26px;
+      .page-header {
+        flex-direction: column;
+        gap: 10px;
       }
 
-      .bottom-bar { inset-inline: 20px; bottom: 18px; }
+      .page-body {
+        margin-top: 18px;
+        grid-template-columns: 1fr;
+        row-gap: 32px;
+      }
+
+      .sidebar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .mode-toggle {
+        writing-mode: horizontal-tb;
+        margin-top: 0;
+      }
+
+      .page-main {
+        order: 2;
+      }
+
+      .intro {
+        max-width: none;
+        order: 1;
+      }
     }
 
     @media (max-width: 640px) {
-      .site-header {
-        font-size: 10px;
-        letter-spacing: 0.16em;
+      .identity-name {
+        font-size: 28px;
       }
-      .hero-hi { font-size: clamp(46px, 15vw, 70px); }
-      .bottom-bar {
-        flex-direction: column;
-        gap: 8px;
-        align-items: flex-start;
+      .section-label {
+        font-size: 10px;
+      }
+      .preview {
+        grid-template-columns: 1fr;
+      }
+      .product-block {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
-<body>
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="site-logo">yuhee.xyz</div>
-    <nav class="site-nav">
-      <a href="mailto:yuhee123@berkeley.edu">email</a>
-      <a href="resume.pdf" target="_blank" rel="noreferrer">cv</a>
-      <a href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">github</a>
-      <a href="https://www.linkedin.com/in/yuhee123" target="_blank" rel="noreferrer">linkedin</a>
-    </nav>
-  </header>
+<body class="theme-light">
+  <div class="page">
+    <div class="page-frame">
+      <!-- HEADER -->
+      <header class="page-header">
+        <div class="identity">
+          <div class="identity-name">Yuhee Lefkowitz</div>
+          <div class="identity-role">Builder &amp; Strategist</div>
+        </div>
+        <nav class="header-links">
+          <a href="mailto:yuhee123@berkeley.edu">email</a>
+          <a href="resume.pdf" target="_blank" rel="noreferrer">cv</a>
+          <a href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">github</a>
+          <a href="https://www.linkedin.com/in/yuhee123" target="_blank" rel="noreferrer">linkedin</a>
+        </nav>
+      </header>
 
-  <main>
-    <!-- HERO -->
-    <section class="hero" aria-label="Intro">
-      <div class="hero-left">
-        <div class="hero-hi">hi</div>
-        <p>my name is yuhee lefkowitz</p>
-        <p>i’m a <span class="hero-em">builder &amp; strategist</span> working across backend, product, and social systems.</p>
-        <p class="hero-tagline">trying to keep things playful :)</p>
-      </div>
+      <!-- BODY -->
+      <div class="page-body">
+        <!-- LEFT NAV -->
+        <aside class="sidebar">
+          <ul class="sidebar-nav">
+            <li>•</li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#info">Info</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
 
-      <div class="hero-right">
-        <!-- this paragraph keeps the original intro text content -->
-        <span>I AM YUHEE — a builder &amp; strategist working across backend, product, and social systems.</span>
-        <span>Right now that looks like infrastructure for social apps, experiments around growth &amp; events, and tools that make messy real-world behavior a little more legible.</span>
-      </div>
-    </section>
-
-    <div class="section-label">selected work · since 2021</div>
-
-    <!-- SELECTED WORK -->
-    <section class="works-shell" aria-label="Selected work grid">
-      <div class="works-columns">
-        <!-- SWE & SYSTEMS -->
-        <div class="works-group">
-          <div class="works-column-heading">swe &amp; systems</div>
-          <div class="works-header">
-            <span>no.</span>
-            <span>work</span>
-            <span>field</span>
+          <div class="mode-toggle" aria-label="Theme toggle">
+            <button type="button" data-mode="light" class="is-active">
+              <span class="square"></span>LIGHT
+            </button>
+            <button type="button" data-mode="dark">
+              <span class="square"></span>DARK
+            </button>
           </div>
-          <ol class="works-list">
-            <li class="work-item is-active"
-                tabindex="0"
-                data-title="CAPYBARA MAPS"
-                data-meta="IOS APP · SWIFTUI · MAPKIT · POSTGIS"
-                data-desc="City-scale geospatial search app. I built a SwiftUI front-end on top of a Dockerized Node &amp; Postgres (PostGIS) backend, with nearest-neighbor queries and caching to keep multi-city lookups feeling instant."
-                data-github="https://github.com/yuhee1234/capybaramaps">
-              <span>1</span><span>CAPYBARA MAPS</span><span>IOS · GEO</span>
-            </li>
+        </aside>
 
-            <li class="work-item"
-                tabindex="0"
-                data-title="STOCKSPHERE"
-                data-meta="NEXT.JS · FLASK · REDIS · TWILIO"
-                data-desc="Full-stack analytics for retail investors. Microservices handle pricing, news, and risk. Redis-backed caching and SMS alerts keep users updated without babysitting charts."
-                data-github="https://github.com/yuhee1234/StockSphere">
-              <span>2</span><span>STOCKSPHERE</span><span>DATA · BACKEND</span>
-            </li>
+        <!-- MIDDLE: PROJECTS -->
+        <main class="page-main" id="projects">
+          <div class="section-label">selected work · since 2021</div>
 
-            <li class="work-item"
-                tabindex="0"
-                data-title="CURRYSTATS"
-                data-meta="FASTAPI · NBA DATA · HUGGINGFACE"
-                data-desc="Live stats layer over NBA games. Fuses play-by-play data with sentiment models to show how every three, turnover, or run shifts fan mood."
-                data-github="https://github.com/yuhee1234/CurryStats">
-              <span>3</span><span>CURRYSTATS</span><span>ML · SPORTS</span>
-            </li>
+          <section class="works-shell" aria-label="Selected work grid">
+            <div class="works-columns">
+              <!-- SWE & SYSTEMS -->
+              <div class="works-group">
+                <div class="works-column-heading">swe &amp; systems</div>
+                <div class="works-header">
+                  <span>no.</span>
+                  <span>work</span>
+                  <span>field</span>
+                </div>
+                <ol class="works-list">
+                  <li class="work-item is-active"
+                      tabindex="0"
+                      data-title="CAPYBARA MAPS"
+                      data-meta="IOS APP · SWIFTUI · MAPKIT · POSTGIS"
+                      data-desc="City-scale geospatial search app. I built a SwiftUI front-end on top of a Dockerized Node &amp; Postgres (PostGIS) backend, with nearest-neighbor queries and caching to keep multi-city lookups feeling instant."
+                      data-github="https://github.com/yuhee1234/capybaramaps">
+                    <span>1</span><span>CAPYBARA MAPS</span><span>IOS · GEO</span>
+                  </li>
 
-            <li class="work-item"
-                tabindex="0"
-                data-title="NOTIFY.CAREERS"
-                data-meta="SCRAPERS · PIPELINES · ALERT DESIGN"
-                data-desc="Job-alert engine that tracks roles across boards. Helped define v1 UX and built rules so alerts feel helpful, not spammy."
-                data-live="https://notify.careers"
-                data-github="https://github.com/yuhee1234">
-              <span>4</span><span>NOTIFY.CAREERS</span><span>SYSTEMS</span>
-            </li>
+                  <li class="work-item"
+                      tabindex="0"
+                      data-title="STOCKSPHERE"
+                      data-meta="NEXT.JS · FLASK · REDIS · TWILIO"
+                      data-desc="Full-stack analytics for retail investors. Microservices handle pricing, news, and risk. Redis-backed caching and SMS alerts keep users updated without babysitting charts."
+                      data-github="https://github.com/yuhee1234/StockSphere">
+                    <span>2</span><span>STOCKSPHERE</span><span>DATA · BACKEND</span>
+                  </li>
 
-            <li class="work-item"
-                tabindex="0"
-                data-title="SHOPLENS — VISUAL AI SHOPPING"
-                data-meta="COMPUTER VISION · PRODUCT"
-                data-desc="Built and shipped a visual shopping demo where users snap a photo and get styled product recommendations. Scoped flows, wired the model, and launched as a live web demo."
-                data-live="https://yuhee1234.github.io/shoplens/"
-                data-github="https://github.com/yuhee1234/shoplens">
-              <span>5</span><span>SHOPLENS</span><span>AI · PRODUCT</span>
-            </li>
-          </ol>
-        </div>
+                  <li class="work-item"
+                      tabindex="0"
+                      data-title="CURRYSTATS"
+                      data-meta="FASTAPI · NBA DATA · HUGGINGFACE"
+                      data-desc="Live stats layer over NBA games. Fuses play-by-play data with sentiment models to show how every three, turnover, or run shifts fan mood."
+                      data-github="https://github.com/yuhee1234/CurryStats">
+                    <span>3</span><span>CURRYSTATS</span><span>ML · SPORTS</span>
+                  </li>
 
-        <!-- PRODUCT & GROWTH -->
-        <div class="works-group">
-          <div class="works-column-heading">product &amp; growth</div>
-          <div class="works-header">
-            <span>no.</span>
-            <span>work</span>
-            <span>field</span>
+                  <li class="work-item"
+                      tabindex="0"
+                      data-title="NOTIFY.CAREERS"
+                      data-meta="SCRAPERS · PIPELINES · ALERT DESIGN"
+                      data-desc="Job-alert engine that tracks roles across boards. Helped define v1 UX and built rules so alerts feel helpful, not spammy."
+                      data-live="https://notify.careers"
+                      data-github="https://github.com/yuhee1234">
+                    <span>4</span><span>NOTIFY.CAREERS</span><span>SYSTEMS</span>
+                  </li>
+
+                  <li class="work-item"
+                      tabindex="0"
+                      data-title="SHOPLENS — VISUAL AI SHOPPING"
+                      data-meta="COMPUTER VISION · PRODUCT"
+                      data-desc="Built and shipped a visual shopping demo where users snap a photo and get styled product recommendations. Scoped flows, wired the model, and launched as a live web demo."
+                      data-live="https://yuhee1234.github.io/shoplens/"
+                      data-github="https://github.com/yuhee1234/shoplens">
+                    <span>5</span><span>SHOPLENS</span><span>AI · PRODUCT</span>
+                  </li>
+                </ol>
+              </div>
+
+              <!-- PRODUCT & GROWTH -->
+              <div class="works-group">
+                <div class="works-column-heading">product &amp; growth</div>
+                <div class="works-header">
+                  <span>no.</span>
+                  <span>work</span>
+                  <span>field</span>
+                </div>
+                <ol class="works-list">
+                  <li class="work-item"
+                      tabindex="0"
+                      data-title="QUILLY"
+                      data-meta="NODE · EXPRESS · MONGO · PRODUCT"
+                      data-desc="Social platform helping college women build friendships. I work across backend infra, a house-sorting algorithm, and event flows that translate in-person energy into retained users."
+                      data-github="https://github.com/yuhee1234">
+                    <span>1</span><span>QUILLY</span><span>SOCIAL · PRODUCT</span>
+                  </li>
+
+                  <li class="work-item"
+                      tabindex="0"
+                      data-title="EVENT LAUNCHES"
+                      data-meta="GROWTH · FUNNELS · OPS"
+                      data-desc="Playful launch systems — from anti-performative vs performative male events to campus parties — tying IRL funnels to activation, retention, and content loops.">
+                    <span>2</span><span>EVENT LAUNCHES</span><span>GROWTH</span>
+                  </li>
+
+                  <li class="work-item"
+                      tabindex="0"
+                      data-title="FIRST-SESSION PERSONALIZATION SPRINT"
+                      data-meta="PM · EXPERIMENT DESIGN"
+                      data-desc="Sprint-style project scoping and dashboarding around first-session personalization: mapped funnel, defined success metrics, and shipped a case-study dashboard to make tradeoffs legible."
+                      data-live="dashboard_1sess.html">
+                    <span>3</span><span>1ST-SESSION PERSONALIZATION</span><span>PRODUCT</span>
+                  </li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="works-archive-note">
+              * archive of selected works made since 2021
+            </div>
+          </section>
+
+          <!-- PREVIEW AREA -->
+          <section class="preview" aria-live="polite">
+            <div>
+              <div class="preview-label">project</div>
+              <div class="preview-title" id="preview-title">CAPYBARA MAPS</div>
+              <div class="preview-meta" id="preview-meta">IOS APP · SWIFTUI · MAPKIT · POSTGIS</div>
+              <div class="preview-links" id="preview-links">
+                <a class="preview-link" href="https://github.com/yuhee1234/capybaramaps" target="_blank" rel="noreferrer">github</a>
+              </div>
+            </div>
+            <div id="preview-desc">
+              City-scale geospatial search app. I built a SwiftUI front-end on top of a Dockerized Node &amp; Postgres (PostGIS) backend, with nearest-neighbor queries and caching to keep multi-city lookups feeling instant.
+            </div>
+          </section>
+
+          <!-- PRODUCT / GROWTH SECTION -->
+          <section class="product-block" aria-label="Product and growth experience" id="product-block">
+            <div>
+              <div class="product-label">product / growth / management</div>
+              <button class="product-toggle" type="button" id="product-toggle">show notes</button>
+            </div>
+            <div class="product-body" id="product-body">
+              <span class="product-line"><strong>QUILLY · PRODUCT / BACKEND</strong> — Scoped and built the backend + house-sorting system powering social discovery for college women.</span>
+              <span class="product-line"><strong>DIPPER · GROWTH</strong> — Designed campus launch experiments and events tying in-person funnels to in-app retention.</span>
+              <span class="product-line"><strong>MINDGRASP AI · MARKETING</strong> — Ran content + social experiments to drive signups and refine onboarding flows.</span>
+              <span class="product-line"><strong>HOOGLEE (STEALTH STARTUP) · GROWTH</strong> — Helped test channels, messaging, and landing tweaks for an early-stage consumer product.</span>
+              <span class="product-line"><strong>LEADERSHIP</strong> — Co-led student orgs and project teams, aligning engineering work with clear metrics and deadlines.</span>
+            </div>
+          </section>
+        </main>
+
+        <!-- RIGHT: BIO / INFO / CONTACT -->
+        <aside class="intro" id="info">
+          <p>I am Yuhee — a builder &amp; strategist working across backend, product, and social systems.</p>
+          <p>Right now that looks like infrastructure for social apps, experiments around growth &amp; events, and tools that make messy real-world behavior a little more legible.</p>
+          <p class="intro-tagline">trying to keep things playful :)</p>
+
+          <div class="school-note">
+            Born in 2004, currently based in Berkeley.<br />
+            Studying Computer Science and Data Science at UC&nbsp;Berkeley.
           </div>
-          <ol class="works-list">
-            <li class="work-item"
-                tabindex="0"
-                data-title="QUILLY"
-                data-meta="NODE · EXPRESS · MONGO · PRODUCT"
-                data-desc="Social platform helping college women build friendships. I work across backend infra, a house-sorting algorithm, and event flows that translate in-person energy into retained users."
-                data-github="https://github.com/yuhee1234">
-              <span>1</span><span>QUILLY</span><span>SOCIAL · PRODUCT</span>
-            </li>
 
-            <li class="work-item"
-                tabindex="0"
-                data-title="EVENT LAUNCHES"
-                data-meta="GROWTH · FUNNELS · OPS"
-                data-desc="Playful launch systems — from anti-performative vs performative male events to campus parties — tying IRL funnels to activation, retention, and content loops.">
-              <span>2</span><span>EVENT LAUNCHES</span><span>GROWTH</span>
-            </li>
-
-            <li class="work-item"
-                tabindex="0"
-                data-title="FIRST-SESSION PERSONALIZATION SPRINT"
-                data-meta="PM · EXPERIMENT DESIGN"
-                data-desc="Sprint-style project scoping and dashboarding around first-session personalization: mapped funnel, defined success metrics, and shipped a case-study dashboard to make tradeoffs legible."
-                data-live="dashboard_1sess.html">
-              <span>3</span><span>1ST-SESSION PERSONALIZATION</span><span>PRODUCT</span>
-            </li>
-          </ol>
-        </div>
+          <div class="contact-block" id="contact">
+            <div>Contact</div>
+            <a href="mailto:yuhee123@berkeley.edu">yuhee123@berkeley.edu</a><br />
+            <a href="resume.pdf" target="_blank" rel="noreferrer">resume / cv</a><br />
+            <a href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">github</a><br />
+            <a href="https://www.linkedin.com/in/yuhee123" target="_blank" rel="noreferrer">linkedin</a>
+          </div>
+        </aside>
       </div>
-
-      <div class="works-archive-note">
-        * archive of selected works made since 2021
-      </div>
-    </section>
-
-    <!-- PREVIEW AREA -->
-    <section class="preview" aria-live="polite">
-      <div>
-        <div class="preview-label">project</div>
-        <div class="preview-title" id="preview-title">CAPYBARA MAPS</div>
-        <div class="preview-meta" id="preview-meta">IOS APP · SWIFTUI · MAPKIT · POSTGIS</div>
-        <div class="preview-links" id="preview-links">
-          <a class="preview-link" href="https://github.com/yuhee1234/capybaramaps" target="_blank" rel="noreferrer">github</a>
-        </div>
-      </div>
-      <div id="preview-desc">
-        City-scale geospatial search app. I built a SwiftUI front-end on top of a Dockerized Node &amp; Postgres (PostGIS) backend, with nearest-neighbor queries and caching to keep multi-city lookups feeling instant.
-      </div>
-    </section>
-
-    <!-- PRODUCT / GROWTH SECTION -->
-    <section class="product-block" aria-label="Product and growth experience" id="product-block">
-      <div>
-        <div class="product-label">product / growth / management</div>
-        <button class="product-toggle" type="button" id="product-toggle">show notes</button>
-      </div>
-      <div class="product-body" id="product-body">
-        <span class="product-line"><strong>QUILLY · PRODUCT / BACKEND</strong> — Scoped and built the backend + house-sorting system powering social discovery for college women.</span>
-        <span class="product-line"><strong>DIPPER · GROWTH</strong> — Designed campus launch experiments and events tying in-person funnels to in-app retention.</span>
-        <span class="product-line"><strong>MINDGRASP AI · MARKETING</strong> — Ran content + social experiments to drive signups and refine onboarding flows.</span>
-        <span class="product-line"><strong>HOOGLEE (STEALTH STARTUP) · GROWTH</strong> — Helped test channels, messaging, and landing tweaks for an early-stage consumer product.</span>
-        <span class="product-line"><strong>LEADERSHIP</strong> — Co-led student orgs and project teams, aligning engineering work with clear metrics and deadlines.</span>
-      </div>
-    </section>
-  </main>
-
-  <!-- BOTTOM NOTE (keeps UC Berkeley info) -->
-  <div class="bottom-bar">
-    <div class="bottom-note">
-      <span>uc berkeley</span>
-      <span>cs · data science</span>
     </div>
-    <div class="bottom-links">
-      <!-- info duplicated in header nav but preserved here logically -->
-      <span>email · cv · github · linkedin</span>
-    </div>
-  </div>
-
-  <!-- FLOATING DOODLE CAT -->
-  <div class="cat" id="cat" aria-hidden="true">
-    <svg viewBox="0 0 80 40">
-      <line x1="6" y1="32" x2="74" y2="32" stroke="#e1e1e1" stroke-width="2" stroke-linecap="round" />
-      <path d="M18 24 Q12 18 16 14" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
-      <rect x="20" y="18" width="28" height="14" rx="7" fill="none" stroke="#111" stroke-width="1.6" />
-      <rect x="40" y="14" width="14" height="12" rx="4" fill="none" stroke="#111" stroke-width="1.6" />
-      <path d="M42 14 L44 9 L46 14" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
-      <path d="M48 14 L50 9 L52 14" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
-      <circle cx="44" cy="18" r="1.2" fill="#111" />
-      <circle cx="50" cy="18" r="1.2" fill="#111" />
-      <path d="M45 20 Q47 21 49 20" fill="none" stroke="#111" stroke-width="1.1" stroke-linecap="round" />
-      <line x1="24" y1="32" x2="24" y2="28.5" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
-      <line x1="30" y1="32" x2="30" y2="28.5" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
-      <line x1="40" y1="32" x2="40" y2="28.5" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
-      <line x1="46" y1="32" x2="46" y2="28.5" stroke="#111" stroke-width="1.6" stroke-linecap="round" />
-    </svg>
   </div>
 
   <script>
     (function () {
-      /* SELECTED WORKS PREVIEW (unchanged behavior) */
+      /* SELECTED WORKS PREVIEW */
       const lists = Array.from(document.querySelectorAll(".works-list"));
       const items = lists.flatMap(list => Array.from(list.querySelectorAll(".work-item")));
       const titleEl = document.getElementById("preview-title");
@@ -663,48 +786,17 @@
         });
       }
 
-      /* FLOATING CAT (simple drift) */
-      const cat = document.getElementById("cat");
-      if (cat) {
-        let x = window.innerWidth * 0.18;
-        let y = window.innerHeight * 0.32;
-        let vx = 32; // px/s
-        let vy = 20; // px/s
-        let last = performance.now();
-
-        function frame(now) {
-          const dt = (now - last) / 1000;
-          last = now;
-
-          const w = window.innerWidth || 800;
-          const h = window.innerHeight || 600;
-          const margin = 56;
-
-          x += vx * dt;
-          y += vy * dt;
-
-          if (x < margin) { x = margin; vx = Math.abs(vx) * (0.85 + Math.random() * 0.3); }
-          else if (x > w - margin) { x = w - margin; vx = -Math.abs(vx) * (0.85 + Math.random() * 0.3); }
-
-          if (y < margin) { y = margin; vy = Math.abs(vy) * (0.85 + Math.random() * 0.3); }
-          else if (y > h - margin) { y = h - margin; vy = -Math.abs(vy) * (0.85 + Math.random() * 0.3); }
-
-          const bob = Math.sin(now / 520) * 2.3;
-
-          cat.style.transform = `translate(${x - 40}px, ${y - 22 + bob}px)`;
-
-          requestAnimationFrame(frame);
-        }
-
-        window.addEventListener("resize", () => {
-          const w = window.innerWidth || 800;
-          const h = window.innerHeight || 600;
-          x = Math.min(Math.max(x, 40), w - 40);
-          y = Math.min(Math.max(y, 40), h - 40);
+      /* LIGHT / DARK MODE (for fun, like screenshot toggle) */
+      const buttons = Array.from(document.querySelectorAll(".mode-toggle button"));
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const mode = btn.getAttribute("data-mode");
+          document.body.classList.toggle("theme-dark", mode === "dark");
+          document.body.classList.toggle("theme-light", mode === "light");
+          buttons.forEach(b => b.classList.remove("is-active"));
+          btn.classList.add("is-active");
         });
-
-        requestAnimationFrame(frame);
-      }
+      });
     })();
   </script>
 </body>
