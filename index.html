@@ -9,28 +9,35 @@
   <style>
     /* ------------------ THEME ------------------ */
     :root {
-      --bg-page: #dcdcdc;
+      --font-main: -apple-system, BlinkMacSystemFont, system-ui, "SF Pro Text", Arial, sans-serif;
+
+      --bg-page: #dedede;
       --bg-frame: #f4f4f4;
-      --ink: #151515;
-      --muted: #787878;
-      --hairline: #d1d1d1;
-      --accent: #151515;
+      --ink: #171717;
+      --muted: #757575;
+      --hairline: #d4d4d4;
+      --accent: #171717;
     }
 
     body.theme-dark {
-      --bg-page: #111111;
-      --bg-frame: #1b1b1b;
+      --bg-page: #101010;
+      --bg-frame: #181818;
       --ink: #f4f4f4;
-      --muted: #9b9b9b;
-      --hairline: #404040;
+      --muted: #a0a0a0;
+      --hairline: #3a3a3a;
       --accent: #f4f4f4;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html, body { height: 100%; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, system-ui, "SF Pro Text", Arial, sans-serif;
+      font-family: var(--font-main);
       -webkit-font-smoothing: antialiased;
       text-rendering: geometricPrecision;
       background: var(--bg-page);
@@ -41,7 +48,10 @@
       padding: 24px;
     }
 
-    a { color: inherit; text-decoration: none; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
     /* ------------------ FRAME ------------------ */
     .page {
@@ -54,7 +64,7 @@
       position: relative;
       background: var(--bg-frame);
       border: 1px solid var(--hairline);
-      box-shadow: 0 14px 40px rgba(0,0,0,0.18);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.14);
       padding: 32px 40px;
       overflow: hidden;
       min-height: min(80vh, 760px);
@@ -70,11 +80,11 @@
       right: 20%;
       pointer-events: none;
       background:
-        radial-gradient(circle at 50% 0%, rgba(0,0,0,0.14), transparent 60%),
-        radial-gradient(circle at 50% 100%, rgba(0,0,0,0.14), transparent 60%),
-        radial-gradient(circle at 50% 50%, rgba(0,0,0,0.16), transparent 65%);
+        radial-gradient(circle at 50% 0%, rgba(0,0,0,0.16), transparent 60%),
+        radial-gradient(circle at 50% 100%, rgba(0,0,0,0.16), transparent 60%),
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,0.18), transparent 65%);
       mix-blend-mode: multiply;
-      opacity: 0.16;
+      opacity: 0.18;
     }
 
     .page-frame::after {
@@ -84,7 +94,7 @@
       pointer-events: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
       mix-blend-mode: multiply;
-      opacity: 0.2;
+      opacity: 0.18;
     }
 
     /* ------------------ HEADER ------------------ */
@@ -104,12 +114,13 @@
     }
 
     .identity-name {
-      font-size: 36px;
-      letter-spacing: 0.02em;
+      font-size: 34px;
+      letter-spacing: 0.03em;
+      font-weight: 500;
     }
 
     .identity-role {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--muted);
     }
 
@@ -118,13 +129,13 @@
       gap: 18px;
       font-size: 11px;
       color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
     }
 
     .header-links a {
       border-bottom: 1px solid transparent;
       padding-bottom: 1px;
-      text-transform: lowercase;
-      letter-spacing: 0.12em;
     }
 
     .header-links a:hover {
@@ -142,7 +153,7 @@
       align-items: flex-start;
     }
 
-    /* left nav */
+    /* LEFT NAV */
     .sidebar {
       display: flex;
       flex-direction: column;
@@ -178,10 +189,11 @@
       letter-spacing: 0.18em;
       color: var(--muted);
       display: flex;
-      gap: 8px;
+      gap: 10px;
       align-items: center;
       cursor: default;
       margin-top: 40px;
+      text-transform: uppercase;
     }
 
     .mode-toggle button {
@@ -191,13 +203,15 @@
       font: inherit;
       color: inherit;
       cursor: pointer;
+      display: flex;
+      align-items: center;
     }
 
     .mode-toggle button span.square {
       display: inline-block;
       width: 8px;
       height: 8px;
-      margin-inline: 2px 4px;
+      margin-inline: 3px 4px;
       border: 1px solid var(--muted);
       background: transparent;
     }
@@ -207,12 +221,12 @@
       border-color: var(--ink);
     }
 
-    /* middle column (projects) */
+    /* MIDDLE: PROJECTS */
     .page-main {
       display: flex;
       flex-direction: column;
       gap: 18px;
-      font-size: 11px;
+      font-size: 12px;
     }
 
     .section-label {
@@ -233,9 +247,9 @@
       column-gap: 26px;
       row-gap: 24px;
       font-size: 11px;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     .works-group {
@@ -260,6 +274,7 @@
       letter-spacing: 0.18em;
       color: #a0a0a0;
     }
+
     .works-header span:first-child { text-align: right; }
 
     .works-list {
@@ -274,8 +289,8 @@
       cursor: pointer;
       transition: color 0.18s ease, opacity 0.18s ease, transform 0.12s ease;
       font-size: 11px;
-      letter-spacing: 0.13em;
-      color: #9b9b9b;
+      letter-spacing: 0.14em;
+      color: #8b8b8b;
     }
 
     .work-item span:first-child { text-align: right; }
@@ -302,7 +317,7 @@
       padding-top: 10px;
       border-top: 1px solid var(--hairline);
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.9fr);
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.9fr);
       column-gap: 28px;
       row-gap: 12px;
       font-size: 11px;
@@ -317,18 +332,24 @@
       letter-spacing: 0.2em;
       margin-bottom: 2px;
     }
+
     .preview-title {
       font-weight: 600;
       color: var(--ink);
       margin-top: 2px;
     }
-    .preview-meta { margin-top: 4px; }
+
+    .preview-meta {
+      margin-top: 4px;
+    }
+
     .preview-links {
       margin-top: 10px;
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
     }
+
     .preview-link {
       font-size: 10px;
       letter-spacing: 0.18em;
@@ -336,19 +357,21 @@
       border-bottom: 1px solid transparent;
       padding-bottom: 1px;
     }
+
     .preview-link:hover {
       border-color: var(--ink);
     }
+
     #preview-desc {
       max-width: 640px;
       font-size: 12px;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
       text-transform: none;
-      color: #444;
+      color: #424242;
       line-height: 1.7;
     }
 
-    /* product / growth notes under preview */
+    /* PRODUCT / GROWTH NOTES */
     .product-block {
       margin-top: 20px;
       padding-top: 12px;
@@ -365,7 +388,7 @@
     }
 
     .product-label {
-      font-weight: 600;
+      font-weight: 500;
       color: var(--ink);
       font-size: 11px;
     }
@@ -383,6 +406,7 @@
       border-bottom: 1px solid transparent;
       text-align: left;
     }
+
     .product-toggle:hover {
       color: var(--ink);
       border-color: var(--ink);
@@ -399,18 +423,20 @@
       text-transform: none;
       font-size: 12px;
       letter-spacing: 0.01em;
-      color: #444;
+      color: #424242;
     }
+
     .product-block.is-open .product-body {
       max-height: 360px;
       opacity: 1;
     }
+
     .product-line strong {
       color: var(--accent);
       font-weight: 600;
     }
 
-    /* right column bio */
+    /* RIGHT COLUMN: BIO / CONTACT */
     .intro {
       font-size: 13px;
       line-height: 1.9;
@@ -419,12 +445,6 @@
 
     .intro p {
       margin-bottom: 4px;
-    }
-
-    .intro p:last-child {
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 11px;
     }
 
     .intro-tagline {
@@ -436,10 +456,10 @@
     }
 
     .school-note {
-      margin-top: 10px;
+      margin-top: 12px;
       font-size: 11px;
       color: var(--muted);
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     .contact-block {
@@ -448,9 +468,18 @@
       line-height: 1.8;
     }
 
+    .contact-block-title {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 10px;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
     .contact-block a {
       border-bottom: 1px solid transparent;
       padding-bottom: 1px;
+      font-size: 11px;
     }
 
     .contact-block a:hover {
@@ -462,14 +491,17 @@
       body {
         align-items: stretch;
       }
+
       .page-frame {
         max-height: none;
         min-height: 100vh;
       }
+
       .page-frame::before,
       .page-frame::after {
         inset: 24px 24px;
       }
+
       .page-body {
         grid-template-columns: 150px minmax(0,1.2fr) 260px;
         column-gap: 26px;
@@ -517,14 +549,17 @@
 
     @media (max-width: 640px) {
       .identity-name {
-        font-size: 28px;
+        font-size: 26px;
       }
+
       .section-label {
         font-size: 10px;
       }
+
       .preview {
         grid-template-columns: 1fr;
       }
+
       .product-block {
         grid-template-columns: 1fr;
       }
@@ -538,7 +573,7 @@
       <header class="page-header">
         <div class="identity">
           <div class="identity-name">Yuhee Lefkowitz</div>
-          <div class="identity-role">Builder &amp; Strategist</div>
+          <div class="identity-role">Builder &amp; strategist across backend, product, and social systems</div>
         </div>
         <nav class="header-links">
           <a href="mailto:yuhee123@berkeley.edu">email</a>
@@ -561,10 +596,10 @@
 
           <div class="mode-toggle" aria-label="Theme toggle">
             <button type="button" data-mode="light" class="is-active">
-              <span class="square"></span>LIGHT
+              <span class="square"></span>Light
             </button>
             <button type="button" data-mode="dark">
-              <span class="square"></span>DARK
+              <span class="square"></span>Dark
             </button>
           </div>
         </aside>
@@ -709,7 +744,7 @@
 
         <!-- RIGHT: BIO / INFO / CONTACT -->
         <aside class="intro" id="info">
-          <p>I am Yuhee — a builder &amp; strategist working across backend, product, and social systems.</p>
+          <p>I’m Yuhee — a builder and strategist working across backend, product, and social systems.</p>
           <p>Right now that looks like infrastructure for social apps, experiments around growth &amp; events, and tools that make messy real-world behavior a little more legible.</p>
           <p class="intro-tagline">trying to keep things playful :)</p>
 
@@ -719,7 +754,7 @@
           </div>
 
           <div class="contact-block" id="contact">
-            <div>Contact</div>
+            <div class="contact-block-title">contact</div>
             <a href="mailto:yuhee123@berkeley.edu">yuhee123@berkeley.edu</a><br />
             <a href="resume.pdf" target="_blank" rel="noreferrer">resume / cv</a><br />
             <a href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">github</a><br />
@@ -786,7 +821,7 @@
         });
       }
 
-      /* LIGHT / DARK MODE (for fun, like screenshot toggle) */
+      /* LIGHT / DARK MODE */
       const buttons = Array.from(document.querySelectorAll(".mode-toggle button"));
       buttons.forEach(btn => {
         btn.addEventListener("click", () => {
