@@ -7,44 +7,13 @@
   <meta name="description" content="Selected work of Yuhee Lefkowitz — backend, product, and social systems." />
 
   <style>
-    /* ------------------ THEME ------------------ */
-    /* MAKE ALL TEXT THE SAME FONT AS SELECTED WORK */
-* {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
-               "SF Pro Display", system-ui, sans-serif !important;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-/* Optional but keeps hierarchy clean */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
-
-p, li, a, span, div {
-  font-weight: 300;
-  letter-spacing: 0.2px;
-}
-
     :root {
-      --font-main: -apple-system, BlinkMacSystemFont, system-ui, "SF Pro Text", Arial, sans-serif;
-
-      --bg-page: #dedede;
-      --bg-frame: #f4f4f4;
-      --ink: #171717;
-      --muted: #757575;
-      --hairline: #d4d4d4;
-      --accent: #171717;
-    }
-
-    body.theme-dark {
-      --bg-page: #101010;
-      --bg-frame: #181818;
-      --ink: #f4f4f4;
-      --muted: #a0a0a0;
-      --hairline: #3a3a3a;
-      --accent: #f4f4f4;
+      --bg: #fafafa;
+      --card: #ffffff;
+      --border: #dbdbdb;
+      --ink: #262626;
+      --muted: #8e8e8e;
+      --accent: #0095f6;
     }
 
     * {
@@ -56,15 +25,10 @@ p, li, a, span, div {
     html, body { height: 100%; }
 
     body {
-      font-family: var(--font-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
-      text-rendering: geometricPrecision;
-      background: var(--bg-page);
+      background: var(--bg);
       color: var(--ink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
     }
 
     a {
@@ -72,784 +36,619 @@ p, li, a, span, div {
       text-decoration: none;
     }
 
-    /* ------------------ FRAME ------------------ */
-    .page {
-      width: 100%;
-      max-width: 1400px;
-      max-height: 820px;
+    /* TOP BAR (very IG) */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
     }
 
-    .page-frame {
-      position: relative;
-      background: var(--bg-frame);
-      border: 1px solid var(--hairline);
-      box-shadow: 0 14px 40px rgba(0,0,0,0.14);
-      padding: 32px 40px;
-      overflow: hidden;
-      min-height: min(80vh, 760px);
-    }
-
-    /* grainy vertical band */
-    .page-frame::before {
-      content: "";
-      position: absolute;
-      top: 32px;
-      bottom: 32px;
-      left: 32%;
-      right: 20%;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(0,0,0,0.16), transparent 60%),
-        radial-gradient(circle at 50% 100%, rgba(0,0,0,0.16), transparent 60%),
-        radial-gradient(circle at 50% 50%, rgba(0,0,0,0.18), transparent 65%);
-      mix-blend-mode: multiply;
-      opacity: 0.18;
-    }
-
-    .page-frame::after {
-      content: "";
-      position: absolute;
-      inset: 32px 40px;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
-      mix-blend-mode: multiply;
-      opacity: 0.18;
-    }
-
-    /* ------------------ HEADER ------------------ */
-    .page-header {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 40px;
-    }
-
-    .identity {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .identity-name {
-      font-size: 34px;
-      letter-spacing: 0.03em;
-      font-weight: 500;
-    }
-
-    .identity-role {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .header-links {
-      display: flex;
-      gap: 18px;
-      font-size: 11px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-    }
-
-    .header-links a {
-      border-bottom: 1px solid transparent;
-      padding-bottom: 1px;
-    }
-
-    .header-links a:hover {
-      border-color: var(--ink);
-      color: var(--ink);
-    }
-
-    /* ------------------ BODY LAYOUT ------------------ */
-    .page-body {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 180px minmax(0, 1fr) 280px;
-      column-gap: 36px;
-      align-items: flex-start;
-    }
-
-    /* LEFT NAV */
-    .sidebar {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: flex-start;
-      height: 100%;
-    }
-
-    .sidebar-nav {
-      list-style: none;
-      font-size: 13px;
-      line-height: 1.9;
-    }
-
-    .sidebar-nav li:first-child {
-      font-size: 20px;
-      margin-bottom: 6px;
-    }
-
-    .sidebar-nav a {
-      border-bottom: 1px solid transparent;
-      padding-bottom: 1px;
-    }
-
-    .sidebar-nav a:hover {
-      border-color: var(--ink);
-    }
-
-    .mode-toggle {
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      color: var(--muted);
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      cursor: default;
-      margin-top: 40px;
-      text-transform: uppercase;
-    }
-
-    .mode-toggle button {
-      border: none;
-      background: none;
-      padding: 0;
-      font: inherit;
-      color: inherit;
-      cursor: pointer;
+    .topbar-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 16px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
     }
 
-    .mode-toggle button span.square {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      margin-inline: 3px 4px;
-      border: 1px solid var(--muted);
-      background: transparent;
+    .logo {
+      font-family: "Helvetica Neue", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.02em;
     }
 
-    .mode-toggle button.is-active span.square {
-      background: var(--ink);
-      border-color: var(--ink);
+    .logo span {
+      font-weight: 300;
     }
 
-    /* MIDDLE: PROJECTS */
-    .page-main {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      font-size: 12px;
-    }
-
-    .section-label {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .works-shell {
-      padding-top: 8px;
-      border-top: 1px solid var(--hairline);
-    }
-
-    .works-columns {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 26px;
-      row-gap: 24px;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      line-height: 1.6;
-    }
-
-    .works-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .works-column-heading {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      color: var(--muted);
-    }
-
-    .works-header {
-      display: grid;
-      grid-template-columns: 32px minmax(0, 1.7fr) minmax(0, 1.4fr);
-      column-gap: 10px;
-      margin-bottom: 4px;
-      font-weight: 500;
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      color: #a0a0a0;
-    }
-
-    .works-header span:first-child { text-align: right; }
-
-    .works-list {
-      list-style: none;
-    }
-
-    .work-item {
-      display: grid;
-      grid-template-columns: 32px minmax(0, 1.7fr) minmax(0, 1.4fr);
-      column-gap: 10px;
-      padding: 3px 0;
-      cursor: pointer;
-      transition: color 0.18s ease, opacity 0.18s ease, transform 0.12s ease;
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      color: #8b8b8b;
-    }
-
-    .work-item span:first-child { text-align: right; }
-
-    .work-item:hover,
-    .work-item.is-active {
-      color: var(--ink);
-      transform: translateX(1px);
-    }
-
-    .works-list.dim .work-item { opacity: 0.3; }
-    .works-list.dim .work-item.is-active { opacity: 1; }
-
-    .works-archive-note {
-      margin-top: 10px;
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .preview {
-      margin-top: 18px;
-      padding-top: 10px;
-      border-top: 1px solid var(--hairline);
-      display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.9fr);
-      column-gap: 28px;
-      row-gap: 12px;
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .preview-label {
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      margin-bottom: 2px;
-    }
-
-    .preview-title {
+    .logo strong {
       font-weight: 600;
-      color: var(--ink);
-      margin-top: 2px;
     }
 
-    .preview-meta {
-      margin-top: 4px;
+    .top-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
     }
 
-    .preview-links {
-      margin-top: 10px;
+    .top-link {
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    /* MAIN WRAPPER */
+    .page {
+      max-width: 960px;
+      margin: 24px auto 40px;
+      padding: 0 16px;
+    }
+
+    /* PROFILE AREA */
+    .profile-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      column-gap: 24px;
+    }
+
+    .avatar-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      background:
+        radial-gradient(circle at 30% 0, #f9ed32, transparent 70%),
+        radial-gradient(circle at 80% 0, #ee2a7b, transparent 70%),
+        radial-gradient(circle at 0 80%, #4f5bd5, transparent 70%),
+        #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    .avatar-inner {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #444;
+      font-size: 24px;
+      font-weight: 600;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .profile-main {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .profile-row-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .profile-name {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .profile-role {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .profile-row-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13px;
+    }
+
+    .profile-stat strong {
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    .profile-bio {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .profile-bio span.highlight {
+      font-weight: 500;
+    }
+
+    .profile-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-    }
-
-    .preview-link {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      border-bottom: 1px solid transparent;
-      padding-bottom: 1px;
-    }
-
-    .preview-link:hover {
-      border-color: var(--ink);
-    }
-
-    #preview-desc {
-      max-width: 640px;
-      font-size: 12px;
-      letter-spacing: 0.01em;
-      text-transform: none;
-      color: #424242;
-      line-height: 1.7;
-    }
-
-    /* PRODUCT / GROWTH NOTES */
-    .product-block {
-      margin-top: 20px;
-      padding-top: 12px;
-      border-top: 1px solid var(--hairline);
-      display: grid;
-      grid-template-columns: minmax(0,1.1fr) minmax(0,2.1fr);
-      column-gap: 28px;
-      row-gap: 10px;
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .product-label {
-      font-weight: 500;
-      color: var(--ink);
-      font-size: 11px;
-    }
-
-    .product-toggle {
-      border: none;
-      background: none;
-      font: inherit;
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: inherit;
-      color: var(--muted);
-      cursor: pointer;
-      padding: 2px 0 0;
-      border-bottom: 1px solid transparent;
-      text-align: left;
-    }
-
-    .product-toggle:hover {
-      color: var(--ink);
-      border-color: var(--ink);
-    }
-
-    .product-body {
-      overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      transition: max-height 0.25s ease, opacity 0.25s ease;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      text-transform: none;
-      font-size: 12px;
-      letter-spacing: 0.01em;
-      color: #424242;
-    }
-
-    .product-block.is-open .product-body {
-      max-height: 360px;
-      opacity: 1;
-    }
-
-    .product-line strong {
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    /* RIGHT COLUMN: BIO / CONTACT */
-    .intro {
+      margin-top: 4px;
       font-size: 13px;
-      line-height: 1.9;
-      max-width: 260px;
     }
 
-    .intro p {
+    .profile-links a {
+      color: var(--accent);
+    }
+
+    .profile-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* SECTION LABELS (like IG tab labels) */
+    .section-tabs {
+      margin-top: 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .section-tab {
+      padding: 12px 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .section-tab.is-active {
+      color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .section-tab-icon {
+      width: 12px;
+      height: 12px;
+      border: 1px solid currentColor;
+    }
+
+    /* GRID FEED */
+    .feed {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 4px;
+    }
+
+    .post {
+      background: var(--card);
+      border: 1px solid var(--border);
+      aspect-ratio: 4/3;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      text-align: center;
+      transition: transform 0.08s ease;
+    }
+
+    .post:hover {
+      transform: scale(1.01);
+    }
+
+    .post-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
       margin-bottom: 4px;
     }
 
-    .intro-tagline {
-      margin-top: 8px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--muted);
+    .post-title {
+      font-size: 12px;
+      font-weight: 500;
     }
 
-    .school-note {
-      margin-top: 12px;
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .contact-block {
-      margin-top: 26px;
-      font-size: 11px;
-      line-height: 1.8;
-    }
-
-    .contact-block-title {
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
+    .post-tag {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
       font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #ffffff;
+      background: rgba(0,0,0,0.6);
+      padding: 3px 6px;
+      border-radius: 999px;
+    }
+
+    /* CAPTION / DETAILS AREA */
+    .caption-card {
+      margin-top: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .caption-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin-bottom: 6px;
+    }
+
+    .caption-title {
+      font-weight: 600;
+    }
+
+    .caption-chip {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
       color: var(--muted);
     }
 
-    .contact-block a {
-      border-bottom: 1px solid transparent;
-      padding-bottom: 1px;
+    .caption-links {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .caption-links a {
+      color: var(--accent);
+    }
+
+    /* PRODUCT NOTES SECTION */
+    .notes-card {
+      margin-top: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px 14px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .notes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .notes-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .notes-toggle {
+      border: none;
+      background: none;
       font-size: 11px;
+      color: var(--accent);
+      cursor: pointer;
     }
 
-    .contact-block a:hover {
-      border-color: var(--ink);
+    .notes-body {
+      margin-top: 4px;
     }
 
-    /* ------------------ RESPONSIVE ------------------ */
-    @media (max-width: 1100px) {
-      body {
-        align-items: stretch;
-      }
-
-      .page-frame {
-        max-height: none;
-        min-height: 100vh;
-      }
-
-      .page-frame::before,
-      .page-frame::after {
-        inset: 24px 24px;
-      }
-
-      .page-body {
-        grid-template-columns: 150px minmax(0,1.2fr) 260px;
-        column-gap: 26px;
-      }
+    .notes-line + .notes-line {
+      margin-top: 4px;
     }
 
-    @media (max-width: 880px) {
-      body { padding: 16px; }
+    .notes-line strong {
+      font-weight: 600;
+    }
 
-      .page-frame {
-        padding: 24px 20px;
-      }
+    .notes-body.is-collapsed {
+      display: none;
+    }
 
-      .page-header {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .page-body {
-        margin-top: 18px;
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .profile-card {
         grid-template-columns: 1fr;
-        row-gap: 32px;
+        row-gap: 16px;
       }
 
-      .sidebar {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
+      .avatar-wrapper {
+        justify-content: flex-start;
       }
 
-      .mode-toggle {
-        writing-mode: horizontal-tb;
-        margin-top: 0;
-      }
-
-      .page-main {
-        order: 2;
-      }
-
-      .intro {
-        max-width: none;
-        order: 1;
+      .feed {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 640px) {
-      .identity-name {
-        font-size: 26px;
+    @media (max-width: 520px) {
+      .feed {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
       }
 
-      .section-label {
-        font-size: 10px;
-      }
-
-      .preview {
-        grid-template-columns: 1fr;
-      }
-
-      .product-block {
-        grid-template-columns: 1fr;
+      .caption-card,
+      .notes-card {
+        border-radius: 6px;
+        padding-inline: 14px;
       }
     }
   </style>
 </head>
-<body class="theme-light">
-  <div class="page">
-    <div class="page-frame">
-      <!-- HEADER -->
-      <header class="page-header">
-        <div class="identity">
-          <div class="identity-name">Yuhee Lefkowitz</div>
-          <div class="identity-role">Builder &amp; strategist across backend, product, and social systems</div>
-        </div>
-        <nav class="header-links">
-          <a href="mailto:yuhee123@berkeley.edu">email</a>
-          <a href="resume.pdf" target="_blank" rel="noreferrer">cv</a>
-          <a href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">github</a>
-          <a href="https://www.linkedin.com/in/yuhee123" target="_blank" rel="noreferrer">linkedin</a>
-        </nav>
-      </header>
-
-      <!-- BODY -->
-      <div class="page-body">
-        <!-- LEFT NAV -->
-        <aside class="sidebar">
-          <ul class="sidebar-nav">
-            <li>•</li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#info">Info</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-
-          <div class="mode-toggle" aria-label="Theme toggle">
-            <button type="button" data-mode="light" class="is-active">
-              <span class="square"></span>Light
-            </button>
-            <button type="button" data-mode="dark">
-              <span class="square"></span>Dark
-            </button>
-          </div>
-        </aside>
-
-        <!-- MIDDLE: PROJECTS -->
-        <main class="page-main" id="projects">
-          <div class="section-label">selected work · since 2021</div>
-
-          <section class="works-shell" aria-label="Selected work grid">
-            <div class="works-columns">
-              <!-- SWE & SYSTEMS -->
-              <div class="works-group">
-                <div class="works-column-heading">swe &amp; systems</div>
-                <div class="works-header">
-                  <span>no.</span>
-                  <span>work</span>
-                  <span>field</span>
-                </div>
-                <ol class="works-list">
-                  <li class="work-item is-active"
-                      tabindex="0"
-                      data-title="CAPYBARA MAPS"
-                      data-meta="IOS APP · SWIFTUI · MAPKIT · POSTGIS"
-                      data-desc="City-scale geospatial search app. I built a SwiftUI front-end on top of a Dockerized Node &amp; Postgres (PostGIS) backend, with nearest-neighbor queries and caching to keep multi-city lookups feeling instant."
-                      data-github="https://github.com/yuhee1234/capybaramaps">
-                    <span>1</span><span>CAPYBARA MAPS</span><span>IOS · GEO</span>
-                  </li>
-
-                  <li class="work-item"
-                      tabindex="0"
-                      data-title="STOCKSPHERE"
-                      data-meta="NEXT.JS · FLASK · REDIS · TWILIO"
-                      data-desc="Full-stack analytics for retail investors. Microservices handle pricing, news, and risk. Redis-backed caching and SMS alerts keep users updated without babysitting charts."
-                      data-github="https://github.com/yuhee1234/StockSphere">
-                    <span>2</span><span>STOCKSPHERE</span><span>DATA · BACKEND</span>
-                  </li>
-
-                  <li class="work-item"
-                      tabindex="0"
-                      data-title="CURRYSTATS"
-                      data-meta="FASTAPI · NBA DATA · HUGGINGFACE"
-                      data-desc="Live stats layer over NBA games. Fuses play-by-play data with sentiment models to show how every three, turnover, or run shifts fan mood."
-                      data-github="https://github.com/yuhee1234/CurryStats">
-                    <span>3</span><span>CURRYSTATS</span><span>ML · SPORTS</span>
-                  </li>
-
-                  <li class="work-item"
-                      tabindex="0"
-                      data-title="NOTIFY.CAREERS"
-                      data-meta="SCRAPERS · PIPELINES · ALERT DESIGN"
-                      data-desc="Job-alert engine that tracks roles across boards. Helped define v1 UX and built rules so alerts feel helpful, not spammy."
-                      data-live="https://notify.careers"
-                      data-github="https://github.com/yuhee1234">
-                    <span>4</span><span>NOTIFY.CAREERS</span><span>SYSTEMS</span>
-                  </li>
-
-                  <li class="work-item"
-                      tabindex="0"
-                      data-title="SHOPLENS — VISUAL AI SHOPPING"
-                      data-meta="COMPUTER VISION · PRODUCT"
-                      data-desc="Built and shipped a visual shopping demo where users snap a photo and get styled product recommendations. Scoped flows, wired the model, and launched as a live web demo."
-                      data-live="https://yuhee1234.github.io/shoplens/"
-                      data-github="https://github.com/yuhee1234/shoplens">
-                    <span>5</span><span>SHOPLENS</span><span>AI · PRODUCT</span>
-                  </li>
-                </ol>
-              </div>
-
-              <!-- PRODUCT & GROWTH -->
-              <div class="works-group">
-                <div class="works-column-heading">product &amp; growth</div>
-                <div class="works-header">
-                  <span>no.</span>
-                  <span>work</span>
-                  <span>field</span>
-                </div>
-                <ol class="works-list">
-                  <li class="work-item"
-                      tabindex="0"
-                      data-title="QUILLY"
-                      data-meta="NODE · EXPRESS · MONGO · PRODUCT"
-                      data-desc="Social platform helping college women build friendships. I work across backend infra, a house-sorting algorithm, and event flows that translate in-person energy into retained users."
-                      data-github="https://github.com/yuhee1234">
-                    <span>1</span><span>QUILLY</span><span>SOCIAL · PRODUCT</span>
-                  </li>
-
-                  <li class="work-item"
-                      tabindex="0"
-                      data-title="EVENT LAUNCHES"
-                      data-meta="GROWTH · FUNNELS · OPS"
-                      data-desc="Playful launch systems — from anti-performative vs performative male events to campus parties — tying IRL funnels to activation, retention, and content loops.">
-                    <span>2</span><span>EVENT LAUNCHES</span><span>GROWTH</span>
-                  </li>
-
-                  <li class="work-item"
-                      tabindex="0"
-                      data-title="FIRST-SESSION PERSONALIZATION SPRINT"
-                      data-meta="PM · EXPERIMENT DESIGN"
-                      data-desc="Sprint-style project scoping and dashboarding around first-session personalization: mapped funnel, defined success metrics, and shipped a case-study dashboard to make tradeoffs legible."
-                      data-live="dashboard_1sess.html">
-                    <span>3</span><span>1ST-SESSION PERSONALIZATION</span><span>PRODUCT</span>
-                  </li>
-                </ol>
-              </div>
-            </div>
-
-            <div class="works-archive-note">
-              * archive of selected works made since 2021
-            </div>
-          </section>
-
-          <!-- PREVIEW AREA -->
-          <section class="preview" aria-live="polite">
-            <div>
-              <div class="preview-label">project</div>
-              <div class="preview-title" id="preview-title">CAPYBARA MAPS</div>
-              <div class="preview-meta" id="preview-meta">IOS APP · SWIFTUI · MAPKIT · POSTGIS</div>
-              <div class="preview-links" id="preview-links">
-                <a class="preview-link" href="https://github.com/yuhee1234/capybaramaps" target="_blank" rel="noreferrer">github</a>
-              </div>
-            </div>
-            <div id="preview-desc">
-              City-scale geospatial search app. I built a SwiftUI front-end on top of a Dockerized Node &amp; Postgres (PostGIS) backend, with nearest-neighbor queries and caching to keep multi-city lookups feeling instant.
-            </div>
-          </section>
-
-          <!-- PRODUCT / GROWTH SECTION -->
-          <section class="product-block" aria-label="Product and growth experience" id="product-block">
-            <div>
-              <div class="product-label">product / growth / management</div>
-              <button class="product-toggle" type="button" id="product-toggle">show notes</button>
-            </div>
-            <div class="product-body" id="product-body">
-              <span class="product-line"><strong>QUILLY · PRODUCT / BACKEND</strong> — Scoped and built the backend + house-sorting system powering social discovery for college women.</span>
-              <span class="product-line"><strong>DIPPER · GROWTH</strong> — Designed campus launch experiments and events tying in-person funnels to in-app retention.</span>
-              <span class="product-line"><strong>MINDGRASP AI · MARKETING</strong> — Ran content + social experiments to drive signups and refine onboarding flows.</span>
-              <span class="product-line"><strong>HOOGLEE (STEALTH STARTUP) · GROWTH</strong> — Helped test channels, messaging, and landing tweaks for an early-stage consumer product.</span>
-              <span class="product-line"><strong>LEADERSHIP</strong> — Co-led student orgs and project teams, aligning engineering work with clear metrics and deadlines.</span>
-            </div>
-          </section>
-        </main>
-
-        <!-- RIGHT: BIO / INFO / CONTACT -->
-        <aside class="intro" id="info">
-          <p>I’m Yuhee — a builder and strategist working across backend, product, and social systems.</p>
-          <p>Right now that looks like infrastructure for social apps, experiments around growth &amp; events, and tools that make messy real-world behavior a little more legible.</p>
-          <p class="intro-tagline">trying to keep things playful :)</p>
-
-          <div class="school-note">
-            Born in 2004, currently based in Berkeley.<br />
-            Studying Computer Science and Data Science at UC&nbsp;Berkeley.
-          </div>
-
-          <div class="contact-block" id="contact">
-            <div class="contact-block-title">contact</div>
-            <a href="mailto:yuhee123@berkeley.edu">yuhee123@berkeley.edu</a><br />
-            <a href="resume.pdf" target="_blank" rel="noreferrer">resume / cv</a><br />
-            <a href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">github</a><br />
-            <a href="https://www.linkedin.com/in/yuhee123" target="_blank" rel="noreferrer">linkedin</a>
-          </div>
-        </aside>
+<body>
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="logo">
+        <span>yuhee</span><strong>.xyz</strong>
+      </div>
+      <div class="top-links">
+        <a class="top-link" href="mailto:yuhee123@berkeley.edu">Email</a>
+        <a class="top-link" href="resume.pdf" target="_blank" rel="noreferrer">CV</a>
       </div>
     </div>
-  </div>
+  </header>
+
+  <main class="page">
+    <!-- PROFILE -->
+    <section class="profile-card">
+      <div class="avatar-wrapper">
+        <div class="avatar">
+          <div class="avatar-inner">Y</div>
+        </div>
+      </div>
+      <div class="profile-main">
+        <div class="profile-row-top">
+          <div>
+            <div class="profile-name">yuhee lefkowitz</div>
+            <div class="profile-role">builder &amp; strategist · backend, product, social systems</div>
+          </div>
+        </div>
+
+        <div class="profile-row-stats">
+          <div class="profile-stat">
+            <strong>selected work</strong> since 2021
+          </div>
+          <div class="profile-stat">
+            <strong>based</strong> berkeley, ca
+          </div>
+        </div>
+
+        <div class="profile-bio">
+          I build infrastructure for social apps, run experiments around growth &amp; events,
+          and design tools that make messy real-world behavior a little more legible.
+          <span class="highlight">Trying to keep things playful.</span>
+        </div>
+
+        <div class="profile-links">
+          <a href="mailto:yuhee123@berkeley.edu">yuhee123@berkeley.edu</a>
+          <span>·</span>
+          <a href="resume.pdf" target="_blank" rel="noreferrer">resume / cv</a>
+          <span>·</span>
+          <a href="https://github.com/yuhee1234" target="_blank" rel="noreferrer">github</a>
+          <span>·</span>
+          <a href="https://www.linkedin.com/in/yuhee123" target="_blank" rel="noreferrer">linkedin</a>
+        </div>
+
+        <div class="profile-meta">
+          studying computer science &amp; data science at uc berkeley.
+        </div>
+      </div>
+    </section>
+
+    <!-- TABS -->
+    <div class="section-tabs">
+      <div class="section-tab is-active">
+        <div class="section-tab-icon"></div>
+        <span>Projects</span>
+      </div>
+      <div class="section-tab">
+        <div class="section-tab-icon"></div>
+        <span>Product notes</span>
+      </div>
+    </div>
+
+    <!-- PROJECT GRID (INSTAGRAM FEED) -->
+    <section class="feed" aria-label="Selected work">
+      <!-- SWE & SYSTEMS -->
+      <article class="post"
+               data-title="CAPYBARA MAPS"
+               data-meta="IOS APP · SWIFTUI · MAPKIT · POSTGIS"
+               data-tag="SWE · GEO"
+               data-desc="City-scale geospatial search app. I built a SwiftUI front-end on top of a Dockerized Node &amp; Postgres (PostGIS) backend, with nearest-neighbor queries and caching to keep multi-city lookups feeling instant."
+               data-github="https://github.com/yuhee1234/capybaramaps">
+        <div>
+          <div class="post-label">post 01</div>
+          <div class="post-title">CAPYBARA MAPS</div>
+        </div>
+        <div class="post-tag">swe</div>
+      </article>
+
+      <article class="post"
+               data-title="STOCKSPHERE"
+               data-meta="NEXT.JS · FLASK · REDIS · TWILIO"
+               data-tag="DATA · BACKEND"
+               data-desc="Full-stack analytics for retail investors. Microservices handle pricing, news, and risk. Redis-backed caching and SMS alerts keep users updated without babysitting charts."
+               data-github="https://github.com/yuhee1234/StockSphere">
+        <div>
+          <div class="post-label">post 02</div>
+          <div class="post-title">STOCKSPHERE</div>
+        </div>
+        <div class="post-tag">swe</div>
+      </article>
+
+      <article class="post"
+               data-title="CURRYSTATS"
+               data-meta="FASTAPI · NBA DATA · HUGGINGFACE"
+               data-tag="ML · SPORTS"
+               data-desc="Live stats layer over NBA games. Fuses play-by-play data with sentiment models to show how every three, turnover, or run shifts fan mood."
+               data-github="https://github.com/yuhee1234/CurryStats">
+        <div>
+          <div class="post-label">post 03</div>
+          <div class="post-title">CURRYSTATS</div>
+        </div>
+        <div class="post-tag">ml</div>
+      </article>
+
+      <article class="post"
+               data-title="NOTIFY.CAREERS"
+               data-meta="SCRAPERS · PIPELINES · ALERT DESIGN"
+               data-tag="SYSTEMS"
+               data-desc="Job-alert engine that tracks roles across boards. Helped define v1 UX and built rules so alerts feel helpful, not spammy."
+               data-live="https://notify.careers"
+               data-github="https://github.com/yuhee1234">
+        <div>
+          <div class="post-label">post 04</div>
+          <div class="post-title">NOTIFY.CAREERS</div>
+        </div>
+        <div class="post-tag">systems</div>
+      </article>
+
+      <article class="post"
+               data-title="SHOPLENS — VISUAL AI SHOPPING"
+               data-meta="COMPUTER VISION · PRODUCT"
+               data-tag="AI · PRODUCT"
+               data-desc="Built and shipped a visual shopping demo where users snap a photo and get styled product recommendations. Scoped flows, wired the model, and launched as a live web demo."
+               data-live="https://yuhee1234.github.io/shoplens/"
+               data-github="https://github.com/yuhee1234/shoplens">
+        <div>
+          <div class="post-label">post 05</div>
+          <div class="post-title">SHOPLENS</div>
+        </div>
+        <div class="post-tag">ai</div>
+      </article>
+
+      <!-- PRODUCT & GROWTH -->
+      <article class="post"
+               data-title="QUILLY"
+               data-meta="NODE · EXPRESS · MONGO · PRODUCT"
+               data-tag="SOCIAL · PRODUCT"
+               data-desc="Social platform helping college women build friendships. I work across backend infra, a house-sorting algorithm, and event flows that translate in-person energy into retained users."
+               data-github="https://github.com/yuhee1234">
+        <div>
+          <div class="post-label">post 06</div>
+          <div class="post-title">QUILLY</div>
+        </div>
+        <div class="post-tag">product</div>
+      </article>
+
+      <article class="post"
+               data-title="EVENT LAUNCHES"
+               data-meta="GROWTH · FUNNELS · OPS"
+               data-tag="GROWTH"
+               data-desc="Playful launch systems — from anti-performative vs performative male events to campus parties — tying IRL funnels to activation, retention, and content loops.">
+        <div>
+          <div class="post-label">post 07</div>
+          <div class="post-title">EVENT LAUNCHES</div>
+        </div>
+        <div class="post-tag">growth</div>
+      </article>
+
+      <article class="post"
+               data-title="FIRST-SESSION PERSONALIZATION SPRINT"
+               data-meta="PM · EXPERIMENT DESIGN"
+               data-tag="PRODUCT"
+               data-desc="Sprint-style project scoping and dashboarding around first-session personalization: mapped funnel, defined success metrics, and shipped a case-study dashboard to make tradeoffs legible."
+               data-live="dashboard_1sess.html">
+        <div>
+          <div class="post-label">post 08</div>
+          <div class="post-title">1ST-SESSION PERSONALIZATION</div>
+        </div>
+        <div class="post-tag">pm</div>
+      </article>
+    </section>
+
+    <!-- CAPTION (PROJECT DETAILS) -->
+    <section class="caption-card" aria-live="polite">
+      <div class="caption-header">
+        <div class="caption-title" id="caption-title">CAPYBARA MAPS</div>
+        <div class="caption-chip" id="caption-meta">IOS APP · SWIFTUI · MAPKIT · POSTGIS</div>
+      </div>
+      <div id="caption-desc">
+        City-scale geospatial search app. I built a SwiftUI front-end on top of a Dockerized Node &amp; Postgres (PostGIS) backend, with nearest-neighbor queries and caching to keep multi-city lookups feeling instant.
+      </div>
+      <div class="caption-links" id="caption-links">
+        <a href="https://github.com/yuhee1234/capybaramaps" target="_blank" rel="noreferrer">github</a>
+      </div>
+    </section>
+
+    <!-- PRODUCT NOTES -->
+    <section class="notes-card" id="notes">
+      <div class="notes-header">
+        <div class="notes-title">product / growth notes</div>
+        <button class="notes-toggle" type="button" id="notes-toggle">hide</button>
+      </div>
+      <div class="notes-body" id="notes-body">
+        <div class="notes-line"><strong>QUILLY · product / backend</strong> — scoped and built the backend + house-sorting system powering social discovery for college women.</div>
+        <div class="notes-line"><strong>DIPPER · growth</strong> — designed campus launch experiments and events tying in-person funnels to in-app retention.</div>
+        <div class="notes-line"><strong>MINDGRASP AI · marketing</strong> — ran content + social experiments to drive signups and refine onboarding flows.</div>
+        <div class="notes-line"><strong>HOOGLEE (stealth startup) · growth</strong> — helped test channels, messaging, and landing tweaks for an early-stage consumer product.</div>
+        <div class="notes-line"><strong>leadership</strong> — co-led student orgs and project teams, aligning engineering work with clear metrics and deadlines.</div>
+      </div>
+    </section>
+  </main>
 
   <script>
     (function () {
-      /* SELECTED WORKS PREVIEW */
-      const lists = Array.from(document.querySelectorAll(".works-list"));
-      const items = lists.flatMap(list => Array.from(list.querySelectorAll(".work-item")));
-      const titleEl = document.getElementById("preview-title");
-      const metaEl = document.getElementById("preview-meta");
-      const descEl = document.getElementById("preview-desc");
-      const linksEl = document.getElementById("preview-links");
+      const posts = Array.from(document.querySelectorAll(".post"));
+      const titleEl = document.getElementById("caption-title");
+      const metaEl = document.getElementById("caption-meta");
+      const descEl = document.getElementById("caption-desc");
+      const linksEl = document.getElementById("caption-links");
 
-      function buildLinks(item) {
-        if (!linksEl) return;
-        const gh = item.getAttribute("data-github");
-        const live = item.getAttribute("data-live");
+      function updateCaption(post) {
+        const title = post.getAttribute("data-title") || "";
+        const meta = post.getAttribute("data-meta") || "";
+        const desc = post.getAttribute("data-desc") || "";
+        const gh = post.getAttribute("data-github");
+        const live = post.getAttribute("data-live");
+
+        titleEl.textContent = title;
+        metaEl.textContent = meta;
+        descEl.innerHTML = desc;
+
         let html = "";
-        if (gh) html += `<a class="preview-link" href="${gh}" target="_blank" rel="noreferrer">github</a>`;
-        if (live) html += `<a class="preview-link" href="${live}" target="_blank" rel="noreferrer">live site</a>`;
+        if (gh) html += `<a href="${gh}" target="_blank" rel="noreferrer">github</a>`;
+        if (live) html += `<a href="${live}" target="_blank" rel="noreferrer">live site</a>`;
         linksEl.innerHTML = html;
       }
 
-      function activate(item) {
-        items.forEach(i => i.classList.remove("is-active"));
-        item.classList.add("is-active");
-        lists.forEach(l => l.classList.add("dim"));
-
-        const title = item.getAttribute("data-title") || "";
-        const meta = item.getAttribute("data-meta") || "";
-        const desc = item.getAttribute("data-desc") || "";
-
-        if (titleEl) titleEl.textContent = title;
-        if (metaEl) metaEl.textContent = meta;
-        if (descEl) descEl.textContent = desc;
-        buildLinks(item);
-      }
-
-      items.forEach(item => {
-        item.addEventListener("mouseenter", () => activate(item));
-        item.addEventListener("focus", () => activate(item));
-        item.addEventListener("click", () => {
-          const live = item.getAttribute("data-live");
-          const gh = item.getAttribute("data-github");
-          const target = live || gh;
-          if (target) window.open(target, "_blank");
-        });
+      posts.forEach(post => {
+        post.addEventListener("click", () => updateCaption(post));
       });
 
-      /* PRODUCT TOGGLE */
-      const block = document.getElementById("product-block");
-      const toggle = document.getElementById("product-toggle");
-      if (block && toggle) {
-        toggle.addEventListener("click", () => {
-          const open = block.classList.toggle("is-open");
-          toggle.textContent = open ? "hide notes" : "show notes";
-        });
-      }
-
-      /* LIGHT / DARK MODE */
-      const buttons = Array.from(document.querySelectorAll(".mode-toggle button"));
-      buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
-          const mode = btn.getAttribute("data-mode");
-          document.body.classList.toggle("theme-dark", mode === "dark");
-          document.body.classList.toggle("theme-light", mode === "light");
-          buttons.forEach(b => b.classList.remove("is-active"));
-          btn.classList.add("is-active");
-        });
+      // notes toggle
+      const notesToggle = document.getElementById("notes-toggle");
+      const notesBody = document.getElementById("notes-body");
+      notesToggle.addEventListener("click", () => {
+        const collapsed = notesBody.classList.toggle("is-collapsed");
+        notesToggle.textContent = collapsed ? "show" : "hide";
       });
     })();
   </script>
