@@ -8,14 +8,14 @@
 
   <style>
     :root {
-      --bg: #05030a;
-      --page: #0d0916;
-      --ink: #f5f2ff;
-      --muted: #a198c7;
-      --border: #231a3b;
-      --accent: #b79dff;
-      --chip-bg: #181024;
-      --chip-bg-soft: #120c1e;
+      --bg: #050509;
+      --page: #0c0b12;
+      --ink: #f5f5ff;
+      --muted: #a3a3c0;
+      --border: #20202c;
+      --accent: #c8c8ff;      /* softer, less purple */
+      --chip-bg: #171722;
+      --chip-bg-soft: #13131c;
     }
 
     * {
@@ -31,7 +31,7 @@
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
       -webkit-font-smoothing: antialiased;
-      background: radial-gradient(circle at top, #1a1230 0, #05030a 55%, #02010a 100%);
+      background: radial-gradient(circle at top, #151520 0, #050509 55%, #020208 100%);
       color: var(--ink);
     }
 
@@ -44,7 +44,7 @@
       max-width: 960px;
       margin: 32px auto 48px;
       padding: 32px 40px 40px;
-      background: radial-gradient(circle at top left, #211535 0, #0d0916 55%);
+      background: radial-gradient(circle at top left, #1a1a25 0, #0c0b12 55%);
       border-radius: 14px;
       box-shadow:
         0 22px 60px rgba(0, 0, 0, 0.55),
@@ -107,7 +107,7 @@
       font-size: 13px;
       border: 1px solid var(--accent);
       background: var(--accent);
-      color: #0a050f;
+      color: #050509;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -154,7 +154,7 @@
       box-shadow:
         0 18px 40px rgba(0, 0, 0, 0.7),
         0 0 0 1px rgba(255, 255, 255, 0.03);
-      background: #0b0614;
+      background: #07070d;
     }
 
     /* SECTION TITLE */
@@ -190,7 +190,7 @@
       height: 14px;
       border-radius: 4px;
       border: 1px solid var(--border);
-      background: radial-gradient(circle at top left, #2a1d4a 0, #120b23 60%);
+      background: radial-gradient(circle at top left, #222236 0, #14141f 60%);
     }
 
     .skills-grid {
@@ -241,7 +241,7 @@
       color: var(--muted);
       padding: 3px;
       border-radius: 999px;
-      background: rgba(9, 5, 20, 0.8);
+      background: rgba(10, 10, 18, 0.9);
       border: 1px solid var(--border);
     }
 
@@ -266,7 +266,7 @@
     .projects-tab.is-active {
       color: var(--ink);
       font-weight: 500;
-      background: rgba(183, 157, 255, 0.1);
+      background: rgba(200, 200, 255, 0.08);
     }
 
     .projects-tab.is-active span.icon {
@@ -285,7 +285,7 @@
       border-radius: 10px;
       border: 1px solid var(--border);
       padding: 12px 14px;
-      background: radial-gradient(circle at top left, #211635 0, #0e0918 55%);
+      background: radial-gradient(circle at top left, #1a1a27 0, #0c0b13 55%);
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -314,7 +314,7 @@
       border: 1px solid var(--border);
       padding: 3px 7px;
       white-space: nowrap;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.25);
     }
 
     .project-meta {
@@ -413,10 +413,10 @@
     <section class="hero">
       <div>
         <div class="hero-heading">
-          Hello, I’m <span>Yuhee Lefkowitz.</span>
+          Hi, I’m <span>Yuhee Lefkowitz.</span>
         </div>
         <p class="hero-body">
-          Hi, I’m Yuhee! I’m an engineer + product manager who doom-scrolls a little too much — but it’s made me obsessed with social media and building for it. I’ve worked on product growth, marketing, and strategy across multiple consumer and social apps, and I create content myself with ~20k TikTok followers, which helps me understand what people actually want. On the technical side, I’m strong in backend systems and AI, with experience from places like Amazon.
+          I’m an engineer + product manager who doom-scrolls a little too much — but it’s made me obsessed with social media and building for it. I’ve worked on product growth, marketing, and strategy across multiple consumer and social apps, and I create content myself with ~20k TikTok followers, which helps me understand what people actually want. On the technical side, I’m strong in backend systems and AI, with experience from places like Amazon.
         </p>
 
         <div class="hero-actions">
