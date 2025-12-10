@@ -363,7 +363,27 @@
     .notes-list {
       margin-top: 6px;
       display: grid;
-      gap: 4px;
+      gap: 6px;
+    }
+
+    /* WIDE IMAGE SECTION */
+
+    .wide-image {
+      margin-top: 28px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 255, 255, 0.02);
+      background: #050509;
+    }
+
+    .wide-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
     }
 
     /* RESPONSIVE */
@@ -623,11 +643,39 @@
     <section class="notes">
       <strong>Product &amp; growth notes</strong>
       <div class="notes-list">
-        <div><strong>Quilly · product / backend</strong> — scoped and built backend + house-sorting systems powering social discovery for college women.</div>
-        <div><strong>Dipper · growth</strong> — designed campus launch experiments and events tying in-person funnels to in-app retention.</div>
-        <div><strong>Mindgrasp AI · marketing</strong> — worked with creators on study / productivity content and read user behavior to guide what we filmed next.</div>
-        <div><strong>Hooglee (stealth) · growth</strong> — helped test channels, messaging, and landing-page tweaks for an early-stage consumer product.</div>
+        <div>
+          <strong>Quilly — Product / Backend / PM</strong>
+          Worked across product and engineering to shape how new users get sorted into communities.
+          Helped scope features, wrote lightweight PRDs, and coordinated with design + frontend
+          so the house-sorting flow matched both user goals and technical constraints. Built the
+          backend systems (Node.js, MongoDB) supporting this experience and iterated on the matching
+          logic by testing which inputs actually helped users feel connected faster.
+        </div>
+        <div>
+          <strong>Dipper — Growth / PM</strong>
+          Helped plan and run campus launches by designing in-person events and referral funnels that
+          fed directly into app activity. Partnered with product to decide which experiments were worth
+          testing, tracked how offline behavior (attendance, QR scans, creator activity) translated into
+          in-app retention, and helped the team understand what kinds of users and touchpoints led to
+          stickier engagement.
+        </div>
+        <div>
+          <strong>Mindgrasp AI — Marketing / PM</strong>
+          Worked with creators to produce study and productivity content that aligned with the product’s
+          value props. Reviewed user behavior — replays, saves, comments — to see which topics and
+          formats were landing. Used these insights to shape weekly content priorities, update briefs,
+          and help the team decide which ideas were worth doubling down on.
+        </div>
+        <div>
+          <strong>Hooglee (stealth) · growth</strong>
+          Helped test channels, messaging, and landing-page tweaks for an early-stage consumer product.
+        </div>
       </div>
+    </section>
+
+    <!-- WIDE IMAGE AT BOTTOM -->
+    <section class="wide-image">
+      <img src="IMG_3514_Original.jpg" alt="Wide header / environment image" />
     </section>
   </main>
 
@@ -643,9 +691,11 @@
         });
         cards.forEach(card => {
           const group = card.dataset.group || "featured";
-          card.style.display = (filter === "featured" && group === "featured") ||
-                               (filter === "past" && group === "past")
-                               ? "flex" : "none";
+          card.style.display =
+            (filter === "featured" && group === "featured") ||
+            (filter === "past" && group === "past")
+              ? "flex"
+              : "none";
         });
       }
 
